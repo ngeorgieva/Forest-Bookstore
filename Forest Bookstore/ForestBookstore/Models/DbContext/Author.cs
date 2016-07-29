@@ -8,10 +8,11 @@ namespace ForestBookstore.Models.DbContext
 
     public partial class Author
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        private ICollection<Book> books;
+
         public Author()
         {
-            Books = new HashSet<Book>();
+            this.books = new HashSet<Book>();
         }
 
         public int Id { get; set; }
@@ -20,7 +21,16 @@ namespace ForestBookstore.Models.DbContext
         [StringLength(50)]
         public string Name { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Book> Books { get; set; }
+        public virtual ICollection<Book> Books
+        {
+            get
+            {
+                return this.books;
+            }
+            set
+            {
+                this.books = value;
+            }
+        }
     }
 }

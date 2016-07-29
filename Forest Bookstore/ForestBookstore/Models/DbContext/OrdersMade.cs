@@ -9,23 +9,34 @@ namespace ForestBookstore.Models.DbContext
     [Table("OrdersMade")]
     public partial class OrdersMade
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+
+        private ICollection<BooksForOrder> booksForOrder;
+          
         public OrdersMade()
         {
-            BooksForOrders = new HashSet<BooksForOrder>();
+            this.booksForOrder = new HashSet<BooksForOrder>();
         }
 
         public int Id { get; set; }
-
-        public int UserId { get; set; }
 
         public bool Status { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime OrderedOn { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BooksForOrder> BooksForOrders { get; set; }
+        public virtual ICollection<BooksForOrder> BooksForOrder
+        {
+            get
+            {
+                return this.booksForOrder;
+            }
+            set
+            {
+                this.booksForOrder = value;
+            }
+        }
+
+        public int UserId { get; set; }
 
         public virtual User User { get; set; }
     }

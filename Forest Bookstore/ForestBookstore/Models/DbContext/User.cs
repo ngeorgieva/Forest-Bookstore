@@ -8,11 +8,14 @@ namespace ForestBookstore.Models.DbContext
 
     public partial class User
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+
+        private ICollection<BooksInBasket> booksInBasket;
+        private ICollection<OrdersMade> orderMade;
+
         public User()
         {
-            BooksInBaskets = new HashSet<BooksInBasket>();
-            OrdersMades = new HashSet<OrdersMade>();
+            booksInBasket = new HashSet<BooksInBasket>();
+            orderMade = new HashSet<OrdersMade>();
         }
 
         public int Id { get; set; }
@@ -45,10 +48,28 @@ namespace ForestBookstore.Models.DbContext
         [Column(TypeName = "date")]
         public DateTime CreatedOn { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BooksInBasket> BooksInBaskets { get; set; }
+        public virtual ICollection<BooksInBasket> BooksInBasket
+        {
+            get
+            {
+                return this.booksInBasket;
+            }
+            set
+            {
+                this.booksInBasket = value;
+            }
+        }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrdersMade> OrdersMades { get; set; }
+        public virtual ICollection<OrdersMade> OrdersMades
+        {
+            get
+            {
+                return this.orderMade;
+            }
+            set
+            {
+                this.orderMade = value;
+            }
+        }
     }
 }

@@ -9,14 +9,10 @@ namespace ForestBookstore.Models.DbContext
     [Table("BooksInBasket")]
     public partial class BooksInBasket
     {
-        [Key]
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key, Column(Order = 0)]
         public int UserId { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key, Column(Order = 1)]
         public int BookId { get; set; }
 
         public int Count { get; set; }

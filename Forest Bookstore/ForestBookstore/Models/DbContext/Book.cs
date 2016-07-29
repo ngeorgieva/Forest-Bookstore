@@ -8,13 +8,18 @@ namespace ForestBookstore.Models.DbContext
 
     public partial class Book
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        private ICollection<BooksForOrder> booksForOrder;
+        private ICollection<BooksInBasket> booksInBasket;
+        private ICollection<Author> authors;
+        private ICollection<Category> categories;
+
+
         public Book()
         {
-            BooksForOrders = new HashSet<BooksForOrder>();
-            BooksInBaskets = new HashSet<BooksInBasket>();
-            Authors = new HashSet<Author>();
-            Categories = new HashSet<Category>();
+            this.booksForOrder = new HashSet<BooksForOrder>();
+            this.booksInBasket = new HashSet<BooksInBasket>();
+            this.authors = new HashSet<Author>();
+            this.categories = new HashSet<Category>();
         }
 
         public int Id { get; set; }
@@ -36,17 +41,53 @@ namespace ForestBookstore.Models.DbContext
 
         [Column(TypeName = "date")]
         public DateTime CreatedOn { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BooksForOrder> BooksForOrders { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BooksInBasket> BooksInBaskets { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Author> Authors { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Category> Categories { get; set; }
+     
+        public virtual ICollection<BooksForOrder> BooksForOrder
+        {
+            get
+            {
+                return this.booksForOrder;
+            }
+            set
+            {
+                this.booksForOrder = value;
+            }
+        }
+     
+        public virtual ICollection<BooksInBasket> BooksInBasket
+        {
+            get
+            {
+                return this.booksInBasket;
+            }
+            set
+            {
+                this.booksInBasket = value;
+            }
+        }
+    
+        public virtual ICollection<Author> Authors
+        {
+            get
+            {
+                return this.authors;
+            }
+            set
+            {
+                this.authors = value;
+            }
+        }
+      
+        public virtual ICollection<Category> Categories
+        {
+            get
+            {
+                return this.categories;
+            }
+            set
+            {
+                this.categories = value;
+            }
+        }
     }
 }
