@@ -25,7 +25,8 @@ namespace ForestBookstore
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/Styles/bootstrap.css",
-                      "~/Content/Styles/site.css"));
+                      "~/Content/Styles/styles.css",
+                      "~/Content/Styles/Site.css"));
         }
     }
 }
