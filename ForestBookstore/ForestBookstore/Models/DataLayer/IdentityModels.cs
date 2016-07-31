@@ -8,6 +8,7 @@ using ForestBookstore.Models.DbContext;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
+using System.Data.Entity.Validation;
 
 namespace ForestBookstore.Models
 {
@@ -23,15 +24,12 @@ namespace ForestBookstore.Models
             orderMade = new HashSet<OrdersMade>();
         }
 
-        [Required]
         [StringLength(50)]
         public string PersonName { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string Town { get; set; }
 
-        [Required]
         public string Address { get; set; }
 
         public int Phone { get; set; }
@@ -77,7 +75,7 @@ namespace ForestBookstore.Models
         public ApplicationDbContext()
             : base("BookstoreDbContext", throwIfV1Schema: false)
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, ForestBookstore.Migrations.Configuration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Migrations.Configuration>());
         }
 
         public virtual DbSet<Author> Authors { get; set; }

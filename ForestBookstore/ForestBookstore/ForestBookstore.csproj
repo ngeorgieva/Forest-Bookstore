@@ -217,6 +217,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Books.cs" />
     <Compile Include="Models\DataLayer\Author.cs" />
     <Compile Include="Models\DataLayer\Book.cs" />
     <Compile Include="Models\DataLayer\BooksForOrder.cs" />
