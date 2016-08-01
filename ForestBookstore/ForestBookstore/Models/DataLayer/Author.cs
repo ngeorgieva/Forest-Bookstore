@@ -9,7 +9,7 @@ namespace ForestBookstore.Models.DbContext
     public partial class Author
     {
         private ICollection<Book> books;
-
+       
         public Author()
         {
             this.books = new HashSet<Book>();

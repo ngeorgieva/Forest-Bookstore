@@ -11,10 +11,14 @@ using System.Web.SessionState;
 
 namespace ForestBookstore
 {
+    using System.Data.Entity;
+    using Models;
+
     public class MvcApplication : System.Web.HttpApplication
     {
         protected void Application_Start()
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Migrations.Configuration>());
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
