@@ -5,6 +5,7 @@ namespace ForestBookstore.Models.DbContext
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using Microsoft.Ajax.Utilities;
 
     public partial class TestBooks
     {
@@ -16,7 +17,7 @@ namespace ForestBookstore.Models.DbContext
             Authors = new HashSet<Author>();
             Categories = new HashSet<Category>();
         }
-
+        
         public int Id { get; set; }
 
         [Required]

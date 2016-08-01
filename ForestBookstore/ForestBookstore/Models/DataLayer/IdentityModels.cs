@@ -12,6 +12,8 @@ using System.Data.Entity.Validation;
 
 namespace ForestBookstore.Models
 {
+    using System.ComponentModel;
+
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
@@ -24,6 +26,7 @@ namespace ForestBookstore.Models
             orderMade = new HashSet<OrdersMade>();
         }
 
+        [DefaultValue("")]
         [StringLength(50)]
         public string PersonName { get; set; }
 
@@ -76,6 +79,7 @@ namespace ForestBookstore.Models
             : base("BookstoreDbContext", throwIfV1Schema: false)
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Migrations.Configuration>());
+            //Database.SetInitializer(new DropCreateDatabaseAlways<ApplicationDbContext>());
         }
 
         public virtual DbSet<Author> Authors { get; set; }
