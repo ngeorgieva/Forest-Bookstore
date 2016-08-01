@@ -78,7 +78,7 @@ namespace ForestBookstore.Models
         public ApplicationDbContext()
             : base("BookstoreDbContext", throwIfV1Schema: false)
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, ForestBookstore.Migrations.Configuration>());
+            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, ForestBookstore.Migrations.Configuration>());
         }
 
         public virtual DbSet<Author> Authors { get; set; }

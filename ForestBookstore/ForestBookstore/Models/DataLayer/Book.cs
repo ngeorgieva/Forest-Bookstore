@@ -2,6 +2,7 @@ namespace ForestBookstore.Models.DbContext
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
@@ -19,12 +20,14 @@ namespace ForestBookstore.Models.DbContext
             this.booksInBasket = new HashSet<BooksInBasket>();
             this.authors = new HashSet<Author>();
             this.categories = new HashSet<Category>();
+            this.CreatedOn = DateTime.Now;
         }
 
         public int Id { get; set; }
 
         [Required]
         [StringLength(100)]
+        [DisplayName("Title")]
         public string Name { get; set; }
 
         [Column(TypeName = "image")]
@@ -39,6 +42,7 @@ namespace ForestBookstore.Models.DbContext
         public int CurrentCount { get; set; }
 
         [Column(TypeName = "date")]
+        [DataType(DataType.Date)]
         public DateTime CreatedOn { get; set; }
      
         public virtual ICollection<BooksForOrder> BooksForOrder

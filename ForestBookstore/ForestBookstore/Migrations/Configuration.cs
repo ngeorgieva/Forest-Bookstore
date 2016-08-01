@@ -10,7 +10,6 @@ namespace ForestBookstore.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(ForestBookstore.Models.ApplicationDbContext context)

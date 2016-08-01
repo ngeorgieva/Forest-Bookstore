@@ -18,7 +18,7 @@ namespace ForestBookstore.Controllers
         // GET: Books
         public ActionResult Index()
         {
-            return View(db.Books.Include(b => b.Authors).ToList());
+            return View(db.Books.ToList());
         }
 
         // GET: Books/Details/5
