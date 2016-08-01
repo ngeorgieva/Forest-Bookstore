@@ -9,6 +9,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
 using System.Data.Entity.Validation;
+using System.Data.Entity;
 
 namespace ForestBookstore.Models
 {
@@ -78,6 +79,7 @@ namespace ForestBookstore.Models
         public ApplicationDbContext()
             : base("BookstoreDbContext", throwIfV1Schema: false)
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, ForestBookstore.Migrations.Configuration>());
         }
 
         public virtual DbSet<Author> Authors { get; set; }

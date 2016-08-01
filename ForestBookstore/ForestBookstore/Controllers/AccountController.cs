@@ -154,7 +154,8 @@ namespace ForestBookstore.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, Town = model.Town,
+                PersonName = model.PersonName, Address = model.Address, Phone = model.Phone};
                 var result = await UserManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
