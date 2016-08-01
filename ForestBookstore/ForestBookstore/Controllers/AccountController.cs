@@ -55,6 +55,17 @@ namespace ForestBookstore.Controllers
             }
         }
 
+        // GET /Account/ShoppingCart
+        [Authorize]
+        public ActionResult ShoppingCart()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            var currentUser = UserManager.FindById(User.Identity.GetUserId());
+            var booksInCart = db.BooksInBaskets.Where(b => b.UserId == currentUser.Id).ToList();
+
+            return View(booksInCart);
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -71,14 +82,14 @@ namespace ForestBookstore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(model);
+            //}
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -488,8 +499,6 @@ namespace ForestBookstore.Controllers
         }
         #endregion
     }
-
-
 }
 
 //try

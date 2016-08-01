@@ -19,7 +19,6 @@ namespace ForestBookstore.Models.DbContext
 
         public virtual Book Book { get; set; }
 
-
         public virtual ApplicationUser User { get; set; }
     }
 }

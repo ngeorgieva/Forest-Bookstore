@@ -13,7 +13,6 @@ namespace ForestBookstore.Models.DbContext
         private ICollection<Author> authors;
         private ICollection<Category> categories;
 
-
         public Book()
         {
             this.booksForOrder = new HashSet<BooksForOrder>();

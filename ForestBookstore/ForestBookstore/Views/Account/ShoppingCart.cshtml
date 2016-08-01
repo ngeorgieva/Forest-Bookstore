@@ -1,0 +1,25 @@
+﻿@using ForestBookstore.Models.DbContext;
+@model List<BooksInBasket>
+@{
+    ViewBag.Title = "Cart";
+}
+
+<h2>Cart</h2>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Count</th>
+        <th>Price</th>
+    </tr>
+    @foreach (var book in this.Model)
+    {
+        <tr>
+            <td>@book.Book.Name</td>
+            <td>@book.Count</td>
+            <td>@(book.Count * book.Book.Price)</td>
+        </tr>
+    }
+</table>
+
+<input type="button" value="Check Out" />
