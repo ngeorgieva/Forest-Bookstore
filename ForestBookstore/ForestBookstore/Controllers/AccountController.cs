@@ -57,16 +57,16 @@ namespace ForestBookstore.Controllers
 
         // GET /Account/ShoppingCart
         [Authorize]
-        //public ActionResult ShoppingCart()
-        //{
-        //    ApplicationDbContext db = new ApplicationDbContext();
-        //    var currentUser = UserManager.FindById(User.Identity.GetUserId());
-        //    var booksInCart = db.BooksInBaskets.Where(b => b.UserId == currentUser.Id).ToList();
-        //
-        //    return View(booksInCart);
-        //}
+        public ActionResult ShoppingCart()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            var currentUser = UserManager.FindById(User.Identity.GetUserId());
+            var booksInCart = db.BooksInBaskets.Where(b => b.UserId == currentUser.Id).ToList();
+        
+            return View(booksInCart);
+        }
 
-        //
+        
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
