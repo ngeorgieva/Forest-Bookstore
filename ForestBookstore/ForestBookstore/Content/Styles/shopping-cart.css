@@ -1,0 +1,7 @@
+﻿.shopping-cart table, .shopping-cart td, .shopping-cart th{
+    border: 1px solid #118C4E;
+}
+
+.shopping-cart td{
+    background: #C1E1A6;
+}
