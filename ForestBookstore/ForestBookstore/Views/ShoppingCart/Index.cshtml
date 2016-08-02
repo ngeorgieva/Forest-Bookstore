@@ -1,12 +1,13 @@
-﻿@using ForestBookstore.Models.DbContext;
-@model List<BooksInBasket>
+﻿@using ForestBookstore.Models;
+@model ShoppingCartBookViewModel
 <h2>Shopping Cart</h2>
 @section scripts {
     <link href="@Url.Content("~/Content/Styles/shopping-cart.css")" rel="stylesheet" type="text/css" />
 }
 
 @{
-    if (this.Model.Count == 0)
+
+    if (this.Model.Books.Count == 0)
     {
         @:No books added in the Shopping Cart.
     }
@@ -20,20 +21,23 @@
                     <th>Count</th>
                     <th>Price</th>
                 </tr>
-                @foreach (var book in this.Model)
+                @foreach (var book in this.Model.Books)
                 {
                     <tr>
                         <td>@book.Book.Name</td>
-                        <td>
-                            @book.Count
-                            @Html.ActionLink("[Increase]", "#")
-                            @Html.ActionLink("[Decrease]", "#")
-                        </td>
+                        <td>@book.Count</td>
                         @{decimal currBookTotalPrice = book.Count * Math.Round(book.Book.Price, 2);}
                         <td>@currBookTotalPrice</td>
                         @{total += book.Count * Math.Round(book.Book.Price, 2);}
+                        <td>@using (Html.BeginForm("Delete", "ShoppingCart"))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("id", book.BookId)
+                            <input class="btn btn-sm btn-warning"
+                                   type="submit" value="Delete" />
+                        }</td>
                     </tr>
-                            }
+                }
                 <tr>
                     <td></td>
                     <td></td>
@@ -41,6 +45,6 @@
                 </tr>
             </table>
         </div>
-        <input type="button" value="Check Out" />
-                            }
+        <input type="submit" value="Check Out" />
+      }
 }

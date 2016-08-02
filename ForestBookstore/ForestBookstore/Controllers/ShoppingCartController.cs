@@ -46,32 +46,28 @@ namespace ForestBookstore.Controllers
         {
             ApplicationDbContext db = new ApplicationDbContext();
             var currentUser = UserManager.FindById(User.Identity.GetUserId());
-            var booksInCart = db.BooksInBaskets.Where(b => b.UserId == currentUser.Id).ToList();
-
+            ShoppingCartBookViewModel booksInCart = new ShoppingCartBookViewModel(new List<CartLine>());
+            booksInCart.Books = db.BooksInBaskets.Where(b => b.UserId == currentUser.Id)
+                .Select(b => new CartLine()
+                {
+                    UserId = b.UserId,
+                    BookId = b.BookId,
+                    Book = b.Book,
+                    Count = b.Count
+                })
+                .ToList();
+                  
             return View(booksInCart);
-        }
-
-        // GET: ShoppingCart/Delete/5
-        public ActionResult Delete(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            BooksInBasket booksInBasket = db.BooksInBaskets.Find(id);
-            if (booksInBasket == null)
-            {
-                return HttpNotFound();
-            }
-            return View(booksInBasket);
         }
 
         // POST: ShoppingCart/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult Delete(int id)
         {
-            BooksInBasket booksInBasket = db.BooksInBaskets.Find(id);
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            BooksInBasket booksInBasket = db.BooksInBaskets
+                .Where(bi => bi.BookId == id && bi.User.Id == user.Id).Single();
             db.BooksInBaskets.Remove(booksInBasket);
             db.SaveChanges();
             return RedirectToAction("Index");
