@@ -24,7 +24,8 @@
             @Html.DisplayNameFor(model => model.Price)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CurrentCount)
+            @*@Html.DisplayNameFor(model => model.CurrentCount)*@
+            "In stock"
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CreatedOn)
@@ -38,7 +39,11 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Image)
+            @*@Html.DisplayFor(modelItem => item.Image)*@
+            @if (item.Image != null)
+            {
+                <img alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + item.Id)" />
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Description)

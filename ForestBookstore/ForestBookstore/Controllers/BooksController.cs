@@ -140,6 +140,14 @@ namespace ForestBookstore.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Books/BookImage/
+        public ActionResult BookImage(int id)
+        {
+            //this.ViewBag.Image = img;
+            Book book = this.db.Books.Find(id);
+            return this.View(book);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
