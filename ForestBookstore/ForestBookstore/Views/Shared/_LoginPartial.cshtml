@@ -11,7 +11,10 @@
                 @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
             </li>
             @{
-                if(this.Session["CartCount"] == null) { }
+                if(this.Session["CartCount"] == null)
+                {
+                    var user = UserManager.FindById(User.Identity.GetUserId());
+                }
 
                 string cartCount = "Shopping Cart " + this.Session["CartCount"];
             <li>@Html.ActionLink(cartCount, "ShoppingCart", "Account")</li>
