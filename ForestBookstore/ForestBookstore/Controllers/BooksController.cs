@@ -11,6 +11,8 @@ using ForestBookstore.Models.DbContext;
 
 namespace ForestBookstore.Controllers
 {
+    using System.IO;
+
     public class BooksController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -47,10 +49,32 @@ namespace ForestBookstore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Image,Description,Price,CurrentCount,CreatedOn")] Book book)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,Price,CurrentCount,CreatedOn")] Book book, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                var fileName = "";
+                byte[] bytes;
+                int bytesToRead;
+                int bytesRead;
+
+                if (file != null)
+                {
+                    fileName = Path.GetFileName(file.FileName);
+                    bytes = new byte[file.ContentLength];
+                    bytesToRead = (int) file.ContentLength;
+                    bytesRead = 0;
+                    while (bytesToRead > 0)
+                    {
+                        int n = file.InputStream.Read(bytes, bytesRead, bytesToRead);
+                        if (n == 0) break;
+                        bytesRead += n;
+                        bytesToRead -= n;
+                    }
+
+                    book.Image = bytes;
+                }
+
                 db.Books.Add(book);
                 db.SaveChanges();
                 return RedirectToAction("Index");
