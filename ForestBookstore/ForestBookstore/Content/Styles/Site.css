@@ -25,3 +25,15 @@ table {
     border-bottom: 1px solid #118C4E;
     color: #585858;
 }
+
+#logo-and-search{
+    display:flex;
+}
+
+#logo-container{
+    margin: 20px;
+}
+
+#search-box{
+    margin: 50px;
+}
