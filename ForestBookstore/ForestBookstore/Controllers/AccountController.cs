@@ -82,6 +82,7 @@ namespace ForestBookstore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            //TODO Issue here!
             //if (!ModelState.IsValid)
             //{
             //    return View(model);
