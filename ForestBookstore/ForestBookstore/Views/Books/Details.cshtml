@@ -23,7 +23,10 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Image)
+            @if (Model.Image != null)
+            {
+                <img alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + Model.Id)" />
+            }
         </dd>
 
         <dt>
