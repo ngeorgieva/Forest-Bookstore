@@ -1,4 +1,4 @@
-﻿<div class="navbar navbar-inverse navbar-fixed-top">
+﻿<div class="navbar navbar-inverse navbar-fixed-top navbar-custom">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -11,8 +11,7 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                <li>@Html.ActionLink("Books", "Index", "Books")</li>
-                <li>@Html.ActionLink("New Book", "Create", "Books")</li>
+                <li>@Html.ActionLink("Books", "Index", "Books")</li>               
             </ul>
             @Html.Partial("_LoginPartial")
         </div>

@@ -14,16 +14,24 @@
     else
     {
         decimal total = 0;
-        <div class="table-responsive shopping-cart">
+        <div class=" shopping-cart">
             <table class="table">
                 <tr>
+                    <th>Image</th>
                     <th>Title</th>
                     <th>Count</th>
                     <th>Price</th>
+                    <th></th>
                 </tr>
                 @foreach (var book in this.Model.Books)
                 {
                     <tr>
+                        <td>
+                            @if (book.Book.Image != null)
+                            {
+                                <img alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + book.Book.Id)" />
+                            }
+                        </td>
                         <td>@book.Book.Name</td>
                         <td>@book.Count</td>
                         @{decimal currBookTotalPrice = book.Count * Math.Round(book.Book.Price, 2);}
@@ -41,10 +49,13 @@
                 <tr>
                     <td></td>
                     <td></td>
+                    <td></td>
                     <td>Total Price: @total</td>
+                    <td></td>
                 </tr>
             </table>
         </div>
-        <input type="submit" value="Check Out" />
+        <input class="btn btn-sm btn-warning"
+               type="submit" value="Check Out"/>
       }
 }

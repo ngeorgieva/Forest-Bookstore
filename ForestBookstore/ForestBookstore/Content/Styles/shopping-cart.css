@@ -1,7 +1,15 @@
-﻿.shopping-cart table, .shopping-cart td, .shopping-cart th{
-    border: 1px solid #118C4E;
+﻿.shopping-cart table, .shopping-cart td, .shopping-cart th, .shopping-cart tr{
+    border-bottom: 1px solid #118C4E;
+}
+
+.shopping-cart table{
+    background: #C1E1A6;
+}
+
+.shopping-cart th{
+    /*text-align: center;*/
 }
 
 .shopping-cart td{
-    background: #C1E1A6;
 }
+
