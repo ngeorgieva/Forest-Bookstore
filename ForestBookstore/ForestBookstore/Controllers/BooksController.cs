@@ -41,6 +41,7 @@ namespace ForestBookstore.Controllers
         // GET: Books/Create
         public ActionResult Create()
         {
+            ViewBag.Authors = new MultiSelectList(this.db.Authors, "ID", "Name");
             return View();
         }
 
