@@ -212,9 +212,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201608031002186_Initial.cs" />
-    <Compile Include="Migrations\201608031002186_Initial.Designer.cs">
-      <DependentUpon>201608031002186_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201608032033556_Initial.cs" />
+    <Compile Include="Migrations\201608032033556_Initial.Designer.cs">
+      <DependentUpon>201608032033556_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -233,6 +233,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\ColofulLogo.png" />
+    <Content Include="Content\Images\the-curios-incident-with-the-dog-in-the-nightime.jpg" />
+    <Content Include="Content\Images\wild.jpg" />
+    <Content Include="Content\Images\women_in_science.jpg" />
     <Content Include="Content\Styles\bootstrap.css" />
     <Content Include="Content\Styles\bootstrap.min.css" />
     <Content Include="Content\Styles\Site.css" />
@@ -311,8 +314,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201608031002186_Initial.resx">
-      <DependentUpon>201608031002186_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201608032033556_Initial.resx">
+      <DependentUpon>201608032033556_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

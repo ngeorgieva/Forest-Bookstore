@@ -14,7 +14,7 @@ namespace ForestBookstore.Controllers
 
         public ActionResult Index()
         {
-            return View(db.Books.Where(b => b.Categories.Any(c => c.Name == "New releases")));
+            return View();
         }
     }
 }

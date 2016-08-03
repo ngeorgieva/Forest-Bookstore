@@ -24,6 +24,7 @@ namespace ForestBookstore.Models
         {
             booksInBasket = new HashSet<BooksInBasket>();
             orderMade = new HashSet<OrdersMade>();
+            this.CreatedOn = DateTime.Now;
         }
 
         [DefaultValue("")]
@@ -78,7 +79,6 @@ namespace ForestBookstore.Models
         public ApplicationDbContext()
             : base("BookstoreDbContext", throwIfV1Schema: false)
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, ForestBookstore.Migrations.Configuration>());
         }
 
         public virtual DbSet<Author> Authors { get; set; }

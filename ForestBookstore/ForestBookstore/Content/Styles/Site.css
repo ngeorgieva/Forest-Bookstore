@@ -27,16 +27,21 @@ table {
 
 #logo-and-search{
     display:flex;
-    margin-left: 100px;
-    margin-right: 100px;
+    margin-left: 105px;
+    margin-right: 105px;
     border-bottom: solid thin #eeeeee;
 }
 
 #logo-container{
     margin: 20px;
+    margin-left: 10px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 #search-box{
     margin-top: 60px;
-    margin-left: 30px;
+    /*margin-left: 20px;*/
+    padding-left: 0;
+    padding-right: 0;
 }

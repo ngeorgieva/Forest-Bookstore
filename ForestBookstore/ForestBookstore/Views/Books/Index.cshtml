@@ -43,7 +43,6 @@
             @Html.DisplayFor(modelItem => item.Author.Name)
         </td>
         <td>
-            @*@Html.DisplayFor(modelItem => item.Image)*@
             @if (item.Image != null)
             {
                 <img alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + item.Id)" />
