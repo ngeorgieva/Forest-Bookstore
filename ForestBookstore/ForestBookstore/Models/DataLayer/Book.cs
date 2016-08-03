@@ -11,14 +11,13 @@ namespace ForestBookstore.Models.DbContext
     {
         private ICollection<BooksForOrder> booksForOrder;
         private ICollection<BooksInBasket> booksInBasket;
-        private ICollection<Author> authors;
+        private Author author;
         private ICollection<Category> categories;
 
         public Book()
         {
             this.booksForOrder = new HashSet<BooksForOrder>();
             this.booksInBasket = new HashSet<BooksInBasket>();
-            this.authors = new HashSet<Author>();
             this.categories = new HashSet<Category>();
             this.CreatedOn = DateTime.Now;
         }
@@ -29,6 +28,9 @@ namespace ForestBookstore.Models.DbContext
         [StringLength(100)]
         [DisplayName("Title")]
         public string Name { get; set; }
+
+        [Required]
+        public Author Author { get; set; }
 
         [Column(TypeName = "image")]
         public byte[] Image { get; set; }
@@ -70,18 +72,6 @@ namespace ForestBookstore.Models.DbContext
             }
         }
     
-        public virtual ICollection<Author> Authors
-        {
-            get
-            {
-                return this.authors;
-            }
-            set
-            {
-                this.authors = value;
-            }
-        }
-      
         public virtual ICollection<Category> Categories
         {
             get
