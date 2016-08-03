@@ -1,0 +1,21 @@
+﻿@using ForestBookstore.Models;
+@model PersonalInfoViewModel
+
+<h2>@ViewBag.Title</h2>
+
+@using (@Html.BeginForm("ChangePersonalInformation", "Manage"))
+{ 
+    @Html.AntiForgeryToken()
+<dl>
+    <dt>@Html.LabelFor(p => p.PersonName):</dt>
+    <dd>@Html.TextBoxFor(p => p.PersonName, new { @value = Model.PersonName })</dd>
+    <dt>@Html.LabelFor(p => p.Address):</dt>
+    <dd>@Html.TextBoxFor(p => p.Address, new { @value = Model.Address })</dd>
+    <dt>@Html.LabelFor(p => p.Town):</dt>
+    <dd>@Html.TextBoxFor(p => p.Town, new { @value = Model.Town })</dd>
+    <dt>@Html.LabelFor(p => p.Phone):</dt>
+    <dd>@Html.TextBoxFor(p => p.Phone, new { @value = Model.Phone })</dd>
+</dl>
+<input class="btn btn-sm btn-warning"
+       type="submit" value="Change Personal Information" />
+}

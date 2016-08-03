@@ -5,6 +5,26 @@ using Microsoft.Owin.Security;
 
 namespace ForestBookstore.Models
 {
+    //TODO Phone
+    public class PersonalInfoViewModel
+    {
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 4)]
+        [Display(Name = "Full Name")]
+        public string PersonName { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 4)]
+        public string Town { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string Address { get; set; }
+
+        //[Phone] to be made
+        public int Phone { get; set; }
+    }
+
     public class IndexViewModel
     {
         public bool HasPassword { get; set; }

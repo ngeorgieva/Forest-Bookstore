@@ -32,9 +32,9 @@ namespace ForestBookstore.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -56,6 +56,7 @@ namespace ForestBookstore.Controllers
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                : message == ManageMessageId.ChangeInfoSuccess ? "Your account personal settings has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
@@ -74,6 +75,48 @@ namespace ForestBookstore.Controllers
             };
             return View(model);
         }
+
+        [HttpGet]
+        public ActionResult ChangePersonalInformation()
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
+            PersonalInfoViewModel userPersonalInfo = new PersonalInfoViewModel
+            {
+                PersonName = user.PersonName,
+                Address = user.Address,
+                Town = user.Town,
+                Phone = user.Phone
+            };
+
+            ViewBag.Title = "Manage";
+
+            return View(userPersonalInfo);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePersonalInformation(
+            [Bind(Include = "PersonName,Address,Town,Phone")] PersonalInfoViewModel model)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
+            user.PersonName = model.PersonName;
+            user.Address = model.Address;
+            user.Town = model.Town;
+            user.Phone = model.Phone;
+
+            var result = UserManager.Update(user);
+
+            if (!result.Succeeded)
+            {
+                AddErrors(result);
+            }
+
+            return RedirectToAction("Index", new { Message = ManageMessageId.ChangeInfoSuccess });
+        }
+
 
         //
         // POST: /Manage/RemoveLogin
@@ -128,36 +171,6 @@ namespace ForestBookstore.Controllers
                 await UserManager.SmsService.SendAsync(message);
             }
             return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
-        }
-
-        //
-        // POST: /Manage/EnableTwoFactorAuthentication
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EnableTwoFactorAuthentication()
-        {
-            await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), true);
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            if (user != null)
-            {
-                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-            }
-            return RedirectToAction("Index", "Manage");
-        }
-
-        //
-        // POST: /Manage/DisableTwoFactorAuthentication
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DisableTwoFactorAuthentication()
-        {
-            await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), false);
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            if (user != null)
-            {
-                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-            }
-            return RedirectToAction("Index", "Manage");
         }
 
         //
@@ -322,6 +335,8 @@ namespace ForestBookstore.Controllers
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
 
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
@@ -376,6 +391,7 @@ namespace ForestBookstore.Controllers
         public enum ManageMessageId
         {
             AddPhoneSuccess,
+            ChangeInfoSuccess,
             ChangePasswordSuccess,
             SetTwoFactorSuccess,
             SetPasswordSuccess,
