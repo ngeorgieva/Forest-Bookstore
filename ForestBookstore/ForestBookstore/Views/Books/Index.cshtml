@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<ForestBookstore.Models.DbContext.Book>
-
 @{
     ViewBag.Title = "Index";
 }
@@ -15,6 +14,9 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Author)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Image)
         </th>
         <th>
@@ -24,20 +26,21 @@
             @Html.DisplayNameFor(model => model.Price)
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.CurrentCount)*@
-            In stock
+            @Html.DisplayNameFor(model => model.CurrentCount)
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.CreatedOn)*@
-            Added on
+            @Html.DisplayNameFor(model => model.CreatedOn)
         </th>
-        <th></th>
+        <th>Action</th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Author.Name)
         </td>
         <td>
             @*@Html.DisplayFor(modelItem => item.Image)*@

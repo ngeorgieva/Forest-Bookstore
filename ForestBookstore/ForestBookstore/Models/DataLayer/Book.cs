@@ -11,7 +11,6 @@ namespace ForestBookstore.Models.DbContext
     {
         private ICollection<BooksForOrder> booksForOrder;
         private ICollection<BooksInBasket> booksInBasket;
-        private Author author;
         private ICollection<Category> categories;
 
         public Book()
@@ -41,9 +40,11 @@ namespace ForestBookstore.Models.DbContext
         [Column(TypeName = "money")]
         public decimal Price { get; set; }
 
+        [DisplayName("In stock")]
         public int CurrentCount { get; set; }
 
         [Column(TypeName = "date")]
+        [DisplayName("Added on")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CreatedOn { get; set; }

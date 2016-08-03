@@ -20,7 +20,8 @@ namespace ForestBookstore.Controllers
         // GET: Books
         public ActionResult Index()
         {
-            return View(db.Books.ToList());
+            var books = this.db.Books.Include(b => b.Author).OrderByDescending(b => b.CreatedOn);
+            return View(books.ToList());
         }
 
         // GET: Books/Details/5
@@ -30,7 +31,7 @@ namespace ForestBookstore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Book book = db.Books.Find(id);
+            Book book = db.Books.Include(b => b.Author).Single(b => b.Id == id);
             if (book == null)
             {
                 return HttpNotFound();
@@ -41,7 +42,6 @@ namespace ForestBookstore.Controllers
         // GET: Books/Create
         public ActionResult Create()
         {
-            ViewBag.Authors = new MultiSelectList(this.db.Authors, "ID", "Name");
             return View();
         }
 
@@ -50,7 +50,7 @@ namespace ForestBookstore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,Price,CurrentCount,CreatedOn")] Book book, HttpPostedFileBase file)
+        public ActionResult Create([Bind(Include = "Id,Name,Author,Description,Price,CurrentCount,CreatedOn")] Book book, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace ForestBookstore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Book book = db.Books.Find(id);
+            Book book = db.Books.Include(b => b.Author).Single(b => b.Id == id);
             if (book == null)
             {
                 return HttpNotFound();
@@ -104,7 +104,7 @@ namespace ForestBookstore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Image,Description,Price,CurrentCount,CreatedOn")] Book book)
+        public ActionResult Edit([Bind(Include = "Id,Name,Image,Author,Description,Price,CurrentCount,CreatedOn")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -122,7 +122,7 @@ namespace ForestBookstore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Book book = db.Books.Find(id);
+            Book book = db.Books.Include(b => b.Author).Single(b => b.Id == id);
             if (book == null)
             {
                 return HttpNotFound();
