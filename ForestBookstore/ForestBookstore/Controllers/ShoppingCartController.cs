@@ -60,6 +60,19 @@ namespace ForestBookstore.Controllers
             return View(booksInCart);
         }
 
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(ShoppingCartBookViewModel cart)
+        {
+            if(cart == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return this.RedirectToAction("ShippingDetails");
+        }
+
         // POST: ShoppingCart/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
