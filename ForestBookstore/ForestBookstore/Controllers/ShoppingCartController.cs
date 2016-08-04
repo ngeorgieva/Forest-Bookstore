@@ -112,6 +112,14 @@ namespace ForestBookstore.Controllers
             return View(shipment);
         }
 
+        [Authorize]
+        public ActionResult Completed([Bind(Include = "PersonName,Town,Address,Phone")] ShipmentDetailsViewModel details)
+        {
+
+
+            return View();
+        }
+
         // POST: ShoppingCart/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

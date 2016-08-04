@@ -50,5 +50,17 @@
         <dd>@Model.Details.Phone</dd>
     </dl>
 
+    using (@Html.BeginForm("Completed"))
+    {
+        @Html.AntiForgeryToken();
+        @Html.HiddenFor(model => model.Details.PersonName);
+        @Html.HiddenFor(model => model.Details.Town);
+        @Html.HiddenFor(model => model.Details.Address);
+        @Html.HiddenFor(model => model.Details.Phone);
+
+        <input type="submit" class="btn btn-sm btn-warning"
+               value="Place Order" onclick="location.href='@Url.Action("Completed", "ShoppingCart")'" />
+    }
+
 
 }

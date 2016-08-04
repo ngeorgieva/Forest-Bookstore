@@ -10,7 +10,10 @@
             <li>
                 @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
             </li>
-            <li>@Html.ActionLink("New Book", "Create", "Books")</li>
+            @if (User.IsInRole("Admin"))
+            {
+            <li>@Html.ActionLink("Admin Panel", "Index", "Admin")</li>
+            }
             @{
                 string cartCount = "Shopping Cart " + this.Session["CartCount"];
             <li>@Html.ActionLink(cartCount, "Index", "ShoppingCart")</li>
