@@ -35,6 +35,7 @@ namespace ForestBookstore.Models.DbContext
         public byte[] Image { get; set; }
 
         [Required]
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
         [Column(TypeName = "money")]

@@ -80,7 +80,7 @@ namespace ForestBookstore.Controllers
         public ActionResult ChangePersonalInformation()
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
-
+        
             PersonalInfoViewModel userPersonalInfo = new PersonalInfoViewModel
             {
                 PersonName = user.PersonName,
@@ -88,9 +88,9 @@ namespace ForestBookstore.Controllers
                 Town = user.Town,
                 Phone = user.Phone
             };
-
+        
             ViewBag.Title = "Manage";
-
+        
             return View(userPersonalInfo);
         }
 

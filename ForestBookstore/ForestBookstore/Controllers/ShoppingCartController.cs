@@ -69,7 +69,7 @@ namespace ForestBookstore.Controllers
             {
                 return RedirectToAction("Index");
             }
-
+        
             return this.RedirectToAction("ShippingDetails");
         }
 

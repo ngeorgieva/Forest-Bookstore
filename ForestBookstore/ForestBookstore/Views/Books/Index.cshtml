@@ -1,4 +1,6 @@
-﻿@model IEnumerable<ForestBookstore.Models.DbContext.Book>
+﻿@model System.Collections.Generic.IEnumerable<ForestBookstore.Models.DbContext.Book>
+@using ForestBookstore.Classes
+
 @{
     ViewBag.Title = "Index";
 }
@@ -28,9 +30,6 @@
         <th>
             @Html.DisplayNameFor(model => model.CurrentCount)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </th>
         <th>Action</th>
     </tr>
 
@@ -49,21 +48,25 @@
             }
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Description)
+            @Utils.CutText(item.Description, 200)@Html.ActionLink("See more", "Details", new { id = item.Id })
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Price)
+            $@Html.DisplayFor(modelItem => item.Price)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CurrentCount)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CreatedOn)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @if (User.IsInRole("Admin"))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) @:|
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) @:|
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            }
+            else
+            {
+                @Html.ActionLink("Details", "Details", new { id = item.Id })
+            }
         </td>
     </tr>
 }
