@@ -41,7 +41,59 @@ table {
 
 #search-box{
     margin-top: 60px;
-    /*margin-left: 20px;*/
     padding-left: 0;
     padding-right: 0;
+}
+
+#text-box {
+  width: 100%;
+  height: 34px;
+  padding-left: 0;
+  padding-right: 0;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555555;
+  vertical-align: middle;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+          transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+#indexTable {
+    background-color: white;
+}
+
+#search-button {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  color: #333333;
+  background-color: #ffffff;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.428571429;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+       -o-user-select: none;
+          user-select: none;
+}
+
+#search-button:hover,
+#search-button:focus,
+#search-button:active,
+#search-button.active,
+.open .dropdown-toggle.btn-default {
+  color: #333333;
+  background-color: #ebebeb;
+  border-color: #adadad;
 }
