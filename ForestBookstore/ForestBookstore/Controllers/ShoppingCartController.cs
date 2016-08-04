@@ -60,17 +60,56 @@ namespace ForestBookstore.Controllers
             return View(booksInCart);
         }
 
-        [HttpPost]
         [Authorize]
-        [ValidateAntiForgeryToken]
-        public ActionResult Index(ShoppingCartBookViewModel cart)
+        public ActionResult Checkout()
         {
-            if(cart == null)
+            //Validation TODO
+            //if (this.Session["cartCount"] == null || (int)this.Session["cartCount"] == 0)
+            //{
+            //    return RedirectToAction("Index");
+            //}
+        
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
+            ShipmentDetailsViewModel currentShipment = new ShipmentDetailsViewModel
+            {
+                PersonName = user.PersonName,
+                Address = user.Address,
+                Town = user.Town,
+                Phone = user.Phone
+            };
+
+            return View(currentShipment);
+        }
+
+        [Authorize]
+        public ActionResult Summary(ShipmentDetailsViewModel shipmentDetails)
+        {
+            if (shipmentDetails == null)
             {
                 return RedirectToAction("Index");
             }
-        
-            return this.RedirectToAction("ShippingDetails");
+
+            ApplicationDbContext db = new ApplicationDbContext();
+            var currentUser = UserManager.FindById(User.Identity.GetUserId());
+            ShoppingCartBookViewModel booksInCart = new ShoppingCartBookViewModel(new List<CartLine>());
+            booksInCart.Books = db.BooksInBaskets.Where(b => b.UserId == currentUser.Id)
+                .Select(b => new CartLine()
+                {
+                    UserId = b.UserId,
+                    BookId = b.BookId,
+                    Book = b.Book,
+                    Count = b.Count
+                })
+                .ToList();
+
+            ShipmentViewModel shipment = new ShipmentViewModel
+            {
+                Cart = booksInCart,
+                Details = shipmentDetails
+            };
+
+            return View(shipment);
         }
 
         // POST: ShoppingCart/Delete/5

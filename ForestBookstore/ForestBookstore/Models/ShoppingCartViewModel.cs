@@ -14,6 +14,10 @@ namespace ForestBookstore.Models
             this.Books = collection;
         }
 
+        public ShoppingCartBookViewModel() : this(new List<CartLine>())
+        {
+        }
+
         public ICollection<CartLine> Books { get; set; }
     }
 

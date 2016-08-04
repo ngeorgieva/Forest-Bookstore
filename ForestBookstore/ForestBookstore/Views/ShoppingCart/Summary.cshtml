@@ -1,1 +1,54 @@
-﻿
+﻿@using ForestBookstore.Models
+@model ShipmentViewModel
+
+<h2>Summary</h2>
+
+<h3>Items</h3>
+@{
+    int counter = 0;
+    decimal totalPrice = 0;
+    <table>
+        <tr>
+            <th>№</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Count</th>
+            <th>Total</th>
+        </tr>
+        
+        @foreach (var book in Model.Cart.Books)
+        {
+            
+            <tr>
+                @{counter++;}
+                <td>@counter</td>
+                <td>@book.Book.Name</td>
+                <td>@book.Book.Price</td>
+                <td>@book.Count</td>
+                <td>@(book.Count * book.Book.Price)</td>
+                @{totalPrice += book.Count * book.Book.Price;}
+              </tr>
+        }
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Overall: @totalPrice</td>
+        </tr>  
+    </table>
+
+    <h3>Shipment Details</h3>
+    <dl>
+        <dt>@Html.Label("Person Name")</dt>
+        <dd>@Model.Details.PersonName</dd>
+        <dt>@Html.LabelFor(model => model.Details.Town)</dt>
+        <dd>@Model.Details.Town</dd>
+        <dt>@Html.LabelFor(model => model.Details.Address)</dt>
+        <dd>@Model.Details.Address</dd>
+        <dt>@Html.LabelFor(model => model.Details.Phone)</dt>
+        <dd>@Model.Details.Phone</dd>
+    </dl>
+
+
+}

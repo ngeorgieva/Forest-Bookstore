@@ -5,9 +5,7 @@
 <h2>Shopping Cart</h2>
 @section scripts {
     <link href="@Url.Content("~/Content/Styles/shopping-cart.css")" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.10.2.js")"></script>
 }
-
 
 @{
     if (this.Model.Books.Count == 0)
@@ -17,7 +15,7 @@
     else
     {
         decimal total = 0;
-        <div class=" shopping-cart">
+        <div class= "shopping-cart">
             <table class="table">
                 <tr>
                     <th>Image</th>
@@ -57,16 +55,11 @@
                     <td></td>
                 </tr>
             </table>
-            <input id="proceedBtn" class="btn btn-sm btn-warning"
-                   type="submit" value="Proceed" onclick="hideIt()" />
+            <input class="btn btn-sm btn-warning"
+                   type="submit" value="Proceed" onclick="location.href='@Url.Action("Checkout", "ShoppingCart")'" />
         </div>
         
       }
 }
 
-<script type="text/javascript">
-    function toShippingDetails() {
-        document.getElementById("proceedBtn").parentNode.style.visibility = "hidden";
-    }
-</script>
 

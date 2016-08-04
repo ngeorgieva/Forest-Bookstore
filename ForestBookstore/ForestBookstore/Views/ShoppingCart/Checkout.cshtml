@@ -1,1 +1,21 @@
-﻿
+﻿@using ForestBookstore.Models;
+@model ShipmentDetailsViewModel
+
+<h2>Shipment Details</h2>
+
+@using (@Html.BeginForm("Summary", "ShoppingCart", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+        <dl>
+            <dt>@Html.LabelFor(m => m.PersonName)</dt>
+            <dd>@Html.TextBoxFor(m => m.PersonName, new { @Value = @Model.PersonName })</dd>
+            <dt>@Html.LabelFor(m => m.Address)</dt>
+            <dd>@Html.TextBoxFor(m => m.Address, new { @Value = @Model.Address })</dd>
+            <dt>@Html.LabelFor(m => m.Town)</dt>
+            <dd>@Html.TextBoxFor(m => m.Town, new { @Value = @Model.Town })</dd>
+            <dt>@Html.LabelFor(m => m.Phone)</dt>
+            <dd>@Html.TextBoxFor(m => m.Phone, new { @Value = @Model.Phone })</dd>
+        </dl>
+        <input type="submit" class="btn btn-sm btn-warning" 
+               value="Summary" onclick="location.href='@Url.Action("Summary", "ShoppingCart")'"/>
+}

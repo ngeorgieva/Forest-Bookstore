@@ -15,6 +15,7 @@ namespace ForestBookstore.Models.DbContext
         public OrdersMade()
         {
             this.booksForOrder = new HashSet<BooksForOrder>();
+            this.OrderedOn = DateTime.Now;
         }
 
         public int Id { get; set; }
