@@ -47,7 +47,11 @@ namespace ForestBookstore.Controllers
             ApplicationDbContext db = new ApplicationDbContext();
             var currentUser = UserManager.FindById(User.Identity.GetUserId());
             ShoppingCartBookViewModel booksInCart = new ShoppingCartBookViewModel(new List<CartLine>());
-            booksInCart.Books = db.BooksInBaskets.Where(b => b.UserId == currentUser.Id)
+            var cartCount = db.BooksInBaskets.Count();
+
+            if(cartCount > 0)
+            {
+                booksInCart.Books = db.BooksInBaskets.Where(b => b.UserId == currentUser.Id)
                 .Select(b => new CartLine()
                 {
                     UserId = b.UserId,
@@ -56,7 +60,8 @@ namespace ForestBookstore.Controllers
                     Count = b.Count
                 })
                 .ToList();
-                  
+            }
+             
             return View(booksInCart);
         }
 
@@ -79,13 +84,15 @@ namespace ForestBookstore.Controllers
                 Phone = user.Phone
             };
 
+            this.Session["PlacingOrder"] = true;
+
             return View(currentShipment);
         }
 
         [Authorize]
         public ActionResult Summary(ShipmentDetailsViewModel shipmentDetails)
         {
-            if (shipmentDetails == null)
+            if (shipmentDetails == null || this.Session["PlacingOrder"] == null)
             {
                 return RedirectToAction("Index");
             }
@@ -103,6 +110,11 @@ namespace ForestBookstore.Controllers
                 })
                 .ToList();
 
+            this.Session["PersonName"] = shipmentDetails.PersonName;
+            this.Session["Address"] = shipmentDetails.Address;
+            this.Session["Town"] = shipmentDetails.Town;
+            this.Session["Phone"] = shipmentDetails.Phone;
+
             ShipmentViewModel shipment = new ShipmentViewModel
             {
                 Cart = booksInCart,
@@ -113,9 +125,81 @@ namespace ForestBookstore.Controllers
         }
 
         [Authorize]
+        [HttpPost]
         public ActionResult Completed()
         {
-            return View();
+            if (this.Session["PersonName"] == null 
+                && this.Session["Address"] == null
+                && this.Session["Town"] == null
+                && this.Session["Phone"] == null)
+            {
+                if(this.Session["PlacingOrder"] == null)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Checkout");
+                }
+            }
+
+            bool orderSuccessful = true;
+
+            try
+            {
+                var user = UserManager.FindById(User.Identity.GetUserId());
+                ApplicationDbContext db = new ApplicationDbContext();
+                OrdersMade order = new OrdersMade
+                {
+                    Status = false,
+                    UserId = User.Identity.GetUserId(),
+                    PersonName = this.Session["PersonName"] as string,
+                    Town = this.Session["Town"] as string,
+                    Address = this.Session["Address"] as string,
+                    Phone = this.Session["Phone"] as string
+                };
+
+                db.OrdersMades.Add(order);
+
+                ShoppingCartBookViewModel booksInCart = new ShoppingCartBookViewModel(new List<CartLine>());
+                booksInCart.Books = db.BooksInBaskets.Where(b => b.UserId == user.Id)
+                    .Select(b => new CartLine()
+                    {
+                        UserId = b.UserId,
+                        BookId = b.BookId,
+                        Book = b.Book,
+                        Count = b.Count
+                    })
+                    .ToList();
+
+                foreach (var book in booksInCart.Books)
+                {
+                    db.BooksForOrders.Add(new BooksForOrder
+                    {
+                        BookId = book.BookId,
+                        Count = book.Count,
+                        OrdersMade = order
+                    });
+
+                    var currentBookId = book.BookId;
+                    var currentBook = db.Books.Find(currentBookId);
+                    currentBook.CurrentCount -= 1;
+                    currentBook.Author = db.Authors.Find(currentBook.AuthorId);
+                    //Check if book is out of order
+                }
+
+                var booksInTheCart = db.BooksInBaskets.Where(b => b.UserId == user.Id);
+                db.BooksInBaskets.RemoveRange(booksInTheCart);
+            
+                db.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                orderSuccessful = false;
+            }
+
+
+            return View(orderSuccessful);
         }
 
         // POST: ShoppingCart/Delete/5
