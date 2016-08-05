@@ -1,4 +1,6 @@
-﻿@model ForestBookstore.Models.DbContext.Book
+﻿@using System.ComponentModel.DataAnnotations
+@using ForestBookstore.Classes
+@model ForestBookstore.Models.DbContext.Book
 
 @{
     ViewBag.Title = "Details";
@@ -6,73 +8,42 @@
 
 <h2>Details</h2>
 
-<div>
-    @*<h4>Book</h4>*@
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-
-        <dd>
-            @if (Model.Image != null)
-            {
-                <img alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + Model.Id)"/>
-            }
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Author.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Price) BGN
-        </dd>
-
-        @if (User.IsInRole("Admin"))
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.CurrentCount)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.CurrentCount)
-            </dd>           
-        }
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreatedOn)
-        </dd>
-
-    </dl>
+<div class="row">
+        <div class="col-md-12">
+            <h3>@Html.DisplayFor(model => model.Name)</h3>
+            <h4><i>by </i>@Html.DisplayFor(model => model.Author.Name)</h4>
+            <p>
+               @if (Model.Image != null)
+               {
+                <img id="detailsViewBookImage" alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + Model.Id)" />
+               }
+               @Html.DisplayFor(model => model.Description)
+            </p>
+            <p>
+                @if (Model.CurrentCount > 5)
+                {
+                    @: <span style="color:green">&#9899;</span>In stock
+                }
+                else if (Model.CurrentCount > 0 && Model.CurrentCount <= 5)
+                {
+                    @: <span style="color:orange">&#9899;</span>Low stock
+                }
+                else
+                {
+                    @: <span style="color:red">&#9899;</span>Out of stock
+                }
+            </p> 
+        </div>
 </div>
+
+<p></p>
+<p>
+    <b>@Html.DisplayNameFor(model => model.Price): </b>
+    @Html.DisplayFor(model => model.Price) BGN
+</p>
+<p>
+    <a class="btn btn-default" href="@Url.Content("/Books/BookImage?id=" + Model.Id)">Order &raquo;</a>
+</p>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")

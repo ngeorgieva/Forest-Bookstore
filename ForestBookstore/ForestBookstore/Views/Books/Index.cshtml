@@ -1,4 +1,5 @@
 ﻿@model System.Collections.Generic.IEnumerable<ForestBookstore.Models.DbContext.Book>
+@using ForestBookstore.Classes
 @using ForestBookstore.Models.DbContext;
 
 @{
@@ -57,20 +58,20 @@
             <td>
                 @if (item.CurrentCount > 5)
                 {
-                    @: In stock
+                    @: <span style="color:green">&#9899;</span>In stock
                 }
                 else if (item.CurrentCount > 0 && item.CurrentCount <= 5)
                 {
-                    @: Low stock
+                    @: <span style="color:orange">&#9899;</span>Low stock
                 }
                 else
                 {
-                    @: Out of stock
+                    @: <span style="color:red">&#9899;</span>Out of stock
                 }
                 @*@Html.DisplayFor(modelItem => item.CurrentCount)*@
             </td>
             <td>
-                <a class="btn btn-default" href="">Order >></a>
+                <a class="btn btn-default" href="">Order &raquo;</a>
             </td>
         </tr>
     }

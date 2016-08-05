@@ -231,6 +231,8 @@
     <Compile Include="Models\DataLayer\OrdersMade.cs" />
     <Compile Include="Models\DataLayer\TestBooks.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ShipmentDetailsViewModel.cs" />
+    <Compile Include="Models\ShipmentViewModel.cs" />
     <Compile Include="Models\ShoppingCartViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

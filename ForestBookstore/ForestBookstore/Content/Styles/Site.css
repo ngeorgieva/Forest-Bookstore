@@ -22,7 +22,7 @@ table {
 
 .navbar-custom {
     background-color: #C1E1A6;
-    border-bottom: 2px solid #118C4E;
+    border-bottom: 2px solid #C1E1A6;
 }
 
 #logo-and-search{
@@ -94,6 +94,28 @@ table {
 #search-button.active,
 .open .dropdown-toggle.btn-default {
   color: #333333;
-  background-color: #ebebeb;
-  border-color: #adadad;
+  background-color: #FF9009;
+  border-color: #585858
+}
+
+#frontPageBookImage {
+    float: left;
+    border: 1px solid #585858;
+    margin-left: 0;
+    margin-right: 10px;
+    margin-top: 2px;
+    margin-bottom: 0;
+}
+
+.bookSectionHeader {
+    color: #FF9009;
+}
+
+#detailsViewBookImage {
+    float: left;
+    border: 1px solid #585858;
+    margin-left: 0;
+    margin-right: 10px;
+    margin-top: 2px;
+    margin-bottom: 0;
 }

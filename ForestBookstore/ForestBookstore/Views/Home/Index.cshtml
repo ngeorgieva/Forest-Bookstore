@@ -1,25 +1,47 @@
-﻿@{
+﻿@using System.Web.UI.WebControls
+@using ForestBookstore.Classes
+@{
     ViewBag.Title = "Home Page";
 }
 
+<h3 class="bookSectionHeader">New releases</h3>
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
+    @foreach (var item in ViewBag.NewReleases)
+    {
+        <div class="col-md-4">
+            <h3>@Utils.CutText(item.Name, 52)</h3>
+            <h4><i>by </i>@item.Author.Name</h4>
+            <p>
+                @if (item.Image != null)
+                {
+                    <img alt="Book Cover" id="frontPageBookImage" src="@Url.Content("/Books/BookImage?id=" + item.Id)"/>
+                }
+                @Utils.CutText(item.Description, 120);
+            </p>
+            <p>
+                <a class="btn btn-default" href="@Url.Content("/Books/Details/?id=" + item.Id)">Learn more &raquo;</a>
+            </p>
+        </div>
+    }
+</div>
+
+<h3 class="bookSectionHeader">Best sellers</h3>
+<div class="row">
+    @foreach (var item in ViewBag.BestSellers)
+    {
+        <div class="col-md-4">
+            <h3>@Utils.CutText(item.Name, 52)</h3>
+            <h4><i>by </i>@item.Author.Name</h4>
+            <p>
+                @if (item.Image != null)
+                {
+                    <img alt="Book Cover" id="frontPageBookImage" src="@Url.Content("/Books/BookImage?id=" + item.Id)" />
+                }
+                @Utils.CutText(item.Description, 120);
+            </p>
+            <p>
+                <a class="btn btn-default" href="@Url.Content("/Books/Details/?id=" + item.Id)">Learn more &raquo;</a>
+            </p>
+        </div>
+    }
 </div>
