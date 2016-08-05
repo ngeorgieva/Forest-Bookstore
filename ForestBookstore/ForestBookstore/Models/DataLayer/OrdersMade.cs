@@ -40,5 +40,13 @@ namespace ForestBookstore.Models.DbContext
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
+
+        public string PersonName { get; set; }
+
+        public string Town { get; set; }
+        
+        public string Address { get; set; }
+        
+        public string Phone { get; set; }
     }
 }

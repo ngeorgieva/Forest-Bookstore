@@ -113,10 +113,8 @@ namespace ForestBookstore.Controllers
         }
 
         [Authorize]
-        public ActionResult Completed([Bind(Include = "PersonName,Town,Address,Phone")] ShipmentDetailsViewModel details)
+        public ActionResult Completed()
         {
-
-
             return View();
         }
 
