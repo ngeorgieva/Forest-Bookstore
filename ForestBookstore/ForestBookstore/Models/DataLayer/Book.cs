@@ -29,6 +29,10 @@ namespace ForestBookstore.Models.DbContext
         public string Name { get; set; }
 
         [Required]
+        [ForeignKey("Author")]
+        public int AuthorId { get; set; }
+
+        [Required]
         public Author Author { get; set; }
 
         [Column(TypeName = "image")]
