@@ -43,7 +43,9 @@ namespace ForestBookstore.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
-            return View();
+            //this.ViewBag.Categories = this.db.Categories.ToList();
+            this.PopulateCategoriesDropDownList();
+            return this.View();
         }
 
         // POST: Books/Create
@@ -52,7 +54,7 @@ namespace ForestBookstore.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Author,Description,Price,CurrentCount,CreatedOn")] Book book, HttpPostedFileBase file)
+        public ActionResult Create([Bind(Include = "Id,Name,Author,Description,Id,Price,CurrentCount,CreatedOn")] Book book, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +67,7 @@ namespace ForestBookstore.Controllers
                 {
                     fileName = Path.GetFileName(file.FileName);
                     bytes = new byte[file.ContentLength];
-                    bytesToRead = (int) file.ContentLength;
+                    bytesToRead = (int)file.ContentLength;
                     bytesRead = 0;
                     while (bytesToRead > 0)
                     {
@@ -162,6 +164,14 @@ namespace ForestBookstore.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void PopulateCategoriesDropDownList(object selectedCategory = null)
+        {
+            var categoryQuery = from c in db.Categories
+                                orderby c.Name
+                                select c;
+            this.ViewBag.Id = new SelectList(categoryQuery, "Id", "Name", selectedCategory);
         }
     }
 }

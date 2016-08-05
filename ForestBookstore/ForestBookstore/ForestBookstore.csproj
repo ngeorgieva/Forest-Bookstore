@@ -209,15 +209,16 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BooksController.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201608041021129_Initial.cs" />
-    <Compile Include="Migrations\201608041021129_Initial.Designer.cs">
-      <DependentUpon>201608041021129_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201608052127217_Initial.cs" />
+    <Compile Include="Migrations\201608052127217_Initial.Designer.cs">
+      <DependentUpon>201608052127217_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -312,11 +313,16 @@
     <Content Include="Views\Books\Index.cshtml" />
     <Content Include="Views\Books\BookImage.cshtml" />
     <Content Include="Views\Shared\_Navigation.cshtml" />
-    <Content Include="Views\Admin\AdminPanel.cshtml" />
     <Content Include="Views\ShoppingCart\Checkout.cshtml" />
     <Content Include="Views\ShoppingCart\Completed.cshtml" />
     <Content Include="Views\ShoppingCart\Index.cshtml" />
     <Content Include="Views\ShoppingCart\Summary.cshtml" />
+    <Content Include="Views\Categories\Create.cshtml" />
+    <Content Include="Views\Categories\Delete.cshtml" />
+    <Content Include="Views\Categories\Details.cshtml" />
+    <Content Include="Views\Categories\Edit.cshtml" />
+    <Content Include="Views\Categories\Index.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -327,8 +333,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201608041021129_Initial.resx">
-      <DependentUpon>201608041021129_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201608052127217_Initial.resx">
+      <DependentUpon>201608052127217_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

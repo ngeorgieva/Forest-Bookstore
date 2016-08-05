@@ -20,7 +20,19 @@
             <tr>
                 <td>
                     <input type="submit" class="btn btn-sm btn-warning"
-                           value="Check Orders" onclick="location.href='@Url.Action("CheckOrders", "Admin")'" />
+                           value="Check Orders" onclick="location.href = '@Url.Action("CheckOrders", "Admin")'"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" class="btn btn-sm btn-warning"
+                           value="Create New Category" onclick="location.href = '@Url.Action("Create", "Categories")'"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" class="btn btn-sm btn-warning"
+                           value="View Categories" onclick="location.href = '@Url.Action("Index", "Categories")'" />
                 </td>
             </tr>
         </table>

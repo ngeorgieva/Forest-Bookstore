@@ -20,6 +20,7 @@ namespace ForestBookstore.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
             this.ContextKey = "MVCBlog.Models.ApplicationDbContext";
         }
 
