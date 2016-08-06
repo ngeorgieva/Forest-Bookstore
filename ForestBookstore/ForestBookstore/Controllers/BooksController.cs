@@ -54,7 +54,7 @@ namespace ForestBookstore.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Author,Description,Id,Price,CurrentCount,CreatedOn")] Book book, HttpPostedFileBase file)
+        public ActionResult Create([Bind(Include = "Id,Name,Author,Description,CategoryName,Price,CurrentCount,CreatedOn")] Book book, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,8 @@ namespace ForestBookstore.Controllers
 
                     book.Image = bytes;
                 }
-
+                int categoryId = int.Parse(this.Request.Form["CategoryId"]);
+                book.Categories.Add(this.db.Categories.Single(c => c.Id == categoryId));
                 db.Books.Add(book);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -171,7 +172,7 @@ namespace ForestBookstore.Controllers
             var categoryQuery = from c in db.Categories
                                 orderby c.Name
                                 select c;
-            this.ViewBag.Id = new SelectList(categoryQuery, "Id", "Name", selectedCategory);
+            this.ViewBag.CategoryId = new SelectList(categoryQuery, "Id", "Name", selectedCategory);
         }
     }
 }

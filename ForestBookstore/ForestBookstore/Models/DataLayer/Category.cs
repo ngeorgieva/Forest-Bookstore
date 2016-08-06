@@ -9,12 +9,13 @@ namespace ForestBookstore.Models.DbContext
     public partial class Category
     {
         private ICollection<Book> books;
-
+        
         public Category()
         {
             this.books = new HashSet<Book>();
         }
 
+        [Key]
         public int Id { get; set; }
 
         [Required]
