@@ -82,6 +82,9 @@ namespace ForestBookstore.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    ApplicationDbContext db = new ApplicationDbContext();
+                    var cartItemsCount = db.BooksInBaskets.Where(b => b.User.UserName == model.UserName).Count();
+                    this.Session["CartCount"] = cartItemsCount;
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
