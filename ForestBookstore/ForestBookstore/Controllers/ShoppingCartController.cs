@@ -52,16 +52,21 @@ namespace ForestBookstore.Controllers
             if(cartCount > 0)
             {
                 booksInCart.Books = db.BooksInBaskets.Where(b => b.UserId == currentUser.Id)
-                .Select(b => new CartLine()
-                {
-                    UserId = b.UserId,
-                    BookId = b.BookId,
-                    Book = b.Book,
-                    Count = b.Count
-                })
-                .ToList();
+                    .Select(b => new CartLine()
+                    {
+                        UserId = b.UserId,
+                        BookId = b.BookId,
+                        Book = b.Book,                 
+                        Count = b.Count
+                    })
+                    .ToList();
             }
-             
+
+            foreach (var book in booksInCart.Books)
+            {
+                book.Book.Author = db.Authors.Find(book.Book.AuthorId);
+            }
+
             return View(booksInCart);
         }
 

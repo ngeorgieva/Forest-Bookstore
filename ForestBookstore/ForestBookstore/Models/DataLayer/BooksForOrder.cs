@@ -9,15 +9,18 @@ namespace ForestBookstore.Models.DbContext
     [Table("BooksForOrder")]
     public partial class BooksForOrder
     {
-        [Key, Column(Order = 0)]
+        [Key]
         public int OrderId { get; set; }
-
-        [Key, Column(Order = 1)]
-        public int BookId { get; set; }
-
+              
         public int Count { get; set; }
 
+        [ForeignKey("Book")]
+        public int BookId { get; set; }
+
         public virtual Book Book { get; set; }
+
+        [ForeignKey("OrdersMade")]
+        public int OrdersMadeId { get; set; }
 
         public virtual OrdersMade OrdersMade { get; set; }
     }

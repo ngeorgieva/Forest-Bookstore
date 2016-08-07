@@ -15,10 +15,10 @@
             <th>Count</th>
             <th>Total</th>
         </tr>
-        
+
         @foreach (var book in Model.Cart.Books)
         {
-            
+
             <tr>
                 @{counter++;}
                 <td>@counter</td>
@@ -27,18 +27,20 @@
                 <td>@book.Count</td>
                 <td>@(book.Count * book.Book.Price)</td>
                 @{totalPrice += book.Count * book.Book.Price;}
-              </tr>
-        }
+            </tr>
+                    }
         <tr>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
             <td>Overall: @totalPrice</td>
-        </tr>  
+        </tr>
     </table>
 
     <h3>Shipment Details</h3>
+    using (Html.BeginForm("Completed", "ShoppingCart", FormMethod.Post))
+    {
     <dl>
         <dt>@Html.Label("Person Name")</dt>
         <dd>@Model.Details.PersonName</dd>
@@ -50,17 +52,7 @@
         <dd>@Model.Details.Phone</dd>
     </dl>
 
-    using (@Html.BeginForm("Completed"))
-    {
-        @Html.AntiForgeryToken();
-        @Html.HiddenFor(model => model.Details.PersonName);
-        @Html.HiddenFor(model => model.Details.Town);
-        @Html.HiddenFor(model => model.Details.Address);
-        @Html.HiddenFor(model => model.Details.Phone);
-
-        <input type="submit" class="btn btn-sm btn-warning"
-               value="Place Order" onclick="location.href='@Url.Action("Completed", "ShoppingCart")'" />
+    <input type="submit" class="btn btn-sm btn-warning"
+           value="Place Order" />
+        }
     }
-
-
-}

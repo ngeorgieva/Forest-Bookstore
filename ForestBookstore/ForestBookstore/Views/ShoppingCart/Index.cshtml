@@ -33,7 +33,7 @@
                                 <img alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + book.Book.Id)" />
                             }
                         </td>
-                        <td>@book.Book.Name</td>
+                        <td><b>@book.Book.Name</b> by <i>@book.Book.Author.Name</i></td>
                         <td>@book.Count</td>
                         @{decimal currBookTotalPrice = book.Count * Math.Round(book.Book.Price, 2);}
                         <td>@currBookTotalPrice</td>
