@@ -88,6 +88,27 @@ namespace ForestBookstore.Controllers
 
                     book.Image = bytes;
                 }
+
+                Author bookAuthor = null;
+                try
+                {
+                    bookAuthor = db.Authors.Where(a => a.Name == book.Author.Name).Single();
+                }
+                catch (InvalidOperationException)
+                {             
+                }
+                
+                if(bookAuthor == null)
+                {
+                    bookAuthor = db.Authors.Add(new Author
+                    {
+                        Name = book.Author.Name
+                    });
+                }
+
+                book.Author = bookAuthor;
+                book.AuthorId = bookAuthor.Id;
+
                 int categoryId = int.Parse(this.Request.Form["CategoryId"]);
                 book.Categories.Add(this.db.Categories.Single(c => c.Id == categoryId));
                 db.Books.Add(book);

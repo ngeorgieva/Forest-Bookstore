@@ -1,5 +1,11 @@
 ﻿@using Microsoft.AspNet.Identity
 
+<script>
+    function ShowBooksInCart() {
+        $(".cartNotifications").notify("Access granted", "success");
+    }
+</script>
+
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -16,7 +22,7 @@
             }
             @{
                 string cartCount = "Shopping Cart " + this.Session["CartCount"];
-            <li>@Html.ActionLink(cartCount, "Index", "ShoppingCart")</li>
+            <li>@Html.ActionLink(cartCount, "Index", "ShoppingCart", new { @class="cartNotifications", onmouseover="ShowBooksInCart()" })</li>
             }
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         </ul>

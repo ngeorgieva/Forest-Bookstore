@@ -40,6 +40,34 @@ namespace ForestBookstore.Controllers
             }
         }
 
+        public ActionResult GetCartBooks()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            var currentUser = UserManager.FindById(User.Identity.GetUserId());
+            List<CartLine> booksInCart = new List<CartLine>();
+            var cartCount = db.BooksInBaskets.Count();
+
+            if (cartCount > 0)
+            {
+                booksInCart = db.BooksInBaskets.Where(b => b.UserId == currentUser.Id)
+                    .Select(b => new CartLine()
+                    {
+                        UserId = b.UserId,
+                        BookId = b.BookId,
+                        Book = b.Book,
+                        Count = b.Count
+                    })
+                    .ToList();
+            }
+
+            foreach (var book in booksInCart)
+            {
+                book.Book.Author = db.Authors.Find(book.Book.AuthorId);
+            }
+
+            return View(); 
+        }
+
         // GET ShoppingCart
         [Authorize]
         public ActionResult Index()
@@ -68,6 +96,33 @@ namespace ForestBookstore.Controllers
             }
 
             return View(booksInCart);
+        }
+
+        [Authorize]
+        public bool AddToCart(int bookId)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            var currentUser = UserManager.FindById(User.Identity.GetUserId());
+            bool successful = true;
+
+            try
+            {
+                db.BooksInBaskets.Add(new BooksInBasket
+                {
+                    Book = db.Books.Find(bookId),
+                    BookId = bookId,
+                    User = currentUser,
+                    UserId = currentUser.Id
+                });
+
+                db.SaveChanges();
+            }
+            catch
+            {
+                successful = false;
+            }
+
+            return successful;
         }
 
         [Authorize]
@@ -220,7 +275,5 @@ namespace ForestBookstore.Controllers
             return RedirectToAction("Index");
         }
 
-
-        
     }
 }

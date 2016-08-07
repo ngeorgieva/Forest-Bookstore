@@ -17,42 +17,42 @@
 
 <table class="table" id="indexTable">
 
-    @foreach (var item in Model)
+    @foreach (var book in Model)
     {
         <tr>
             <td rowspan="2">
-                @if (item.Image != null)
+                @if (book.Image != null)
                 {
-                    <img alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + item.Id)" />
+                    <img alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + book.Id)" />
                 }
             </td>
             <td>
-                <p><b>@Html.DisplayFor(modelItem => item.Name)</b></p>
-                <p><i>by</i> @Html.DisplayFor(modelItem => item.Author.Name)</p>
+                <p><b>@Html.DisplayFor(modelItem => book.Name)</b></p>
+                <p><i>by</i> @Html.DisplayFor(modelItem => book.Author.Name)</p>
             </td>
             <td colspan="2">
-                @Utils.CutText(item.Description, 250)@Html.ActionLink("See more", "Details", new { id = item.Id })
+                @Utils.CutText(book.Description, 250)@Html.ActionLink("See more", "Details", new { id = book.Id })
             </td>
             <td>
                 @if (User.IsInRole("Admin"))
                 {
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                    @Html.ActionLink("Edit", "Edit", new { id = book.Id })
                     @:|
-                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    @Html.ActionLink("Details", "Details", new { id = book.Id })
                     @:|
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Delete", "Delete", new { id = book.Id })
                 }
                 else
                 {
-                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    @Html.ActionLink("Details", "Details", new { id = book.Id })
                 }
             </td>
         </tr>
         <tr>
-            @if (item.Categories.Count > 0)
+            @if (book.Categories.Count > 0)
             {
                 <td>
-                    @foreach (var category in item.Categories)
+                    @foreach (var category in book.Categories)
                     {
                         <i>@category.Name </i><br>
                     }
@@ -60,14 +60,14 @@
             }
             <td>
                 <b>@Html.DisplayNameFor(model => model.Price):</b>
-                @Html.DisplayFor(modelItem => item.Price) BGN
+                @Html.DisplayFor(modelItem => book.Price) BGN
             </td>
             <td>
-                @if (item.CurrentCount > 5)
+                @if (book.CurrentCount > 5)
                 {
                     @: <span style="color: green">&#9899;</span>In stock
                 }
-                else if (item.CurrentCount > 0 && item.CurrentCount <= 5)
+                else if (book.CurrentCount > 0 && book.CurrentCount <= 5)
                 {
                     @: <span style="color: orange">&#9899;</span>Low stock
                 }
@@ -78,6 +78,9 @@
                 @*@Html.DisplayFor(modelItem => item.CurrentCount)*@
             </td>
             <td>
+                @Ajax.ActionLink("AddToCart", "ShoppingCart", null,
+               new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "",
+                   InsertionMode = InsertionMode.Replace, OnFailure = "", OnSuccess = "" }, new { @class = "" })
                 <a class="btn btn-default" href="">Order &raquo;</a>
             </td>
         </tr>

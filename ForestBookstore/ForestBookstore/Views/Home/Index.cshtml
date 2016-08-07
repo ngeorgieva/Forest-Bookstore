@@ -4,6 +4,12 @@
     ViewBag.Title = "Home Page";
 }
 
+<script>
+    function testNotifyJs(){
+        $(".testclass").notify("Access granted", "success");
+    }
+</script>
+
 <h3 class="bookSectionHeader">New releases</h3>
 <div class="row">
     @foreach (var item in ViewBag.NewReleases)
@@ -45,3 +51,5 @@
         </div>
     }
 </div>
+
+<input type="button" class="testclass" onclick="testNotifyJs()" name="test notify js"/>
