@@ -95,16 +95,15 @@ namespace ForestBookstore.Controllers
                     bookAuthor = db.Authors.Where(a => a.Name == book.Author.Name).Single();
                 }
                 catch (InvalidOperationException)
-                {             
-                }
-                
-                if(bookAuthor == null)
                 {
-                    bookAuthor = db.Authors.Add(new Author
+                    if (bookAuthor == null)
                     {
-                        Name = book.Author.Name
-                    });
-                }
+                        bookAuthor = db.Authors.Add(new Author
+                        {
+                            Name = book.Author.Name
+                        });
+                    }
+                }               
 
                 book.Author = bookAuthor;
                 book.AuthorId = bookAuthor.Id;
@@ -146,7 +145,31 @@ namespace ForestBookstore.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(book).State = EntityState.Modified;
+                Author bookAuthor = null;
+                try
+                {
+                    bookAuthor = db.Authors.Where(a => a.Name == book.Author.Name).Single();
+                }
+                catch (InvalidOperationException)
+                {
+                    if (bookAuthor == null)
+                    {
+                        bookAuthor = db.Authors.Add(new Author
+                        {
+                            Name = book.Author.Name
+                        });
+                    }
+                }
+
+                var currentBook = db.Books.Where(b => b.Id == book.Id).Single();
+                currentBook.Author = bookAuthor;
+                currentBook.AuthorId = bookAuthor.Id;
+                currentBook.Name = book.Name;
+                currentBook.Price = book.Price;
+                currentBook.Description = book.Description;
+                currentBook.CurrentCount = book.CurrentCount;
+                currentBook.CreatedOn = book.CreatedOn;
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
