@@ -27,10 +27,11 @@
                 }
             </td>
             <td>
-                <b>@Html.DisplayFor(modelItem => item.Name)</b>
+                <p><b>@Html.DisplayFor(modelItem => item.Name)</b></p>
+                <p><i>by</i> @Html.DisplayFor(modelItem => item.Author.Name)</p>
             </td>
             <td colspan="2">
-                @Utils.CutText(item.Description, 200)@Html.ActionLink("See more", "Details", new { id = item.Id })
+                @Utils.CutText(item.Description, 250)@Html.ActionLink("See more", "Details", new { id = item.Id })
             </td>
             <td>
                 @if (User.IsInRole("Admin"))
@@ -48,9 +49,15 @@
             </td>
         </tr>
         <tr>
-            <td>
-                <i>by</i> @Html.DisplayFor(modelItem => item.Author.Name)
-            </td>
+            @if (item.Categories.Count > 0)
+            {
+                <td>
+                    @foreach (var category in item.Categories)
+                    {
+                        <i>@category.Name </i><br>
+                    }
+                </td>
+            }
             <td>
                 <b>@Html.DisplayNameFor(model => model.Price):</b>
                 @Html.DisplayFor(modelItem => item.Price) BGN
@@ -58,15 +65,15 @@
             <td>
                 @if (item.CurrentCount > 5)
                 {
-                    @: <span style="color:green">&#9899;</span>In stock
+                    @: <span style="color: green">&#9899;</span>In stock
                 }
                 else if (item.CurrentCount > 0 && item.CurrentCount <= 5)
                 {
-                    @: <span style="color:orange">&#9899;</span>Low stock
+                    @: <span style="color: orange">&#9899;</span>Low stock
                 }
                 else
                 {
-                    @: <span style="color:red">&#9899;</span>Out of stock
+                    @: <span style="color: red">&#9899;</span>Out of stock
                 }
                 @*@Html.DisplayFor(modelItem => item.CurrentCount)*@
             </td>

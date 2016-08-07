@@ -12,6 +12,7 @@ using ForestBookstore.Models.DbContext;
 namespace ForestBookstore.Controllers
 {
     using System.IO;
+    using System.Text;
 
     public class BooksController : Controller
     {
@@ -31,11 +32,19 @@ namespace ForestBookstore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Book book = db.Books.Include(b => b.Author).Single(b => b.Id == id);
+            Book book = this.db.Books.Include(b => b.Author).Include(b => b.Categories).Single(b => b.Id == id);
+
             if (book == null)
             {
                 return HttpNotFound();
             }
+            var categries = new StringBuilder();
+            foreach (var c in book.Categories)
+            {
+                categries.Append(c.Name + ", ");
+            }
+            categries.Remove(categries.Length - 2, 2);
+            this.ViewBag.Categories = categries.ToString();
             return View(book);
         }
 
@@ -54,7 +63,7 @@ namespace ForestBookstore.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Author,Description,CategoryName,Price,CurrentCount,CreatedOn")] Book book, HttpPostedFileBase file)
+        public ActionResult Create([Bind(Include = "Id,Name,Author,Description,Price,CurrentCount,CreatedOn")] Book book, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
@@ -102,6 +111,7 @@ namespace ForestBookstore.Controllers
             {
                 return HttpNotFound();
             }
+            //this.PopulateCategoriesDropDownList();
             return View(book);
         }
 

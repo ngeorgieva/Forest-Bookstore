@@ -12,6 +12,7 @@
         <div class="col-md-12">
             <h3>@Html.DisplayFor(model => model.Name)</h3>
             <h4><i>by </i>@Html.DisplayFor(model => model.Author.Name)</h4>
+            <p><i>@ViewBag.Categories</i></p>
             <p>
                @if (Model.Image != null)
                {
