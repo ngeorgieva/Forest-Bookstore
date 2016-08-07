@@ -131,7 +131,7 @@ namespace ForestBookstore.Controllers
             {
                 return HttpNotFound();
             }
-            //this.PopulateCategoriesDropDownList();
+            this.PopulateCategoriesDropDownList();
             return View(book);
         }
 
@@ -169,6 +169,9 @@ namespace ForestBookstore.Controllers
                 currentBook.Description = book.Description;
                 currentBook.CurrentCount = book.CurrentCount;
                 currentBook.CreatedOn = book.CreatedOn;
+
+                int categoryId = int.Parse(this.Request.Form["CategoryId"]);
+                currentBook.Categories.Add(this.db.Categories.Single(c => c.Id == categoryId));
 
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -76,6 +76,7 @@ namespace ForestBookstore.Controllers
             {
                 return HttpNotFound();
             }
+            this.PopulateCategoriesDropDownList();
             return View(category);
         }
 
@@ -89,8 +90,11 @@ namespace ForestBookstore.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(category).State = EntityState.Modified;
-                db.SaveChanges();
+                int bookId = int.Parse(this.Request.Form["BookId"]);
+                var book = this.db.Books.Include(b => b.Categories).Single(b => b.Id == bookId);
+                if (book != null) book.Categories.Remove(this.db.Categories.Single(c => c.Id == category.Id));
+                //this.db.Entry(category).State = EntityState.Modified;
+                this.db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(category);
@@ -131,6 +135,14 @@ namespace ForestBookstore.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void PopulateCategoriesDropDownList(object selectedCategory = null)
+        {
+            var booksQuery = from b in this.db.Books.Include(b => b.Author)
+                                orderby b.Name
+                                select b;
+            this.ViewBag.BookId = new SelectList(booksQuery, "Id", "Name", selectedCategory);
         }
     }
 }
