@@ -13,18 +13,29 @@ namespace ForestBookstore.Controllers
 {
     using System.IO;
     using System.Text;
+    using PagedList;
 
     public class BooksController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Books
-        public ActionResult Index(string searchString)
+        public ActionResult Index(string searchString, string currentFilter, int? page)
         {
             var books = this.db.Books.Include(b => b.Author).OrderByDescending(b => b.CreatedOn);
 
-            string searchType = this.Request["searchBy"];
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
 
+            ViewBag.CurrentFilter = searchString;
+
+            string searchType = this.Request["searchBy"];
             if (!String.IsNullOrEmpty(searchString))
             {
                 if (searchType.Equals("Name"))
@@ -44,7 +55,10 @@ namespace ForestBookstore.Controllers
                             .OrderByDescending(b => b.CreatedOn);
                 }
             }
-            return View(books.ToList());
+
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(books.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Books/Details/5

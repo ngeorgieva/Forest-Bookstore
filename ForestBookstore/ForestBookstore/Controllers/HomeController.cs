@@ -19,5 +19,10 @@ namespace ForestBookstore.Controllers
             this.ViewBag.BestSellers = this.db.Books.Include(b => b.Author).OrderBy(b => b.CreatedOn).Take(3);
             return this.View();
         }
+
+        public ActionResult Contact()
+        {
+            return this.View();
+        }
     }
 }

@@ -1,9 +1,10 @@
-﻿@model System.Collections.Generic.IEnumerable<ForestBookstore.Models.DbContext.Book>
+﻿@model PagedList.IPagedList<ForestBookstore.Models.DbContext.Book>
+@using PagedList.Mvc
 @using ForestBookstore.Classes
 @using ForestBookstore.Models.DbContext;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Books";
 }
 
 <h2>Books</h2>
@@ -23,28 +24,29 @@
             <td rowspan="2">
                 @if (book.Image != null)
                 {
-                    <img alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + book.Id)" />
+                    <img alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + book.Id)"/>
                 }
             </td>
             <td>
-                <p><b>@Html.DisplayFor(modelItem => book.Name)</b></p>
+                <p><b>@Html.DisplayFor(modelItem => book.Name)</b>
+                </p>
                 <p><i>by</i> @Html.DisplayFor(modelItem => book.Author.Name)</p>
             </td>
             <td colspan="2">
-                @Utils.CutText(book.Description, 250)@Html.ActionLink("See more", "Details", new { id = book.Id })
+                @Utils.CutText(book.Description, 250)@Html.ActionLink("See more", "Details", new {id = book.Id})
             </td>
             <td>
                 @if (User.IsInRole("Admin"))
                 {
-                    @Html.ActionLink("Edit", "Edit", new { id = book.Id })
+                    @Html.ActionLink("Edit", "Edit", new {id = book.Id})
                     @:|
-                    @Html.ActionLink("Details", "Details", new { id = book.Id })
+                    @Html.ActionLink("Details", "Details", new {id = book.Id})
                     @:|
-                    @Html.ActionLink("Delete", "Delete", new { id = book.Id })
+                    @Html.ActionLink("Delete", "Delete", new {id = book.Id})
                 }
                 else
                 {
-                    @Html.ActionLink("Details", "Details", new { id = book.Id })
+                    @Html.ActionLink("Details", "Details", new {id = book.Id})
                 }
             </td>
         </tr>
@@ -59,7 +61,7 @@
                 </td>
             }
             <td>
-                <b>@Html.DisplayNameFor(model => model.Price):</b>
+                <b>Book:</b>
                 @Html.DisplayFor(modelItem => book.Price) BGN
             </td>
             <td>
@@ -79,10 +81,21 @@
             </td>
             <td>
                 @Ajax.ActionLink("AddToCart", "ShoppingCart", null,
-               new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "",
-                   InsertionMode = InsertionMode.Replace, OnFailure = "", OnSuccess = "" }, new { @class = "" })
+                    new AjaxOptions
+                    {
+                        HttpMethod = "POST",
+                        UpdateTargetId = "",
+                        InsertionMode = InsertionMode.Replace,
+                        OnFailure = "",
+                        OnSuccess = ""
+                    }, new {@class = ""})
                 <a class="btn btn-default" href="">Order &raquo;</a>
             </td>
         </tr>
     }
 </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, currentFilter = ViewBag.CurrentFilter }))
