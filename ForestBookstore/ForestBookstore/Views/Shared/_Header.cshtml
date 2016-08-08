@@ -5,12 +5,30 @@
         </div>
         <!-- SEARCH BAR -->
         <div id="search-box">
-            <form method="get" action="http://www.google.com">
+            @*<form method="get" action="http://www.google.com">
                 <input type="text" id="text-box" size="55">
                 <input type="submit" value="Search" id="search-button"><br>
                 <input type="radio" name="title-or-author" value="Author" checked> Author
                 <input type="radio" name="title-or-author" value="Title"> Title
-            </form>
+            </form>*@
+
+            @using (Html.BeginForm("Index", "Books", FormMethod.Get))
+            {
+                <div style="display: inline; float: left">
+                    @Html.TextBox("SearchString", null, new { id = "text-box", size = "55" })
+                    <br>
+                    @Html.RadioButton("searchBy", "Name", true)
+
+                    @Html.Label("Book Title", null, new { style = "font-weight:lighter" })
+        
+                    @Html.RadioButton("searchBy", "Author")
+
+                    @Html.Label("Author", null, new { style = "font-weight:lighter" })
+                </div>
+                <div style="display: inline; float: right">
+                    <input type="submit" value="Search" id="search-button" />
+                </div>
+            }
         </div>
     </section>
 </header>
