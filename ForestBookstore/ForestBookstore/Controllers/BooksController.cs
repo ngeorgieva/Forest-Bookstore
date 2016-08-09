@@ -20,25 +20,14 @@ namespace ForestBookstore.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Books
-        public ActionResult Index(string searchString, string currentFilter, int? page)
+        public ActionResult Index(string searchString, string searchBy, int page = 1, int pageSize = 3)
         {
             var books = this.db.Books.Include(b => b.Author).OrderByDescending(b => b.CreatedOn);
 
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-
-            ViewBag.CurrentFilter = searchString;
-
-            string searchType = this.Request["searchBy"];
+            //string searchType = this.Request["searchBy"];
             if (!String.IsNullOrEmpty(searchString))
             {
-                if (searchType.Equals("Name"))
+                if (searchBy == "Name")
                 {
                     books =
                         this.db.Books.Include(b => b.Author)
@@ -56,11 +45,11 @@ namespace ForestBookstore.Controllers
                 }
             }
 
-            int pageSize = 3;
-            int pageNumber = (page ?? 1);
-            return View(books.ToPagedList(pageNumber, pageSize));
+            PagedList<Book> model = new PagedList<Book>(books, page, pageSize);
+            
+            return View(model);
         }
-
+        
         // GET: Books/Details/5
         public ActionResult Details(int? id)
         {

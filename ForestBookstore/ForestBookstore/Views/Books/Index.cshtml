@@ -24,29 +24,30 @@
             <td rowspan="2">
                 @if (book.Image != null)
                 {
-                    <img alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + book.Id)"/>
+                    <img alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + book.Id)" />
                 }
             </td>
             <td>
-                <p><b>@Html.DisplayFor(modelItem => book.Name)</b>
+                <p>
+                    <b>@Html.DisplayFor(modelItem => book.Name)</b>
                 </p>
                 <p><i>by</i> @Html.DisplayFor(modelItem => book.Author.Name)</p>
             </td>
             <td colspan="2">
-                @Utils.CutText(book.Description, 250)@Html.ActionLink("See more", "Details", new {id = book.Id})
+                @Utils.CutText(book.Description, 250)@Html.ActionLink("See more", "Details", new { id = book.Id })
             </td>
             <td>
                 @if (User.IsInRole("Admin"))
                 {
-                    @Html.ActionLink("Edit", "Edit", new {id = book.Id})
+                    @Html.ActionLink("Edit", "Edit", new { id = book.Id })
                     @:|
-                    @Html.ActionLink("Details", "Details", new {id = book.Id})
+                    @Html.ActionLink("Details", "Details", new { id = book.Id })
                     @:|
-                    @Html.ActionLink("Delete", "Delete", new {id = book.Id})
+                    @Html.ActionLink("Delete", "Delete", new { id = book.Id })
                 }
                 else
                 {
-                    @Html.ActionLink("Details", "Details", new {id = book.Id})
+                    @Html.ActionLink("Details", "Details", new { id = book.Id })
                 }
             </td>
         </tr>
@@ -91,17 +92,16 @@
                         OnComplete = "enable"
                     }, new { @class = "" }))
                 {
-                   <input type="submit" id="@book.Id" class="btn btn-default" name="Order" value="Order" >
+                    <input type="submit" id="@book.Id" class="btn btn-default" name="Order" value="Order">
                 }
             </td>
         </tr>
     }
 </table>
 <br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, currentFilter = ViewBag.CurrentFilter }))
+<div class="text-center">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, searchString = Request.QueryString["SearchString"], searchBy = Request.QueryString["searchBy"] }))
+</div>
 
 
 @section scripts{
