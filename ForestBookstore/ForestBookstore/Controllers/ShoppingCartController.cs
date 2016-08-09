@@ -65,7 +65,7 @@ namespace ForestBookstore.Controllers
                 book.Book.Author = db.Authors.Find(book.Book.AuthorId);
             }
 
-            return View(); 
+            return View();
         }
 
         // GET ShoppingCart
@@ -77,14 +77,14 @@ namespace ForestBookstore.Controllers
             ShoppingCartBookViewModel booksInCart = new ShoppingCartBookViewModel(new List<CartLine>());
             var cartCount = db.BooksInBaskets.Count();
 
-            if(cartCount > 0)
+            if (cartCount > 0)
             {
                 booksInCart.Books = db.BooksInBaskets.Where(b => b.UserId == currentUser.Id)
                     .Select(b => new CartLine()
                     {
                         UserId = b.UserId,
                         BookId = b.BookId,
-                        Book = b.Book,                 
+                        Book = b.Book,
                         Count = b.Count
                     })
                     .ToList();
@@ -99,30 +99,44 @@ namespace ForestBookstore.Controllers
         }
 
         [Authorize]
-        public bool AddToCart(int bookId)
+        [HttpPost]
+        public ActionResult AddToCart(int bookId)
         {
+            //if (!Request.IsAjaxRequest())
+            //{
+            //    return HttpNotFound();
+            //}
+
             ApplicationDbContext db = new ApplicationDbContext();
             var currentUser = UserManager.FindById(User.Identity.GetUserId());
             bool successful = true;
 
-            try
+            var lineExist = db.BooksInBaskets
+                    .Where(b => b.UserId == currentUser.Id && b.BookId == bookId).Count();
+            if (lineExist == 1)
             {
-                db.BooksInBaskets.Add(new BooksInBasket
+                var cartLine = db.BooksInBaskets
+                    .Where(b => b.UserId == currentUser.Id && b.BookId == bookId).Single();
+                cartLine.Count++;
+            }
+            else
+            {
+                var book = db.Books.Find(bookId);
+                var userId = currentUser.Id;
+                var cartLine = new BooksInBasket
                 {
-                    Book = db.Books.Find(bookId),
+                    Book = book,
                     BookId = bookId,
-                    User = currentUser,
-                    UserId = currentUser.Id
-                });
+                    UserId = userId,
+                    Count = 1          
+                };
 
-                db.SaveChanges();
+                db.BooksInBaskets.Add(cartLine);
             }
-            catch
-            {
-                successful = false;
-            }
+                          
+            db.SaveChanges();
 
-            return successful;
+            return Content(successful.ToString());
         }
 
         [Authorize]
@@ -133,7 +147,7 @@ namespace ForestBookstore.Controllers
             //{
             //    return RedirectToAction("Index");
             //}
-        
+
             var user = UserManager.FindById(User.Identity.GetUserId());
 
             ShipmentDetailsViewModel currentShipment = new ShipmentDetailsViewModel
@@ -188,12 +202,12 @@ namespace ForestBookstore.Controllers
         [HttpPost]
         public ActionResult Completed()
         {
-            if (this.Session["PersonName"] == null 
+            if (this.Session["PersonName"] == null
                 && this.Session["Address"] == null
                 && this.Session["Town"] == null
                 && this.Session["Phone"] == null)
             {
-                if(this.Session["PlacingOrder"] == null)
+                if (this.Session["PlacingOrder"] == null)
                 {
                     return RedirectToAction("Index");
                 }
@@ -250,10 +264,10 @@ namespace ForestBookstore.Controllers
 
                 var booksInTheCart = db.BooksInBaskets.Where(b => b.UserId == user.Id);
                 db.BooksInBaskets.RemoveRange(booksInTheCart);
-            
+
                 db.SaveChanges();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 orderSuccessful = false;
             }

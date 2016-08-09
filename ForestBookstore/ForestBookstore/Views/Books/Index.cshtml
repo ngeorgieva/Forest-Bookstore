@@ -80,16 +80,19 @@
                 @*@Html.DisplayFor(modelItem => item.CurrentCount)*@
             </td>
             <td>
-                @Ajax.ActionLink("AddToCart", "ShoppingCart", null,
+                @using (Ajax.BeginForm("AddToCart", "ShoppingCart", new { bookId = @book.Id },
                     new AjaxOptions
                     {
                         HttpMethod = "POST",
                         UpdateTargetId = "",
-                        InsertionMode = InsertionMode.Replace,
+                        OnBegin = "",
                         OnFailure = "",
-                        OnSuccess = ""
-                    }, new {@class = ""})
-                <a class="btn btn-default" href="">Order &raquo;</a>
+                        OnSuccess = "",
+                        OnComplete = "",
+                    }, new { @class = "" }))
+                {
+                    <input type="submit" class="btn btn-default" name="Order" value="Order">
+                }
             </td>
         </tr>
     }
