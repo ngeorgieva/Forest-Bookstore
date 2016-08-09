@@ -85,13 +85,13 @@
                     {
                         HttpMethod = "POST",
                         UpdateTargetId = "",
-                        OnBegin = "",
-                        OnFailure = "",
-                        OnSuccess = "",
-                        OnComplete = "",
+                        OnBegin = "disable",
+                        OnFailure = "enable",
+                        OnSuccess = "successfulOrder",
+                        OnComplete = "enable"
                     }, new { @class = "" }))
                 {
-                    <input type="submit" class="btn btn-default" name="Order" value="Order">
+                   <input type="submit" id="@book.Id" class="btn btn-default" name="Order" value="Order" >
                 }
             </td>
         </tr>
@@ -102,3 +102,23 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 
 @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page, currentFilter = ViewBag.CurrentFilter }))
+
+
+@section scripts{
+    <script>
+        function disable() {
+            $(this).find('input').prop('disabled', true);
+        }
+
+        function enable() {
+            $(this).find('input').prop('disabled', false);
+        }
+
+        function successfulOrder() {
+            $.notify(
+              "Item added in the Shopping Cart!",
+            { position: "right bottom", className: "success" }
+            );
+        }
+    </script>
+}
