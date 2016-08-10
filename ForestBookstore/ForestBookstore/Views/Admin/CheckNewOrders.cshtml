@@ -1,48 +1,67 @@
 ﻿@using ForestBookstore.Models.DbContext;
 @model List<OrdersMade>
 
-<table class="table">
-    <tr>
-        <th>№</th>
-        <th>Order Details</th>
-        <th>Shipment Details</th>
-    </tr>
-    @{ int orderCounter = 1; }
-    @{
-        foreach (var order in Model)
-        {
+<h2>Orders to be sent</h2>
+
+@section scripts {
+    <link href="@Url.Content("~/Content/Styles/shopping-cart.css")" rel="stylesheet" type="text/css" />
+}
+
+@if (Model == null)
+{
+    @:There are no unsent orders made yet.
+}
+else
+{
+    <div class="shopping-cart">
+        <table class="table">
             <tr>
-                <td>
-                    @orderCounter
-                    @{orderCounter++;}
-                </td>
+                <th>№</th>
+                <th>Order Details</th>
+                <th>Shipment Details</th>
+                <th>Options</th>
+            </tr>
+            @{ int orderCounter = 1; }
+            @{
+                foreach (var order in Model)
+                {
+                    <tr>
+                        <td>
+                            @orderCounter
+                            @{orderCounter++;}
+                        </td>
 
-                <td>
-                    @{decimal totalOrderPrice = 0; int bookCounter = 0; }
+                        <td>
+                            @{decimal totalOrderPrice = 0; int bookCounter = 0; }
 
-                    @foreach (var book in order.BooksForOrder)
+                            @foreach (var book in order.BooksForOrder)
+                            {
+                                bookCounter++;
+                                totalOrderPrice += book.Book.Price * @book.Count;
+                                decimal currentBookOverallPrice = Math.Round(book.Book.Price, 2) * @book.Count;
+                                <div>@bookCounter: <b>@book.Book.Name</b> by <i>@book.Book.Author.Name</i></div>
+                                <div><b>Count</b>: @book.Count - <b>Price</b>: @Math.Round(book.Book.Price, 2) - <b>Overall</b>: @Math.Round(currentBookOverallPrice, 2)</div>
+                            }
+
+                            <div><b>Order Overall</b>: @Math.Round(totalOrderPrice, 2)</div>
+                        </td>
+
+                        <td>
+                            <div><b>Person Name</b>: @order.PersonName</div>
+                            <div><b>Address</b>: @order.Address</div>
+                            <div><b>Town</b>: @order.Town</div>
+                            <div><b>Phone</b>: @order.Phone</div>
+                        </td>
+
+                        <td>
+                            @using (Html.BeginForm("IsShipped", "Admin", new { orderId = @order.Id }, FormMethod.Post))
                     {
-                        bookCounter++;
-                        totalOrderPrice += book.Book.Price * @book.Count;
-                        decimal currentBookOverallPrice = Math.Round(book.Book.Price, 2) * @book.Count;
-                        <div>@bookCounter: <b>@book.Book.Name</b> by <i>@book.Book.Author</i></div>
-                        <div><b>Count</b>: @book.Count - <b>Price</b>: @Math.Round(book.Book.Price, 2) - <b>Book Overall</b>: @Math.Round(currentBookOverallPrice, 2)</div>
-                    }
-
-                    <div><b>Order Overall</b>: @Math.Round(totalOrderPrice, 2)</div>
-                </td>
-
-                <td>
-                    <div><b>Person Name</b>: @order.PersonName</div>
-                    <div><b>Address</b>: @order.Address</div>
-                    <div><b>Town</b>: @order.Town</div>
-                    <div><b>Phone</b>: @order.Phone</div>
-                </td>
-            </tr>
-
-            <tr>
-                <input type="submit" name="Shipped" onclick="location.href='@Url.Action("IsShipped", "Admin")'"/>
-            </tr>
-         }
-    }
-</table>
+                                <input type="submit" class="btn btn-sm btn-warning" value="Mark as Sent" />
+                            }
+                        </td>
+                    </tr>
+                                }
+            }
+        </table>
+    </div>
+}

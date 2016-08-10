@@ -137,6 +137,8 @@ namespace ForestBookstore.Controllers
                         {
                             Name = book.Author.Name
                         });
+
+                        db.SaveChanges();
                     }
                 }               
 
