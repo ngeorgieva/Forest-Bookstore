@@ -20,33 +20,43 @@ namespace ForestBookstore.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Books
-        public ActionResult Index(string searchString, string searchBy, int page = 1, int pageSize = 3)
+        public ActionResult Index(string searchString, string searchBy, int? categoryId, int page = 1, int pageSize = 3)
         {
             var books = this.db.Books.Include(b => b.Author).OrderByDescending(b => b.CreatedOn);
 
-            //string searchType = this.Request["searchBy"];
-            if (!String.IsNullOrEmpty(searchString))
+            if (categoryId != null)
             {
-                if (searchBy == "Name")
+                books = this.db.Books.Include(b => b.Author)
+                    .Include(b => b.Categories)
+                    .Where(b => b.Categories.Any(c => c.Id == categoryId)).OrderByDescending(b => b.CreatedOn);
+            }
+            else
+            {
+                if (!String.IsNullOrEmpty(searchString))
                 {
-                    books =
-                        this.db.Books.Include(b => b.Author)
-                            .Include(b => b.Categories)
-                            .Where(b => b.Name.Contains(searchString))
-                            .OrderByDescending(b => b.CreatedOn);
-                }
-                else
-                {
-                    books =
-                        this.db.Books.Include(b => b.Author)
-                            .Include(b => b.Categories)
-                            .Where(b => b.Author.Name.Contains(searchString))
-                            .OrderByDescending(b => b.CreatedOn);
+                    if (searchBy == "Name")
+                    {
+                        books =
+                            this.db.Books.Include(b => b.Author)
+                                .Include(b => b.Categories)
+                                .Where(b => b.Name.Contains(searchString))
+                                .OrderByDescending(b => b.CreatedOn);
+                    }
+                    else
+                    {
+                        books =
+                            this.db.Books.Include(b => b.Author)
+                                .Include(b => b.Categories)
+                                .Where(b => b.Author.Name.Contains(searchString))
+                                .OrderByDescending(b => b.CreatedOn);
+                    }
                 }
             }
 
             PagedList<Book> model = new PagedList<Book>(books, page, pageSize);
-            
+
+            ViewBag.Categories = this.db.Categories.Include(c => c.Books);
+
             return View(model);
         }
         

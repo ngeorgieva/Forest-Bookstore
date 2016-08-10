@@ -1,0 +1,13 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<ForestBookstore.Models.DbContext.Book>
+
+<ul class="nav nav-pills nav-stacked">
+    @foreach (var item in ViewBag.Categories)
+    {
+        string name = item.Name;
+        <li>
+            @Html.ActionLink(name, "Index", new { categoryId = item.Id })
+        </li>
+    }
+</ul>
+

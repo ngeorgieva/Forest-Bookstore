@@ -7,102 +7,111 @@
     ViewBag.Title = "Books";
 }
 
-<h2>Books</h2>
+<div class="container-fluid">
+    <div id="container">
+        <div class="sidebar">
+            @Html.Partial("BooksByCategory")
+        </div>
 
-@if (User.IsInRole("Admin"))
-{
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-}
+        <div class="body">
+            <h2>Books</h2>
 
-<table class="table" id="indexTable">
-
-    @foreach (var book in Model)
-    {
-        <tr>
-            <td rowspan="2">
-                @if (book.Image != null)
-                {
-                    <img alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + book.Id)" />
-                }
-            </td>
-            <td>
-                <p>
-                    <b>@Html.DisplayFor(modelItem => book.Name)</b>
-                </p>
-                <p><i>by</i> @Html.DisplayFor(modelItem => book.Author.Name)</p>
-            </td>
-            <td colspan="2">
-                @Utils.CutText(book.Description, 250)@Html.ActionLink("See more", "Details", new { id = book.Id })
-            </td>
-            <td>
-                @if (User.IsInRole("Admin"))
-                {
-                    @Html.ActionLink("Edit", "Edit", new { id = book.Id })
-                    @:|
-                    @Html.ActionLink("Details", "Details", new { id = book.Id })
-                    @:|
-                    @Html.ActionLink("Delete", "Delete", new { id = book.Id })
-                }
-                else
-                {
-                    @Html.ActionLink("Details", "Details", new { id = book.Id })
-                }
-            </td>
-        </tr>
-        <tr>
-            @if (book.Categories.Count > 0)
+            @if (User.IsInRole("Admin"))
             {
-                <td>
-                    @foreach (var category in book.Categories)
-                    {
-                        <i>@category.Name </i><br>
-                    }
-                </td>
+                <p>
+                    @Html.ActionLink("Create New", "Create")
+                </p>
             }
-            <td>
-                <b>Book:</b>
-                @Html.DisplayFor(modelItem => book.Price) BGN
-            </td>
-            <td>
-                @if (book.CurrentCount > 5)
-                {
-                    @: <span style="color: green">&#9899;</span>In stock
-                }
-                else if (book.CurrentCount > 0 && book.CurrentCount <= 5)
-                {
-                    @: <span style="color: orange">&#9899;</span>Low stock
-                }
-                else
-                {
-                    @: <span style="color: red">&#9899;</span>Out of stock
-                }
-                @*@Html.DisplayFor(modelItem => item.CurrentCount)*@
-            </td>
-            <td>
-                @using (Ajax.BeginForm("AddToCart", "ShoppingCart", new { bookId = @book.Id },
-                    new AjaxOptions
-                    {
-                        HttpMethod = "POST",
-                        UpdateTargetId = "",
-                        OnBegin = "disable",
-                        OnFailure = "enable",
-                        OnSuccess = "successfulOrder",
-                        OnComplete = "enable"
-                    }, new { @class = "" }))
-                {
-                    <input type="submit" id="@book.Id" class="btn btn-default" name="Order" value="Order">
-                }
-            </td>
-        </tr>
-    }
-</table>
-<br />
-<div class="text-center">
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, searchString = Request.QueryString["SearchString"], searchBy = Request.QueryString["searchBy"] }))
-</div>
 
+            <table class="table" id="indexTable">
+
+                @foreach (var book in Model)
+            {
+                    <tr>
+                        <td rowspan="2">
+                            @if (book.Image != null)
+                            {
+                                <img alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + book.Id)" />
+                            }
+                        </td>
+                        <td>
+                            <p>
+                                <b>@Html.DisplayFor(modelItem => book.Name)</b>
+                            </p>
+                            <p><i>by</i> @Html.DisplayFor(modelItem => book.Author.Name)</p>
+                        </td>
+                        <td colspan="2">
+                            @Utils.CutText(book.Description, 250)@Html.ActionLink("See more", "Details", new { id = book.Id })
+                        </td>
+                        <td>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                @Html.ActionLink("Edit", "Edit", new { id = book.Id })
+                                @:|
+                                @Html.ActionLink("Details", "Details", new { id = book.Id })
+                                @:|
+                                @Html.ActionLink("Delete", "Delete", new { id = book.Id })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Details", "Details", new { id = book.Id })
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        @if (book.Categories.Count > 0)
+                        {
+                            <td>
+                                @foreach (var category in book.Categories)
+                                {
+                                    <i>@category.Name </i><br>
+                                }
+                            </td>
+                        }
+                        <td>
+                            <b>Book:</b>
+                            @Html.DisplayFor(modelItem => book.Price) BGN
+                        </td>
+                        <td>
+                            @if (book.CurrentCount > 5)
+                            {
+                                @: <span style="color: green">&#9899;</span>In stock
+                        }
+                            else if (book.CurrentCount > 0 && book.CurrentCount <= 5)
+                            {
+                                @: <span style="color: orange">&#9899;</span>Low stock
+                        }
+                            else
+                            {
+                                @: <span style="color: red">&#9899;</span>Out of stock
+                        }
+                            @*@Html.DisplayFor(modelItem => item.CurrentCount)*@
+                        </td>
+                        <td>
+                            @using (Ajax.BeginForm("AddToCart", "ShoppingCart", new { bookId = @book.Id },
+                new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    UpdateTargetId = "",
+                    OnBegin = "disable",
+                    OnFailure = "enable",
+                    OnSuccess = "successfulOrder",
+                    OnComplete = "enable"
+                }, new { @class = "" }))
+                            {
+                                <input type="submit" id="@book.Id" class="btn btn-default" name="Order" value="Order">
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+            <br />
+            <div class="text-center">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, searchString = Request.QueryString["SearchString"], searchBy = Request.QueryString["searchBy"], categoryId = Request.QueryString["categoryId"] }))
+            </div>
+        </div>
+    </div>
+</div>
 
 @section scripts{
     <script>
