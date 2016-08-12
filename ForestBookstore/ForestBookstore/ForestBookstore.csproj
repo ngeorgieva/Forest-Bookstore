@@ -224,20 +224,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201608071127072_Initial.cs" />
-    <Compile Include="Migrations\201608071127072_Initial.Designer.cs">
-      <DependentUpon>201608071127072_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\DataLayer\Author.cs" />
-    <Compile Include="Models\DataLayer\Book.cs" />
-    <Compile Include="Models\DataLayer\BooksForOrder.cs" />
-    <Compile Include="Models\DataLayer\BooksInBasket.cs" />
-    <Compile Include="Models\DataLayer\Category.cs" />
-    <Compile Include="Models\DataLayer\IdentityModels.cs" />
-    <Compile Include="Models\DataLayer\OrdersMade.cs" />
-    <Compile Include="Models\DataLayer\TestBooks.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ShipmentDetailsViewModel.cs" />
     <Compile Include="Models\ShipmentViewModel.cs" />
@@ -268,6 +255,8 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -292,10 +281,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
@@ -331,6 +317,7 @@
     <Content Include="Views\Categories\Edit.cshtml" />
     <Content Include="Views\Categories\Index.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\CheckNewOrders.cshtml" />
     <Content Include="Views\Books\BooksByCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -342,9 +329,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201608071127072_Initial.resx">
-      <DependentUpon>201608071127072_Initial.cs</DependentUpon>
-    </EmbeddedResource>
+    <ProjectReference Include="..\ForestBookstore.DataLayer\ForestBookstore.DataLayer.csproj">
+      <Project>{d022c94d-3209-4ace-81b9-585c8a19c8b9}</Project>
+      <Name>ForestBookstore.DataLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

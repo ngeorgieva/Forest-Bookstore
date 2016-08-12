@@ -6,6 +6,7 @@ namespace ForestBookstore.Models.DbContext
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
     using ForestBookstore.Models.DbContext;
+    using DataLayer;
 
     [Table("OrdersMade")]
     public partial class OrdersMade
