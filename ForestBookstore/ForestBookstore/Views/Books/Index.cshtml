@@ -88,19 +88,27 @@
                             @*@Html.DisplayFor(modelItem => item.CurrentCount)*@
                         </td>
                         <td>
-                            @using (Ajax.BeginForm("AddToCart", "ShoppingCart", new { bookId = @book.Id },
-                new AjaxOptions
-                {
-                    HttpMethod = "POST",
-                    UpdateTargetId = "",
-                    OnBegin = "disable",
-                    OnFailure = "enable",
-                    OnSuccess = "successfulOrder",
-                    OnComplete = "enable"
-                }, new { @class = "" }))
+                            @if (book.CurrentCount <= 0)
                             {
-                                <input type="submit" id="@book.Id" class="btn btn-default" name="Order" value="Order">
+                                <input type="submit" class="btn btn-default" value="Order" disabled/>
                             }
+                            else
+                            {
+                                using (Ajax.BeginForm("AddToCart", "ShoppingCart", new { bookId = @book.Id },
+                                        new AjaxOptions
+                                        {
+                                            HttpMethod = "POST",
+                                            UpdateTargetId = "",
+                                            OnBegin = "disable",
+                                            OnFailure = "enable",
+                                            OnSuccess = "successfulOrder",
+                                            OnComplete = "enable"
+                                        }, new { @class = "" }))
+                                {
+                                    <input type="submit" id="@book.Id" class="btn btn-default" name="Order" value="Order">
+                                }
+                            }
+
                         </td>
                     </tr>
                 }
