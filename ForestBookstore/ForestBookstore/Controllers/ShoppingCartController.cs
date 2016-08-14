@@ -184,6 +184,11 @@ namespace ForestBookstore.Controllers
                 })
                 .ToList();
 
+            foreach (var cartLine in booksInCart.Books)
+            {
+                cartLine.Book.Author = db.Authors.Find(cartLine.Book.AuthorId);
+            }
+
             this.Session["PersonName"] = shipmentDetails.PersonName;
             this.Session["Address"] = shipmentDetails.Address;
             this.Session["Town"] = shipmentDetails.Town;

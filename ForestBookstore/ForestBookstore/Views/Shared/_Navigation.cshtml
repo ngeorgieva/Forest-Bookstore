@@ -10,8 +10,8 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Books", "Index", "Books")</li>     
-                <li>@Html.ActionLink("Contact Us", "Contact", "Home")</li>          
+                <li>@Html.ActionLink("Books", "Index", "Books", null, new { @class = "navbar-brand" })</li>     
+                <li>@Html.ActionLink("Contact Us", "Contact", "Home", null, new { @class = "navbar-brand" })</li>          
             </ul>
             @Html.Partial("_LoginPartial")
         </div>

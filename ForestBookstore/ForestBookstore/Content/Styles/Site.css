@@ -22,7 +22,15 @@ table {
 
 .navbar-custom {
     background-color: #C1E1A6;
-    border-bottom: 2px solid #C1E1A6;
+    border-bottom: solid 2px #118C4E;
+}
+
+.navbar-brand:hover {
+    color: #ff9009 !important; 
+}
+
+.navbar-brand {
+     color: #585858 !important    
 }
 
 #logo-and-search{
