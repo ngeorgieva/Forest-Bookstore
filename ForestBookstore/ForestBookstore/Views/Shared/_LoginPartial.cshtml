@@ -12,19 +12,19 @@
         <ul class="nav navbar-nav navbar-right">
             @Html.AntiForgeryToken()
             @{string username = User.Identity.GetUserName(); }
-            <li>@Html.ActionLink(@username.First().ToString().ToUpper() + String.Join("", username.Skip(1)) + "'s Account Settings", "Index", "Manage")</li>
+            <li>@Html.ActionLink(@username.First().ToString().ToUpper() + String.Join("", username.Skip(1)) + "'s Account Settings", "Index", "Manage", null, new { @class = "navbar-brand" })</li>
             @{
                 string cartCount = "Shopping Cart";
-            <li>@Html.ActionLink(cartCount, "Index", "ShoppingCart")</li>
+            <li>@Html.ActionLink(cartCount, "Index", "ShoppingCart", null, new { @class = "navbar-brand" })</li>
             }
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()" class = "navbar-brand">Log off</a></li>
         </ul>
     }
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "navbar-brand" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-brand" })</li>
     </ul>
 }

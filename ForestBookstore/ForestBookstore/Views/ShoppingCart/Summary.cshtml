@@ -41,7 +41,7 @@
                 <tr>
                     @{counter++;}
                     <td>@counter</td>
-                    <td>@book.Book.Name</td>
+                    <td>@book.Book.Name by @book.Book.Author.Name</td>
                     <td>@Math.Round(book.Book.Price, 2)</td>
                     <td>@book.Count</td>
                     <td>@Math.Round((book.Count * book.Book.Price), 2)</td>
