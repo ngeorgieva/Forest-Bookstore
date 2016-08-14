@@ -1,27 +1,20 @@
 ﻿@using Microsoft.AspNet.Identity
 
 <script>
-    function ShowBooksInCart() {
-        $(".cartNotifications").notify("Put the books here and here and here and here and here and here and here", "success");
-    }
+    
 </script>
 
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
-        
+
         <ul class="nav navbar-nav navbar-right">
             @Html.AntiForgeryToken()
-            <li>
-                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-            </li>
-            @if (User.IsInRole("Admin"))
-            {
-            <li>@Html.ActionLink("Admin Panel", "Index", "Admin")</li>
-            }
+            @{string username = User.Identity.GetUserName(); }
+            <li>@Html.ActionLink(@username.First().ToString().ToUpper() + String.Join("", username.Skip(1)) + "'s Account Settings", "Index", "Manage")</li>
             @{
-                string cartCount = "Shopping Cart (" + this.Session["CartCount"] + ")";
+                string cartCount = "Shopping Cart";
             <li>@Html.ActionLink(cartCount, "Index", "ShoppingCart")</li>
             }
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>

@@ -20,7 +20,7 @@ namespace ForestBookstore.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Books
-        public ActionResult Index(string searchString, string searchBy, int? categoryId, int page = 1, int pageSize = 3)
+        public ActionResult Index(string searchString, string searchBy, int? categoryId, int page = 1, int pageSize = 5)
         {
             var books = this.db.Books.Include(b => b.Author).OrderByDescending(b => b.CreatedOn);
 

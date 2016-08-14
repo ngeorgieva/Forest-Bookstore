@@ -13,3 +13,16 @@
 .shopping-cart td{
 }
 
+.account-manage-btn{
+    width:180px;
+}
+
+.account-manage-tbl{
+    width: 300px;
+    margin:auto;
+    text-align:center;
+}
+
+.account-manage-tbl th{
+    text-align:center;
+}

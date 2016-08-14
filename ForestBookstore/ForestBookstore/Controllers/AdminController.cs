@@ -9,13 +9,7 @@ using ForestBookstore.Models.DbContext;
 namespace ForestBookstore.Controllers
 {
     public class AdminController : Controller
-    {
-        // GET: Admin
-        public ActionResult Index()
-        {
-            return View();
-        }
-
+    { 
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public ActionResult CheckNewOrders()
@@ -41,9 +35,7 @@ namespace ForestBookstore.Controllers
                     {
                         book.Book.Author = db.Authors.Find(book.Book.AuthorId);
                     }
-                }
-
-                
+                }            
             }
      
             return View(allOrders);

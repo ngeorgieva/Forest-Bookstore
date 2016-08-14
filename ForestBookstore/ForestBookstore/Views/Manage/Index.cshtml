@@ -1,31 +1,74 @@
 ﻿@model ForestBookstore.Models.IndexViewModel
 @{
-    ViewBag.Title = "Manage";
+    ViewBag.Title = "Manage Account";
 }
+
+
 
 <h2>@ViewBag.Title</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
-<div>
+
     <h4>Change your account settings</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
+<div class="shopping-cart">
+    <table class="table account-manage-tbl">
+        <tr>
+            <th>User Options</th>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" class="btn btn-sm btn-warning account-manage-btn"
+                       value="Change Password" onclick="location.href='@Url.Action("ChangePassword", "Manage")'" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" class="btn btn-sm btn-warning account-manage-btn"
+                       value="Change Personal Information" onclick="location.href='@Url.Action("ChangePersonalInformation", "Manage")'" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" class="btn btn-sm btn-warning account-manage-btn"
+                       value="Check My Orders" onclick="location.href='@Url.Action("ChangePersonalInformation", "Manage")'" />
+            </td>
+        </tr>
+        @{
+            if (User.IsInRole("Admin"))
             {
-                @Html.ActionLink("Change your password", "ChangePassword")
+                <tr>
+                    <th>Admin Options</th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" class="btn btn-sm btn-warning account-manage-btn"
+                               value="Add New Book" onclick="location.href='@Url.Action("Create", "Books")'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" class="btn btn-sm btn-warning account-manage-btn"
+                               value="Check Orders" onclick="location.href = '@Url.Action("CheckNewOrders", "Admin")'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" class="btn btn-sm btn-warning account-manage-btn"
+                               value="Create New Category" onclick="location.href = '@Url.Action("Create", "Categories")'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" class="btn btn-sm btn-warning account-manage-btn"
+                               value="View Categories" onclick="location.href = '@Url.Action("Index", "Categories")'" />
+                    </td>
+                </tr>
+
             }
-            else
-            {
-                @Html.ActionLink("Create", "SetPassword")
-            }
-            ]
-        </dd>
-        <dt>Personal Information:</dt>
-        <dd>
-            [@Html.ActionLink(" Change your personal information ", "ChangePersonalInformation")]
-        </dd>
-    </dl>
-</div>
+        }
+    </table>
+    </div>
+@section scripts {
+    <link href="@Url.Content("~/Content/Styles/shopping-cart.css")" rel="stylesheet" type="text/css" />
+}
