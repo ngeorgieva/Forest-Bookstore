@@ -14,6 +14,7 @@ namespace ForestBookstore.Models
 {
     using DataLayer;
     using System.ComponentModel;
+    using ForestBookstore.DataLayer.Models;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -28,6 +29,7 @@ namespace ForestBookstore.Models
         public virtual DbSet<BooksInBasket> BooksInBaskets { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<OrdersMade> OrdersMades { get; set; }
+        public virtual DbSet<Review> Reviews { get; set; }
 
         public static ApplicationDbContext Create()
         {

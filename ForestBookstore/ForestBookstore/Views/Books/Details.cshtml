@@ -45,6 +45,28 @@
 <p>
     <a class="btn btn-default" href="@Url.Content("/Books/BookImage?id=" + Model.Id)">Order &raquo;</a>
 </p>
+
+@if (Model.Reviews.Any())
+{
+    @:Reviews:
+    <ul>
+        @foreach (var review in Model.Reviews)
+        {
+            <li>
+                @review.Text
+                @if (@review.Author != null)
+                {
+                    @: (by @review.Author.UserName)
+                }
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No reviews</p>
+}
+
 <p>
     @if (User.IsInRole("Admin"))
     {

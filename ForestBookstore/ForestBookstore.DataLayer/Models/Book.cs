@@ -6,12 +6,14 @@ namespace ForestBookstore.Models.DbContext
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using ForestBookstore.DataLayer.Models;
 
     public partial class Book
     {
         private ICollection<BooksForOrder> booksForOrder;
         private ICollection<BooksInBasket> booksInBasket;
         private ICollection<Category> categories;
+        private ICollection<Review> reviews;
 
         public Book()
         {
@@ -19,6 +21,7 @@ namespace ForestBookstore.Models.DbContext
             this.booksInBasket = new HashSet<BooksInBasket>();
             this.categories = new HashSet<Category>();
             this.CreatedOn = DateTime.Now;
+            this.reviews = new HashSet<Review>();
         }
 
         public int Id { get; set; }
@@ -87,6 +90,18 @@ namespace ForestBookstore.Models.DbContext
             set
             {
                 this.categories = value;
+            }
+        }
+
+        public virtual ICollection<Review> Reviews
+        {
+            get
+            {
+                return this.reviews;
+            }
+            set
+            {
+                this.reviews = value;
             }
         }
     }

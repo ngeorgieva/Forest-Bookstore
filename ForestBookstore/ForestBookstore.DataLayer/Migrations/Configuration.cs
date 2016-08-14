@@ -9,6 +9,7 @@ namespace ForestBookstore.Migrations
     using System.Linq;
     using System.Text;
     using System.Web;
+    using DataLayer.Models;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Models;
@@ -79,6 +80,14 @@ namespace ForestBookstore.Migrations
                     15.00M,
                     15,
                     1, 4);
+
+                this.SaveChanges(context);
+
+                this.AddReviewToBook(context, 1, "A self-absorbed, ill-prepared woman, 26 years old, leaves her husband (a decent guy) for no good reason, mucks her life up even further with drugs and reckless sex, then engages in some vacuous navel-gazing on the Pacific Crest Trail. As a woman hiking alone she gets all kinds of special treatment and help from fellow hikers. She loses a few pounds, gets some muscles and some sun-bleached hair and calls her work done.", "admin");
+
+                this.SaveChanges(context);
+
+                this.AddReviewToBook(context, 1, "So far, a great read. It's Eat, Pray, Love without all the whining.", "pesho");
 
                 this.SaveChanges(context);
             }
@@ -164,6 +173,23 @@ namespace ForestBookstore.Migrations
             if (!addAdminRoleResult.Succeeded)
             {
                 throw new Exception(string.Join("; ", addAdminRoleResult.Errors));
+            }
+        }
+
+        private void AddReviewToBook(ApplicationDbContext context, int bookId, string text, string authorUsername)
+        {
+            Book book = context.Books.Include(b => b.Reviews).FirstOrDefault(b => b.Id == bookId);
+            if (book != null)
+            {
+                Review review = new Review();
+                review.Text = text;
+                ApplicationUser author = context.Users.FirstOrDefault(u => u.UserName == authorUsername);
+                if (author != null)
+                {
+                    review.Author = author;
+                }
+                
+                book.Reviews.Add(review);
             }
         }
 
