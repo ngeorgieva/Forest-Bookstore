@@ -13,16 +13,20 @@ using System.Web;
 
 namespace ForestBookstore.Models.DataLayer
 {
+    using ForestBookstore.DataLayer.Models;
+
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
         private ICollection<BooksInBasket> booksInBasket;
         private ICollection<OrdersMade> orderMade;
+        private ICollection<Review> reviews;
 
         public ApplicationUser() : base()
         {
-            booksInBasket = new HashSet<BooksInBasket>();
-            orderMade = new HashSet<OrdersMade>();
+            this.booksInBasket = new HashSet<BooksInBasket>();
+            this.orderMade = new HashSet<OrdersMade>();
+            this.reviews = new HashSet<Review>();
             this.CreatedOn = DateTime.Now;
         }
 
@@ -62,6 +66,12 @@ namespace ForestBookstore.Models.DataLayer
             {
                 this.orderMade = value;
             }
+        }
+
+        public virtual ICollection<Review> Reviews
+        {
+            get { return this.reviews; }
+            set { this.reviews = value; }
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)

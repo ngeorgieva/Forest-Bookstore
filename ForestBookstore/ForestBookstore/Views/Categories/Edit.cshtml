@@ -1,4 +1,5 @@
-﻿@model ForestBookstore.Models.DbContext.Category
+﻿@using System.Web.Mvc.Html
+@model ForestBookstore.Models.DbContext.Category
 
 @{
     ViewBag.Title = "Edit";
@@ -28,8 +29,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Books, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("BookId", "---Remove Book---")
-                @Html.ValidationMessageFor(model => model.Books, "", new { @class = "text-danger" })
+                @Html.DropDownList("BookId", null, "---Remove Book---", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Books, "", new {@class = "text-danger"})
             </div>
         </div>
 

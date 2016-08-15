@@ -68,6 +68,12 @@ else
 }
 
 <p>
+<p>
+    <a class="btn btn-default" href="@Url.Content("/Reviews/Create/?id=" + Model.Id)">Write a Review &raquo;</a>
+</p>
+</p>
+
+<p>
     @if (User.IsInRole("Admin"))
     {
         @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) @:|

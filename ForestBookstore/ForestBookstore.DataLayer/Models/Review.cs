@@ -15,6 +15,7 @@
         public int Id { get; set; }
 
         [Required]
+        [DataType(DataType.MultilineText)]
         public string Text { get; set; }
 
         //[Required]
@@ -26,7 +27,7 @@
 
         public int BookId { get; set; }
 
-        [Required]
+        //[Required]
         public virtual Book Book { get; set; }
     }
 }
