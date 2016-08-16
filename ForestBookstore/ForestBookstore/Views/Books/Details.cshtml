@@ -48,16 +48,20 @@
 
 @if (Model.Reviews.Any())
 {
-    @:Reviews:
+    @:<h4>Customer Reviews:</h4>
     <ul>
         @foreach (var review in Model.Reviews)
         {
             <li>
-                @review.Text
                 @if (@review.Author != null)
                 {
-                    @: (by @review.Author.UserName)
+                    <p><b><i>Posted by:</i>@review.Author.UserName) <i>on</i> @review.Date.ToShortDateString() </b></p>
                 }
+                else
+                {
+                    <p><b><i>Posted by:</i> Anonymous<i>on</i> @review.Date.ToShortDateString()</b></p>
+                }
+                <p>@review.Text</p>
             </li>
         }
     </ul>
@@ -68,9 +72,7 @@ else
 }
 
 <p>
-<p>
     <a class="btn btn-default" href="@Url.Content("/Reviews/Create/?id=" + Model.Id)">Write a Review &raquo;</a>
-</p>
 </p>
 
 <p>

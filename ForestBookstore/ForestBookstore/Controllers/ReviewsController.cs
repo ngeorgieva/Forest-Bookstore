@@ -11,6 +11,7 @@ using ForestBookstore.Models;
 
 namespace ForestBookstore.Controllers
 {
+    using System.Text;
     using Models.DataLayer;
     using Models.DbContext;
 
@@ -43,10 +44,30 @@ namespace ForestBookstore.Controllers
 
         // GET: Reviews/Create
         [Authorize]
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            //ViewBag.AuthorId = new SelectList(db.Users, "Id", "PersonName");
-            //ViewBag.BookId = new SelectList(db.Books, "Id", "Name");
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            try
+            {
+                Book bookUnderReview = this.db.Books.Include(b => b.Author).Include(b => b.Categories).FirstOrDefault(b => b.Id == id);
+                this.ViewBag.BookUnderReview = bookUnderReview;
+                var sb = new StringBuilder();
+
+                foreach (var c in bookUnderReview.Categories)
+                {
+                    sb.Append(c.Name + ", ");
+                }
+                sb.Remove(sb.Length - 2, 2);
+                this.ViewBag.Categories = sb.ToString();
+            }
+            catch (ArgumentNullException)
+            {
+                return this.HttpNotFound();
+            }
+            
             return View();
         }
 

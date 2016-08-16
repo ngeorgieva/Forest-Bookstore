@@ -1,6 +1,7 @@
 ﻿namespace ForestBookstore.DataLayer.Models
 {
     using System;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using ForestBookstore.Models.DataLayer;
     using ForestBookstore.Models.DbContext;
@@ -15,6 +16,7 @@
         public int Id { get; set; }
 
         [Required]
+        [DisplayName("Review Text")]
         [DataType(DataType.MultilineText)]
         public string Text { get; set; }
 

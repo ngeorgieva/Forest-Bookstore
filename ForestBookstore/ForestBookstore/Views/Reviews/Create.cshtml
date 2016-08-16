@@ -4,43 +4,35 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
-
+<div>
+    <p>
+        @if (ViewBag.BookUnderReview.Image != null)
+        {
+            <img id="detailsViewBookImage" alt="Book Cover" src="@Url.Content("/Books/BookImage?id=" + ViewBag.BookUnderReview.Id)" />
+        }
+    </p>
+    <h3>Review for @ViewBag.BookUnderReview.Name</h3>
+    <h4><i>by</i> @ViewBag.BookUnderReview.Author.Name</h4>
+    <p><i>@ViewBag.Categories</i></p>
+</div>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Review</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
+                @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
                 @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control", @rows = "10" } })
-                @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.AuthorId, "AuthorId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("AuthorId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.AuthorId, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Text, "", new {@class = "text-danger"})
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BookId, "BookId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("BookId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BookId, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-4 col-md-20">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
