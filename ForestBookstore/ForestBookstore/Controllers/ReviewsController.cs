@@ -44,31 +44,9 @@ namespace ForestBookstore.Controllers
 
         // GET: Reviews/Create
         [Authorize]
-        public ActionResult Create(int? id)
+        public ActionResult Create()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            try
-            {
-                Book bookUnderReview = this.db.Books.Include(b => b.Author).Include(b => b.Categories).FirstOrDefault(b => b.Id == id);
-                this.ViewBag.BookUnderReview = bookUnderReview;
-                var sb = new StringBuilder();
-
-                foreach (var c in bookUnderReview.Categories)
-                {
-                    sb.Append(c.Name + ", ");
-                }
-                sb.Remove(sb.Length - 2, 2);
-                this.ViewBag.Categories = sb.ToString();
-            }
-            catch (ArgumentNullException)
-            {
-                return this.HttpNotFound();
-            }
-            
-            return View();
+            return this.PartialView();
         }
 
         // POST: Reviews/Create
@@ -92,11 +70,9 @@ namespace ForestBookstore.Controllers
                 review.Book = book;
                 this.db.Reviews.Add(review);
                 this.db.SaveChanges();
-                return RedirectToAction("Index");
+                return this.RedirectToAction("Details", "Books", new { id = id });
             }
 
-            //ViewBag.AuthorId = new SelectList(db.Users, "Id", "PersonName", review.AuthorId);
-            //ViewBag.BookId = new SelectList(db.Books, "Id", "Name", review.BookId);
             return View(review);
         }
 
