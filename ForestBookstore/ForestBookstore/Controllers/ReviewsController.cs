@@ -12,6 +12,7 @@ using ForestBookstore.Models;
 namespace ForestBookstore.Controllers
 {
     using System.Text;
+    using Classes;
     using Models.DataLayer;
     using Models.DbContext;
 
@@ -43,10 +44,9 @@ namespace ForestBookstore.Controllers
         }
 
         // GET: Reviews/Create
-        [Authorize]
         public ActionResult Create()
         {
-            return this.PartialView();
+            return this.PartialView("Create");
         }
 
         // POST: Reviews/Create
@@ -73,7 +73,7 @@ namespace ForestBookstore.Controllers
                 return this.RedirectToAction("Details", "Books", new { id = id });
             }
 
-            return View(review);
+            return this.PartialView(review);
         }
 
         // GET: Reviews/Edit/5

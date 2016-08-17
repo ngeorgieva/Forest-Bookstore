@@ -61,10 +61,15 @@
                 <tr>
                     <td>
                         <input type="submit" class="btn btn-sm btn-warning account-manage-btn"
-                               value="View Categories" onclick="location.href = '@Url.Action("Index", "Categories")'" />
+                               value="View/Edit Categories" onclick="location.href = '@Url.Action("Index", "Categories")'" />
                     </td>
                 </tr>
-
+                <tr>
+                    <td>
+                        <input type="submit" class="btn btn-sm btn-warning account-manage-btn"
+                               value="View/Edit User Reviews" onclick="location.href = '@Url.Action("Index", "Reviews")'" />
+                    </td>
+                </tr>
             }
         }
     </table>

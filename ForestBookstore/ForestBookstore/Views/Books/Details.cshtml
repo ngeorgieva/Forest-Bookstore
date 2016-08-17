@@ -46,37 +46,41 @@
     <a class="btn btn-default" href="@Url.Content("/Books/BookImage?id=" + Model.Id)">Order &raquo;</a>
 </p>
 
-@if (Model.Reviews.Any())
-{
-    @:<h4>Customer Reviews:</h4>
-    <ul>
-        @foreach (var review in Model.Reviews)
-        {
-            <li>
-                @if (@review.Author != null)
-                {
-                    <p><b><i>Posted by: </i>@review.Author.UserName <i>on</i> @review.Date.ToShortDateString() </b></p>
-                }
-                else
-                {
-                    <p><b><i>Posted by: </i> Anonymous<i>on</i> @review.Date.ToShortDateString()</b></p>
-                }
-                <p>@review.Text</p>
-            </li>
-        }
-    </ul>
-}
-else
-{
-    <p>No reviews</p>
-}
-
 <div id="writa-a-review-form-@Model.Id">
-    @Ajax.ActionLink("Write a Customer Review »", "Create", "Reviews", new { id = Model.Id}, new AjaxOptions
+    @Ajax.ActionLink("Write a Customer Review »", "Create", "Reviews", new { id = Model.Id }, new AjaxOptions
 {
     InsertionMode = InsertionMode.Replace,
     UpdateTargetId = "writa-a-review-form-" + Model.Id
-}, new {@class = "btn btn-default"})
+}, new { @class = "btn btn-default" })
+</div>
+
+<div>
+    @if (Model.Reviews.Any())
+    {
+        @:<h4>Customer Reviews:</h4>
+        <ul>
+            @foreach (var review in Model.Reviews.OrderByDescending(r => r.Date))
+            {
+                <li id="customer-review">
+                    @if (@review.Author != null)
+                    {
+                        <p><b><i>Posted by: </i>@review.Author.UserName <i>on</i> @review.Date.ToShortDateString() </b>
+                        </p>
+                    }
+                    else
+                    {
+                        <p><b><i>Posted by: </i> Anonymous<i> on</i> @review.Date.ToShortDateString()</b>
+                        </p>
+                    }
+                    <p>@review.Text</p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No reviews</p>
+    }
 </div>
 
 <p>

@@ -11,6 +11,8 @@ using ForestBookstore.Models.DbContext;
 
 namespace ForestBookstore.Controllers
 {
+    using System.Web.WebPages.Html;
+
     public class CategoriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -76,7 +78,17 @@ namespace ForestBookstore.Controllers
             {
                 return HttpNotFound();
             }
-            this.PopulateCategoriesDropDownList();
+            
+            var booksQuery =
+                this.db.Books
+                .Include(b => b.Author)
+                    .Include(b => b.Categories)
+                    .Where(b => b.Categories.Any(c => c.Id == id)).AsEnumerable().Select(b => new
+                    {
+                        BookId = b.Id,
+                        Description = $"{b.Name} by {b.Author.Name}"
+                    });
+            this.ViewBag.BookId = new SelectList(booksQuery, "BookId", "Description");
             return View(category);
         }
 
@@ -137,12 +149,5 @@ namespace ForestBookstore.Controllers
             base.Dispose(disposing);
         }
 
-        private void PopulateCategoriesDropDownList(object selectedCategory = null)
-        {
-            var booksQuery = from b in this.db.Books.Include(b => b.Author)
-                                orderby b.Name
-                                select b;
-            this.ViewBag.BookId = new SelectList(booksQuery, "Id", "Name", selectedCategory);
-        }
     }
 }

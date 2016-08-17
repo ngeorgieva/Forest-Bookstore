@@ -4,6 +4,12 @@
 {
     @Html.AntiForgeryToken()
 
+    if (!User.Identity.IsAuthenticated)
+    {
+       <p><b>You must be logged in to write a review! Please @Html.ActionLink("login", "Login", "Account")</b></p>
+    }
+    else
+    {
     <div class="form-horizontal">
         <hr/>
 
@@ -18,10 +24,11 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Post" class="btn btn-default" />
             </div>
         </div>
     </div>
+    }
 }
 
 @section Scripts {
