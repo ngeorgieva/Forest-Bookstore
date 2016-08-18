@@ -8,16 +8,16 @@
     <link href="@Url.Content("~/Content/Styles/shopping-cart.css")" rel="stylesheet" type="text/css" />
 }
 
-<h2>Index</h2>
+<h2>All reviews</h2>
 
 <div class="shopping-cart">
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Author.PersonName)
+                @Html.DisplayName("Review Author")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book.Name)
+                @Html.DisplayName("Book")
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Text)
@@ -35,7 +35,8 @@
                     @Html.DisplayFor(modelItem => item.Author.PersonName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Book.Name)
+                    @Html.DisplayFor(modelItem => item.Book.Name) by
+                    @Html.DisplayFor(modelItem => item.Book.Author.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Text)

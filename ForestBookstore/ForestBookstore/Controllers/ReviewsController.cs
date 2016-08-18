@@ -24,7 +24,7 @@ namespace ForestBookstore.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
-            var reviews = db.Reviews.Include(r => r.Author).Include(r => r.Book);
+            var reviews = db.Reviews.Include(r => r.Author).Include(r => r.Book.Author);
             return View(reviews.ToList());
         }
 
@@ -35,7 +35,7 @@ namespace ForestBookstore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Review review = db.Reviews.Find(id);
+            Review review = db.Reviews.Include(r => r.Book.Author).FirstOrDefault(r => r.Id == id);
             if (review == null)
             {
                 return HttpNotFound();
@@ -90,7 +90,17 @@ namespace ForestBookstore.Controllers
                 return HttpNotFound();
             }
             ViewBag.AuthorId = new SelectList(db.Users, "Id", "PersonName", review.AuthorId);
-            ViewBag.BookId = new SelectList(db.Books, "Id", "Name", review.BookId);
+
+            var booksQuery =
+                this.db.Books
+                .Include(b => b.Author)
+                    .Include(b => b.Categories)
+                    .AsEnumerable().Select(b => new
+                    {
+                        BookId = b.Id,
+                        Description = $"{b.Name} by {b.Author.Name}"
+                    });
+            this.ViewBag.BookId = new SelectList(booksQuery, "BookId", "Description", review.BookId);
             return View(review);
         }
 
@@ -120,7 +130,7 @@ namespace ForestBookstore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Review review = db.Reviews.Find(id);
+            Review review = db.Reviews.Include(r => r.Book.Author).FirstOrDefault(r => r.Id == id);
             if (review == null)
             {
                 return HttpNotFound();
