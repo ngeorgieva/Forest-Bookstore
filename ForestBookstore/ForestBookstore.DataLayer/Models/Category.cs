@@ -22,6 +22,16 @@ namespace ForestBookstore.Models.DbContext
         [StringLength(70)]
         public string Name { get; set; }
 
-        public virtual ICollection<Book> Books { get; set; }
+        public virtual ICollection<Book> Books
+        {
+            get
+            {
+                return this.books;
+            }
+            set
+            {
+                this.books = value;
+            }
+        }
     }
 }
