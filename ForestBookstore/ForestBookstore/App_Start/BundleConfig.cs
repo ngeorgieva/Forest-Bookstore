@@ -29,6 +29,12 @@ namespace ForestBookstore
                       "~/Content/Styles/bootstrap.css",
                       "~/Content/Styles/styles.css",
                       "~/Content/Styles/Site.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+          "~/Scripts/jquery-ui-1.12.0.js"));
+            //css  
+            bundles.Add(new StyleBundle("~/Content/cssjqryUi").Include(
+                   "~/Content/themes/base/jquery-ui.css"));
         }
     }
 }

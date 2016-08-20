@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using ForestBookstore.Models;
-using ForestBookstore.Models.DbContext;
-
-namespace ForestBookstore.Controllers
+﻿namespace ForestBookstore.Controllers
 {
+    using System;
+    using System.Data.Entity;
     using System.IO;
+    using System.Linq;
+    using System.Net;
     using System.Text;
+    using System.Web;
+    using System.Web.Mvc;
+    using Models;
+    using Models.DbContext;
     using PagedList;
 
     public class BooksController : Controller
@@ -59,7 +56,7 @@ namespace ForestBookstore.Controllers
 
             return View(model);
         }
-        
+
         // GET: Books/Details/5
         public ActionResult Details(int? id)
         {
@@ -140,13 +137,21 @@ namespace ForestBookstore.Controllers
 
                         db.SaveChanges();
                     }
-                }               
+                }
 
                 book.Author = bookAuthor;
                 book.AuthorId = bookAuthor.Id;
 
-                int categoryId = int.Parse(this.Request.Form["CategoryId"]);
-                book.Categories.Add(this.db.Categories.Single(c => c.Id == categoryId));
+                try
+                {
+                    int categoryId = int.Parse(this.Request.Form["CategoryId"]);
+                    book.Categories.Add(this.db.Categories.Single(c => c.Id == categoryId));
+                }
+                catch (FormatException)
+                {
+                    //No selected category to add;
+                }
+                
                 db.Books.Add(book);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -207,8 +212,16 @@ namespace ForestBookstore.Controllers
                 currentBook.CurrentCount = book.CurrentCount;
                 currentBook.CreatedOn = book.CreatedOn;
 
-                int categoryId = int.Parse(this.Request.Form["CategoryId"]);
-                currentBook.Categories.Add(this.db.Categories.Single(c => c.Id == categoryId));
+                try
+                {
+                    int categoryId = int.Parse(this.Request.Form["CategoryId"]);
+                    currentBook.Categories.Add(this.db.Categories.Single(c => c.Id == categoryId));
+                }
+                catch (FormatException)
+                {
+                    //No selected category to add
+                }
+                
 
                 db.SaveChanges();
                 return RedirectToAction("Index");

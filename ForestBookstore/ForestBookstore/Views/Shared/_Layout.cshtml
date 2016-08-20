@@ -6,6 +6,7 @@
     <title>Forest Bookstore</title>
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/jqueryui")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
 </head>
@@ -21,6 +22,7 @@
     </div>
 
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryui")
     @RenderSection("scripts", required: false)
 </body>
 </html>

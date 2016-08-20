@@ -9,7 +9,7 @@
                 return text;
             }
 
-            var shortText = text.Substring(0, maxLength) + "...";
+            var shortText = text.Substring(0, maxLength) + "... ";
             return shortText;
         }
     }
