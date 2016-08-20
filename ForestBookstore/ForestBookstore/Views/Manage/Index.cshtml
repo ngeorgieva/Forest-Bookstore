@@ -31,9 +31,10 @@
         <tr>
             <td>
                 <input type="submit" class="btn btn-sm btn-warning account-manage-btn"
-                       value="Check My Orders" onclick="location.href='@Url.Action("ChangePersonalInformation", "Manage")'" />
+                       value="Check My Orders" onclick="location.href='@Url.Action("CheckMyOrders", "Manage")'" />
             </td>
         </tr>
+        
         @{
             if (User.IsInRole("Admin"))
             {
@@ -49,7 +50,13 @@
                 <tr>
                     <td>
                         <input type="submit" class="btn btn-sm btn-warning account-manage-btn"
-                               value="Check Orders" onclick="location.href = '@Url.Action("CheckNewOrders", "Admin")'" />
+                               value="Check New Orders" onclick="location.href = '@Url.Action("CheckNewOrders", "Admin")'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" class="btn btn-sm btn-warning account-manage-btn"
+                               value="Check Sent Orders" onclick="location.href = '@Url.Action("CheckSentOrders", "Admin")'" />
                     </td>
                 </tr>
                 <tr>

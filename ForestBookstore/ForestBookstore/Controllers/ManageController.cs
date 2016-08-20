@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ForestBookstore.Models;
+using System.Collections.Generic;
+using ForestBookstore.Models.DbContext;
 
 namespace ForestBookstore.Controllers
 {
@@ -74,6 +76,32 @@ namespace ForestBookstore.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
             return View(model);
+        }
+
+        public ActionResult CheckMyOrders()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var myOrders = new List<OrdersMade>();
+
+            if(db.OrdersMades.Where(u => u.User.Id == user.Id).Count() > 0)
+            {
+                myOrders = db.OrdersMades
+                    .Where(u => u.UserId == user.Id)
+                    .OrderBy(o => o.Status)
+                    .ThenBy(o => o.OrderedOn)
+                    .ToList();
+            }
+
+            foreach (var order in myOrders)
+            {
+                foreach (var book in order.BooksForOrder)
+                {
+                    book.Book.Author = db.Authors.Find(book.Book.AuthorId);
+                }
+            }
+
+            return View(myOrders);
         }
 
         [HttpGet]

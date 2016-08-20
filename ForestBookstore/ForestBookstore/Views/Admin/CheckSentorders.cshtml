@@ -1,4 +1,5 @@
-﻿@using ForestBookstore.Models.DbContext;
+﻿
+@using ForestBookstore.Models.DbContext;
 @model List<OrdersMade>
 
 <h2>Orders to be sent</h2>
@@ -52,13 +53,12 @@ else
                             <div><b>Town</b>: @order.Town</div>
                             <div><b>Phone</b>: @order.Phone</div>
                             <div><b>Ordered On</b>@order.OrderedOn</div>
-
                         </td>
 
                         <td>
-                            @using (Html.BeginForm("IsShipped", "Admin", new { orderId = @order.Id }, FormMethod.Post))
+                            @using (Html.BeginForm("IsNotShipped", "Admin", new { orderId = @order.Id }, FormMethod.Post))
                     {
-                                <input type="submit" class="btn btn-sm btn-warning" value="Mark as Sent" />
+                                <input type="submit" class="btn btn-sm btn-warning" value="Mark as Unsent" />
                             }
                         </td>
                     </tr>
@@ -66,4 +66,4 @@ else
             }
         </table>
     </div>
-}
+                                }

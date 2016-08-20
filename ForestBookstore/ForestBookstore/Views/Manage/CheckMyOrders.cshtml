@@ -1,17 +1,11 @@
-﻿@using ForestBookstore.Models.DbContext;
+﻿@using ForestBookstore.Models.DbContext
 @model List<OrdersMade>
 
-<h2>Orders to be sent</h2>
+<h2>My Orders</h2>
 
-@section scripts {
-    <link href="@Url.Content("~/Content/Styles/shopping-cart.css")" rel="stylesheet" type="text/css" />
-}
-
-@if (Model == null)
+@if (Model.Any())
 {
-    @:There are no unsent orders.
-}
-else
+foreach (var orders in Model)
 {
     <div class="shopping-cart">
         <table class="table">
@@ -19,7 +13,7 @@ else
                 <th>№</th>
                 <th>Order Details</th>
                 <th>Shipment Details</th>
-                <th>Options</th>
+                <th>Order Status</th>
             </tr>
             @{ int orderCounter = 1; }
             @{
@@ -51,14 +45,16 @@ else
                             <div><b>Address</b>: @order.Address</div>
                             <div><b>Town</b>: @order.Town</div>
                             <div><b>Phone</b>: @order.Phone</div>
-                            <div><b>Ordered On</b>@order.OrderedOn</div>
-
+                            <div><b>Ordered On</b>: @order.OrderedOn</div>
                         </td>
 
                         <td>
-                            @using (Html.BeginForm("IsShipped", "Admin", new { orderId = @order.Id }, FormMethod.Post))
-                    {
-                                <input type="submit" class="btn btn-sm btn-warning" value="Mark as Sent" />
+                            @if (order.Status == false)
+                            {
+                                @: Waiting to be sent.
+                            }else
+                            {
+                                @: Order sent.
                             }
                         </td>
                     </tr>
@@ -66,4 +62,6 @@ else
             }
         </table>
     </div>
-}
+                                }}else{
+                                    @: No orders made.
+                                }

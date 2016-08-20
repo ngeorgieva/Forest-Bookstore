@@ -9,7 +9,7 @@ namespace ForestBookstore
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery-3.1.0.min.js",
                         "~/Scripts/notify.min.js")
                         .Include("~/Scripts/jquery.unobtrusive-ajax.min.js")); 
 
