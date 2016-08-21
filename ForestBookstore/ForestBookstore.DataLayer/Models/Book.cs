@@ -53,8 +53,8 @@ namespace ForestBookstore.Models.DbContext
 
         [Column(TypeName = "date")]
         [DisplayName("Added on")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        //[DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CreatedOn { get; set; }
 
         public virtual ICollection<BooksForOrder> BooksForOrder
