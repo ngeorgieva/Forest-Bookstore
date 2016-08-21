@@ -10,6 +10,7 @@ namespace ForestBookstore
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-3.1.0.min.js",
+                        "~/Scripts/jquery-1.12.4.js",
                         "~/Scripts/notify.min.js")
                         .Include("~/Scripts/jquery.unobtrusive-ajax.min.js")); 
 
@@ -30,11 +31,12 @@ namespace ForestBookstore
                       "~/Content/Styles/styles.css",
                       "~/Content/Styles/Site.css"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-          "~/Scripts/jquery-ui-1.12.0.js"));
-            //css  
-            bundles.Add(new StyleBundle("~/Content/cssjqryUi").Include(
-                   "~/Content/themes/base/jquery-ui.css"));
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-datetimepicker").Include(
+                      "~/Scripts/moment.js",
+                      "~/Scripts/bootstrap-datetimepicker.js"));
+
+            bundles.Add(new StyleBundle("~/Content/bootstrap-datetimepicker").Include(
+                      "~/Content/bootstrap-datetimepicker.min.css"));
         }
     }
 }

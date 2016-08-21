@@ -75,10 +75,19 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CreatedOn, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedOn, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.CreatedOn, new { htmlAttributes = new { @class = "form-control datetimepicker" } })
                 @Html.ValidationMessageFor(model => model.CreatedOn, "", new { @class = "text-danger" })
             </div>
         </div>
+
+        <script>
+            $(function() {
+                $('.datetimepicker').datetimepicker(
+                {
+                    format: 'YYYY-MM-DD'
+                });
+            });
+        </script>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -92,6 +101,11 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
-@section Scripts {
+@section scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap-datetimepicker")
+}
+
+@section styles {
+    @Styles.Render("~/Content/bootstrap-datetimepicker")
 }
