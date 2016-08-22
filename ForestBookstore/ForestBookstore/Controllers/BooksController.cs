@@ -70,12 +70,17 @@
             {
                 return HttpNotFound();
             }
+
             var categries = new StringBuilder();
             foreach (var c in book.Categories)
             {
                 categries.Append(c.Name + ", ");
             }
-            categries.Remove(categries.Length - 2, 2);
+            if (categries.Length > 0)
+            {
+                categries.Remove(categries.Length - 2, 2);
+                categries.Append(" | ");
+            }
             this.ViewBag.Categories = categries.ToString();
             return View(book);
         }
@@ -95,7 +100,7 @@
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Author,Description,Price,CurrentCount,CreatedOn")] Book book, HttpPostedFileBase file)
+        public ActionResult Create([Bind(Include = "Id,Name,Author,Description,ReleaseDate,Price,CurrentCount,CreatedOn")] Book book, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
@@ -183,7 +188,7 @@
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Image,Author,Description,Price,CurrentCount,CreatedOn")] Book book)
+        public ActionResult Edit([Bind(Include = "Id,Name,Image,Author,Description,ReleaseDate,Price,CurrentCount,CreatedOn")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -208,6 +213,7 @@
                 currentBook.AuthorId = bookAuthor.Id;
                 currentBook.Name = book.Name;
                 currentBook.Price = book.Price;
+                currentBook.ReleaseDate = book.ReleaseDate;
                 currentBook.Description = book.Description;
                 currentBook.CurrentCount = book.CurrentCount;
                 currentBook.CreatedOn = book.CreatedOn;
@@ -222,7 +228,6 @@
                     //No selected category to add
                 }
                 
-
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

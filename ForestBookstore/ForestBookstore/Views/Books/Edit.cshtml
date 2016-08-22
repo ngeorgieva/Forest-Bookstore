@@ -49,6 +49,24 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.ReleaseDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ReleaseDate, new { htmlAttributes = new { @class = "form-control datetimepicker", @Value = Model.ReleaseDate } })
+                @Html.ValidationMessageFor(model => model.ReleaseDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <script>
+            $(function () {
+                $('.datetimepicker').datetimepicker(
+                {
+                    sideBySide: true,
+                    showTodayButton: true
+                });
+            });
+        </script>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.Categories, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("CategoryId", null, "---Add Category---", htmlAttributes: new { @class = "form-control" })
@@ -71,23 +89,6 @@
                 @Html.ValidationMessageFor(model => model.CurrentCount, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedOn, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedOn, new { htmlAttributes = new { @class = "form-control datetimepicker" } })
-                @Html.ValidationMessageFor(model => model.CreatedOn, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <script>
-            $(function() {
-                $('.datetimepicker').datetimepicker(
-                {
-                    format: 'YYYY-MM-DD'
-                });
-            });
-        </script>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
