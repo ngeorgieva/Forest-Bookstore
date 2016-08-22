@@ -15,7 +15,7 @@ namespace ForestBookstore.Controllers
 
         public ActionResult Index()
         {
-            this.ViewBag.NewReleases = this.db.Books.Include(b => b.Author).OrderByDescending(b => b.CreatedOn).Take(3);
+            this.ViewBag.NewReleases = this.db.Books.Include(b => b.Author).OrderByDescending(b => b.ReleaseDate).Take(3);
             this.ViewBag.BestSellers = this.db.Books.Include(b => b.Author).OrderBy(b => b.CreatedOn).Take(3);
             return this.View();
         }
