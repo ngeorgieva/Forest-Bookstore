@@ -45,6 +45,8 @@ namespace ForestBookstore.Models.DbContext
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
+        public DateTime ReleaseDate { get; set; }
+
         [Column(TypeName = "money")]
         public decimal Price { get; set; }
 
@@ -53,8 +55,8 @@ namespace ForestBookstore.Models.DbContext
 
         [Column(TypeName = "date")]
         [DisplayName("Added on")]
-        //[DataType(DataType.Date)]
-        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:YYYY-MM-DD}", ApplyFormatInEditMode = true)]
         public DateTime CreatedOn { get; set; }
 
         public virtual ICollection<BooksForOrder> BooksForOrder
