@@ -83,7 +83,7 @@
                     new DateTime(2016, 7, 26), 
                     15.00M,
                     15,
-                    1, 4);
+                    4);
 
                 this.CreateBook(context, 
                     "Harry Potter and the Cursed Child - Parts One and Two", 
@@ -93,7 +93,7 @@
                     new DateTime(2016, 7, 31), 
                     17.00M, 
                     30, 
-                    1, 2, 3);
+                    2, 3);
                 
 
                 this.CreateBook(context, 
@@ -148,10 +148,17 @@
                 this.CreateBook(context, 
                     "Very Good Lives: The Fringe Benefits of Failure and the Importance of Imagination", 
                     "J.K. Rowling", 
-                    File.ReadAllBytes("D:/SoftUni/Tech Module/Software Technologies/Teamwork-Forest Bookstore/Forest-Bookstore/ForestBookstore/ForestBookstore/Content/Images/very-good-lives.jpg"), "In 2008, J.K. Rowling delivered a deeply affecting commencement speech at Harvard University. Now published for the first time in book form, Very Good Lives offers J.K. Rowling’s words of wisdom for anyone at a turning point in life, asking the profound and provocative questions: How can we embrace failure? And how can we use our imagination to better both ourselves and others?", 
+                    File.ReadAllBytes("D:/SoftUni/Tech Module/Software Technologies/Teamwork-Forest Bookstore/Forest-Bookstore/ForestBookstore/ForestBookstore/Content/Images/very-good-lives.jpg"), 
+                    "In 2008, J.K. Rowling delivered a deeply affecting commencement speech at Harvard University. Now published for the first time in book form, Very Good Lives offers J.K. Rowling’s words of wisdom for anyone at a turning point in life, asking the profound and provocative questions: How can we embrace failure? And how can we use our imagination to better both ourselves and others?", 
                     new DateTime(2015, 4, 14), 
                     10.00M, 
                     4, 
+                    4);
+
+                this.CreateBook(context, "I Contain Multitudes: The Microbes Within Us and a Grander View of Life", "Ed Yong", File.ReadAllBytes("D:/SoftUni/Tech Module/Software Technologies/Teamwork-Forest Bookstore/Forest-Bookstore/ForestBookstore/ForestBookstore/Content/Images/i-contain-multitudes.jpg"), "Joining the ranks of popular science classics like The Botany of Desire and The Selfish Gene, a groundbreaking, wondrously informative, and vastly entertaining examination of the most significant revolution in biology since Darwin—a “microbe’s-eye view” of the world that reveals a marvelous, radically reconceived picture of life on earth. Every animal, whether human, squid, or wasp, is home to millions of bacteria and other microbes.Ed Yong, whose humor is as evident as his erudition, prompts us to look at ourselves and our animal companions in a new light—less as individuals and more as the interconnected, interdependent multitudes we assuredly are. The microbes in our bodies are part of our immune systems and protect us from disease.In the deep oceans, mysterious creatures without mouths or guts depend on microbes for all their energy.Bacteria provide squid with invisibility cloaks, help beetles to bring down forests, and allow worms to cause diseases that afflict millions of people. Many people think of microbes as germs to be eradicated, but those that live with us—the microbiome—build our bodies, protect our health, shape our identities, and grant us incredible abilities.In this astonishing book, Ed Yong takes us on a grand tour through our microbial partners, and introduces us to the scientists on the front lines of discovery.It will change both our view of nature and our sense of where we belong in it.", 
+                    new DateTime(2016, 8, 9), 
+                    20.00M,
+                    0,
                     4);
                 this.SaveChanges(context);
 
