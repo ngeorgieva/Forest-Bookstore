@@ -36,7 +36,7 @@
                         <td><b>@book.Book.Name</b> by <i>@book.Book.Author.Name</i></td>
                         <td>@book.Count</td>
                         @{decimal currBookTotalPrice = book.Count * Math.Round(book.Book.Price, 2);}
-                        <td>@currBookTotalPrice</td>
+                        <td>@currBookTotalPrice BGN</td>
                         @{total += book.Count * Math.Round(book.Book.Price, 2);}
                         <td>@using (Html.BeginForm("Delete", "ShoppingCart"))
                         {
@@ -51,7 +51,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>Total Price: @total</td>
+                    <td>Total Price: @total BGN</td>
                     <td></td>
                 </tr>
             </table>

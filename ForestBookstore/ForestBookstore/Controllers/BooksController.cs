@@ -17,15 +17,25 @@
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Books
-        public ActionResult Index(string searchString, string searchBy, int? categoryId, int page = 1, int pageSize = 5)
+        public ActionResult Index(string searchString, string searchBy, int? categoryId, int page = 1, int pageSize = 3)
         {
             var books = this.db.Books.Include(b => b.Author).OrderByDescending(b => b.CreatedOn);
 
             if (categoryId != null)
             {
-                books = this.db.Books.Include(b => b.Author)
-                    .Include(b => b.Categories)
-                    .Where(b => b.Categories.Any(c => c.Id == categoryId)).OrderByDescending(b => b.CreatedOn);
+                var category = this.db.Categories.Find(categoryId);
+                if (category.Name == "New Releases")
+                {
+                    DateTime sixMonthsAgo = DateTime.Today.AddMonths(-6);
+                    books = this.db.Books.Include(b => b.Author).Where(b => DateTime.Compare(b.ReleaseDate, sixMonthsAgo) >= 0).OrderByDescending(b => b.ReleaseDate);
+                }
+                else
+                {
+                    books = this.db.Books.Include(b => b.Author)
+                   .Include(b => b.Categories)
+                   .Where(b => b.Categories.Any(c => c.Id == categoryId)).OrderByDescending(b => b.ReleaseDate);
+                }
+               
             }
             else
             {
@@ -37,7 +47,7 @@
                             this.db.Books.Include(b => b.Author)
                                 .Include(b => b.Categories)
                                 .Where(b => b.Name.Contains(searchString))
-                                .OrderByDescending(b => b.CreatedOn);
+                                .OrderByDescending(b => b.ReleaseDate);
                     }
                     else
                     {
@@ -45,7 +55,7 @@
                             this.db.Books.Include(b => b.Author)
                                 .Include(b => b.Categories)
                                 .Where(b => b.Author.Name.Contains(searchString))
-                                .OrderByDescending(b => b.CreatedOn);
+                                .OrderByDescending(b => b.ReleaseDate);
                     }
                 }
             }
@@ -71,16 +81,7 @@
                 return HttpNotFound();
             }
 
-            var categries = new StringBuilder();
-            foreach (var c in book.Categories)
-            {
-                categries.Append(c.Name + ", ");
-            }
-            if (categries.Length > 0)
-            {
-                categries.Remove(categries.Length - 2, 2);
-                categries.Append(" | ");
-            }
+            var categries = this.GetBookCategoriesAsAString(book);
             this.ViewBag.Categories = categries.ToString();
             return View(book);
         }
@@ -277,6 +278,25 @@
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private string GetBookCategoriesAsAString(Book book)
+        {
+            var categries = new StringBuilder();
+            if (book.ReleaseDate >= DateTime.Today.AddMonths(-6))
+            {
+                categries.Append("New Release" + ", ");
+            }
+            foreach (var c in book.Categories)
+            {
+                categries.Append(c.Name + ", ");
+            }
+            if (categries.Length > 0)
+            {
+                categries.Remove(categries.Length - 2, 2);
+                categries.Append(" | ");
+            }
+            return categries.ToString();
         }
 
         private void PopulateCategoriesDropDownList(object selectedCategory = null)

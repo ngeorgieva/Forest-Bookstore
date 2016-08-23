@@ -244,6 +244,7 @@
     <Content Include="Content\Images\ASP-Net-MVC.jpg" />
     <Content Include="Content\Images\ColofulLogo.png" />
     <Content Include="Content\Images\harry-potter.jpg" />
+    <Content Include="Content\Images\i-contain-multitudes.jpg" />
     <Content Include="Content\Images\Intro-CSharp-Book-English.jpg" />
     <Content Include="Content\Images\the-casual-vacancy.jpg" />
     <Content Include="Content\Images\the-curios-incident-with-the-dog-in-the-nightime.jpg" />
@@ -396,6 +397,7 @@
     <Content Include="Views\Reviews\Edit.cshtml" />
     <Content Include="Views\Reviews\Index.cshtml" />
     <Content Include="Views\Reviews\Create.cshtml" />
+    <Content Include="Views\Admin\CheckSentorders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

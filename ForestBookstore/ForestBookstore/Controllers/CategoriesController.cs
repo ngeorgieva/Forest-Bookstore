@@ -88,6 +88,7 @@ namespace ForestBookstore.Controllers
                         BookId = b.Id,
                         Description = $"{b.Name} by {b.Author.Name}"
                     });
+
             this.ViewBag.BookId = new SelectList(booksQuery, "BookId", "Description");
             return View(category);
         }

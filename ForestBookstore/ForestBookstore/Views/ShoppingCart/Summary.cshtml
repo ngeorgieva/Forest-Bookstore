@@ -42,9 +42,9 @@
                     @{counter++;}
                     <td>@counter</td>
                     <td>@book.Book.Name by @book.Book.Author.Name</td>
-                    <td>@Math.Round(book.Book.Price, 2)</td>
+                    <td>@Math.Round(book.Book.Price, 2) BGN</td>
                     <td>@book.Count</td>
-                    <td>@Math.Round((book.Count * book.Book.Price), 2)</td>
+                    <td>@Math.Round((book.Count * book.Book.Price), 2) BGN</td>
                     @{totalPrice += book.Count * book.Book.Price;}
                 </tr>
                         }
@@ -53,7 +53,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>Overall: @Math.Round(totalPrice, 2)</td>
+                <td>Overall: @Math.Round(totalPrice, 2) BGN</td>
             </tr>
         </table>
     </div>
