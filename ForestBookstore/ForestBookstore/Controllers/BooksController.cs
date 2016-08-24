@@ -105,17 +105,12 @@
         {
             if (ModelState.IsValid)
             {
-                var fileName = "";
-                byte[] bytes;
-                int bytesToRead;
-                int bytesRead;
-
                 if (file != null)
                 {
-                    fileName = Path.GetFileName(file.FileName);
-                    bytes = new byte[file.ContentLength];
-                    bytesToRead = (int)file.ContentLength;
-                    bytesRead = 0;
+                    var fileName = Path.GetFileName(file.FileName);
+                    byte[]  bytes = new byte[file.ContentLength];
+                    int bytesToRead = (int)file.ContentLength;
+                    int bytesRead = 0;
                     while (bytesToRead > 0)
                     {
                         int n = file.InputStream.Read(bytes, bytesRead, bytesToRead);
