@@ -35,7 +35,7 @@
                    .Include(b => b.Categories)
                    .Where(b => b.Categories.Any(c => c.Id == categoryId)).OrderByDescending(b => b.ReleaseDate);
                 }
-               
+
             }
             else
             {
@@ -62,9 +62,9 @@
 
             PagedList<Book> model = new PagedList<Book>(books, page, pageSize);
 
-            ViewBag.Categories = this.db.Categories.Include(c => c.Books);
+            this.ViewBag.Categories = this.db.Categories.Include(c => c.Books);
 
-            return View(model);
+            return this.View(model);
         }
 
         // GET: Books/Details/5
@@ -83,14 +83,13 @@
 
             var categries = this.GetBookCategoriesAsAString(book);
             this.ViewBag.Categories = categries.ToString();
-            return View(book);
+            return this.View(book);
         }
 
         // GET: Books/Create
         [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
-            //this.ViewBag.Categories = this.db.Categories.ToList();
             this.PopulateCategoriesDropDownList();
             return this.View();
         }
@@ -103,12 +102,12 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Author,Description,ReleaseDate,Price,CurrentCount,CreatedOn")] Book book, HttpPostedFileBase file)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 if (file != null)
                 {
                     var fileName = Path.GetFileName(file.FileName);
-                    byte[]  bytes = new byte[file.ContentLength];
+                    byte[] bytes = new byte[file.ContentLength];
                     int bytesToRead = (int)file.ContentLength;
                     int bytesRead = 0;
                     while (bytesToRead > 0)
@@ -125,18 +124,18 @@
                 Author bookAuthor = null;
                 try
                 {
-                    bookAuthor = db.Authors.Where(a => a.Name == book.Author.Name).Single();
+                    bookAuthor = this.db.Authors.First(a => a.Name == book.Author.Name);
                 }
-                catch (InvalidOperationException)
+                catch (Exception ex) when (ex is ArgumentNullException || ex is InvalidOperationException)
                 {
                     if (bookAuthor == null)
                     {
-                        bookAuthor = db.Authors.Add(new Author
+                        bookAuthor = this.db.Authors.Add(new Author
                         {
                             Name = book.Author.Name
                         });
 
-                        db.SaveChanges();
+                        this.db.SaveChanges();
                     }
                 }
 
@@ -152,13 +151,13 @@
                 {
                     //No selected category to add;
                 }
-                
-                db.Books.Add(book);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+                this.db.Books.Add(book);
+                this.db.SaveChanges();
+                return this.RedirectToAction("Index");
             }
 
-            return View(book);
+            return this.View(book);
         }
 
         // GET: Books/Edit/5
@@ -172,10 +171,10 @@
             Book book = db.Books.Include(b => b.Author).Single(b => b.Id == id);
             if (book == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
             this.PopulateCategoriesDropDownList();
-            return View(book);
+            return this.View(book);
         }
 
         // POST: Books/Edit/5
@@ -186,25 +185,27 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Image,Author,Description,ReleaseDate,Price,CurrentCount,CreatedOn")] Book book)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 Author bookAuthor = null;
                 try
                 {
-                    bookAuthor = db.Authors.Where(a => a.Name == book.Author.Name).Single();
+                    bookAuthor = this.db.Authors.First(a => a.Name == book.Author.Name);
                 }
-                catch (InvalidOperationException)
+                catch (Exception ex) when (ex is ArgumentNullException || ex is InvalidOperationException)
                 {
                     if (bookAuthor == null)
                     {
-                        bookAuthor = db.Authors.Add(new Author
+                        bookAuthor = this.db.Authors.Add(new Author
                         {
                             Name = book.Author.Name
                         });
+
+                        this.db.SaveChanges();
                     }
                 }
 
-                var currentBook = db.Books.Where(b => b.Id == book.Id).Single();
+                var currentBook = this.db.Books.Find(book.Id);
                 currentBook.Author = bookAuthor;
                 currentBook.AuthorId = bookAuthor.Id;
                 currentBook.Name = book.Name;
@@ -223,11 +224,11 @@
                 {
                     //No selected category to add
                 }
-                
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+                this.db.SaveChanges();
+                return this.RedirectToAction("Index");
             }
-            return View(book);
+            return this.View(book);
         }
 
         // GET: Books/Delete/5
@@ -238,12 +239,12 @@
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Book book = db.Books.Include(b => b.Author).Single(b => b.Id == id);
+            Book book = this.db.Books.Include(b => b.Author).Single(b => b.Id == id);
             if (book == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
-            return View(book);
+            return this.View(book);
         }
 
         // POST: Books/Delete/5
@@ -252,10 +253,10 @@
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Book book = db.Books.Find(id);
-            db.Books.Remove(book);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            Book book = this.db.Books.Find(id);
+            this.db.Books.Remove(book);
+            this.db.SaveChanges();
+            return this.RedirectToAction("Index");
         }
 
         // GET: Books/BookImage/
@@ -270,7 +271,7 @@
         {
             if (disposing)
             {
-                db.Dispose();
+                this.db.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -296,7 +297,7 @@
 
         private void PopulateCategoriesDropDownList(object selectedCategory = null)
         {
-            var categoryQuery = from c in db.Categories
+            var categoryQuery = from c in this.db.Categories
                                 orderby c.Name
                                 select c;
             this.ViewBag.CategoryId = new SelectList(categoryQuery, "Id", "Name", selectedCategory);
