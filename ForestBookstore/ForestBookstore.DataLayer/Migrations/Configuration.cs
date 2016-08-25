@@ -26,8 +26,8 @@
             //    System.Diagnostics.Debugger.Launch();
             //}
 
-            AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
+            this.AutomaticMigrationsEnabled = true;
+            this.AutomaticMigrationDataLossAllowed = true;
             this.ContextKey = "MVCBlog.Models.ApplicationDbContext";
         }
 
@@ -235,7 +235,15 @@
         {
             var book = new Book();
             book.Name = title;
-            book.Author = new Author{ Name = authorName };
+            try
+            {
+                book.Author = context.Authors.First(a => a.Name == authorName);
+            }
+            catch (Exception ex) when (ex is ArgumentNullException || ex is InvalidOperationException)
+            {
+                book.Author = new Author{ Name = authorName };
+            }
+            
             book.Image = image;
             book.Description = description;
             book.ReleaseDate = releaseDate;
@@ -251,6 +259,7 @@
                 }
             }
             context.Books.Add(book);
+            this.SaveChanges(context);
         }
 
         private void CreateRole(ApplicationDbContext context, string roleName)
