@@ -51,7 +51,33 @@
 </p>
 
 <p>
-    <a class="btn btn-default" href="@Url.Content("/Books/BookImage?id=" + Model.Id)">Order &raquo;</a>
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (Model.CurrentCount <= 0)
+        {
+            <input type="submit" class="btn btn-default" value="Order" disabled />
+        }
+        else
+        {
+            using (Ajax.BeginForm("AddToCart", "ShoppingCart", new { bookId = @Model.Id },
+                    new AjaxOptions
+                    {
+                        HttpMethod = "POST",
+                        UpdateTargetId = "",
+                        OnBegin = "disable",
+                        OnFailure = "enable",
+                        OnSuccess = "successfulOrder",
+                        OnComplete = "enable"
+                    }, new { @class = "" }))
+            {
+                <input type="submit" id="@Model.Id" class="btn btn-default" name="Order" value="Order">
+            }
+        }
+    }
+    else
+    {
+        @Html.ActionLink("Login to Order", "Login", "Account")
+    }
 </p>
 
 <div id="writa-a-review-form-@Model.Id">
@@ -105,4 +131,21 @@
 
 @section scripts {
     @Scripts.Render("~/bundles/ajax")
+
+    <script>
+            function disable() {
+                $(this).find('input').prop('disabled', true);
+            }
+
+            function enable() {
+                $(this).find('input').prop('disabled', false);
+            }
+
+            function successfulOrder() {
+                $.notify(
+                  "Item added in the Shopping Cart!",
+                { position: "right bottom", className: "success" }
+                );
+            }
+    </script>
 }
