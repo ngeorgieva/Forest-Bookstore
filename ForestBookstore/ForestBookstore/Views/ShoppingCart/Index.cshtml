@@ -34,8 +34,35 @@
                             }
                         </td>
                         <td><b>@book.Book.Name</b> by <i>@book.Book.Author.Name</i></td>
-                        <td>@book.Count</td>
-                        @{decimal currBookTotalPrice = book.Count * Math.Round(book.Book.Price, 2);}
+                        <td>
+                             <!--
+                            @using (Ajax.BeginForm("UpBookCount", "ShoppingCart", new { bookId = @book.BookId },
+                                    new AjaxOptions
+                                    {
+                                        HttpMethod = "POST",
+                                        UpdateTargetId = "" + @book.BookId,
+                                    }, new { @class = "" }))
+                            {
+                                <button type="submit" class="btn btn-default" style="display: inline">&#8657</button>
+                            }
+                                 -->
+
+                            <label id="@book.BookId" style="text-align:center">@book.Count</label>
+                            <!--
+                            @using (Ajax.BeginForm("DownBookCount", "ShoppingCart", new { bookId = @book.BookId },
+                            new AjaxOptions
+                            {
+                                HttpMethod = "POST",
+                                UpdateTargetId = "" + @book.BookId,
+                            }, new { @class = "" }))
+                            {
+                                <button type="submit" class="btn btn-default" style="display: inline" value="&#8659">&#8659</button>
+                            }
+                            -->
+                        </td>
+                        @{
+                            decimal currBookTotalPrice = book.Count * Math.Round(book.Book.Price, 2);
+                            }
                         <td>@currBookTotalPrice BGN</td>
                         @{total += book.Count * Math.Round(book.Book.Price, 2);}
                         <td>@using (Html.BeginForm("Delete", "ShoppingCart"))
@@ -62,4 +89,8 @@
       }
 }
 
+<script>
+    function calculateBookPrice(bookId, ) {
 
+    }
+</script>

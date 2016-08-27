@@ -164,7 +164,7 @@ namespace ForestBookstore.Controllers
                 PersonName = user.PersonName,
                 Address = user.Address,
                 Town = user.Town,
-                Phone = user.Phone
+                Phone = user.Phone.ToString()
             };
 
             this.Session["PlacingOrder"] = true;
@@ -285,8 +285,7 @@ namespace ForestBookstore.Controllers
             {
                 orderSuccessful = false;
             }
-
-
+            
             return View(orderSuccessful);
         }
 
@@ -301,6 +300,35 @@ namespace ForestBookstore.Controllers
             db.BooksInBaskets.Remove(booksInBasket);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult UpBookCount(int bookId)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
+            var bookCountInBasket = db.BooksInBaskets.Where(b => b.UserId == user.Id && b.BookId == bookId).Single();
+            bookCountInBasket.Count += 1;
+
+            db.SaveChanges();
+
+            return Content(bookCountInBasket.Count.ToString());
+        }
+
+        [HttpPost]
+        public ActionResult DownBookCount(int bookId)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
+            var bookCountInBasket = db.BooksInBaskets.Where(b => b.UserId == user.Id && b.BookId == bookId).Single();
+            if(bookCountInBasket.Count > 1)
+            {
+                bookCountInBasket.Count -= 1;
+            }
+
+            db.SaveChanges();
+
+            return Content(bookCountInBasket.Count.ToString());
         }
 
     }

@@ -12,7 +12,6 @@
             <dt>@Html.LabelFor(m => m.PersonName)</dt>
             <dd>@Html.TextBoxFor(m => m.PersonName, new { @Value = @Model.PersonName })
             @Html.ValidationMessageFor(model => model.PersonName)</dd>
-
             <dt>@Html.LabelFor(m => m.Address)</dt>
             <dd>@Html.TextBoxFor(m => m.Address, new { @Value = @Model.Address })
             @Html.ValidationMessageFor(model => model.Address)</dd>
@@ -24,5 +23,5 @@
             @Html.ValidationMessageFor(model => model.Phone)</dd>
         </dl>
         <input type="submit" class="btn btn-sm btn-warning" 
-               value="Summary" onclick="location.href='@Url.Action("Summary", "ShoppingCart")'"/>
+               value="To Summary" onclick="location.href='@Url.Action("Summary", "ShoppingCart")'"/>
 }
