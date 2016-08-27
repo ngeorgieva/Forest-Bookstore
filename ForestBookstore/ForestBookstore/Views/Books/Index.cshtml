@@ -99,25 +99,26 @@
                                             new AjaxOptions
                                             {
                                                 HttpMethod = "POST",
-                                                UpdateTargetId = "",
+                                                UpdateTargetId = "currentOrderedBook",
                                                 OnBegin = "disable",
                                                 OnFailure = "enable",
                                                 OnSuccess = "successfulOrder",
                                                 OnComplete = "enable"
                                             }, new { @class = "" }))
                                     {
-                                        <input type="submit" id="@book.Id" class="btn btn-default" name="Order" value="Order">
+                                        <input type="submit" id="@book.Id" class="btn btn-default" name="Order" value="Add to Cart">
                                     }
                                 }
                             }
                             else
                             {
-                                @Html.ActionLink("Login to Order", "Login", "Account")
+                                @Html.ActionLink("Login to Add to Cart", "Login", "Account")
                             }
                         </td>
-                    </tr>
+                    </tr>        
                 }
             </table>
+            <label id="currentOrderedBook" hidden></label>
             <br />
             <div class="text-center">
                 @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, searchString = Request.QueryString["SearchString"], searchBy = Request.QueryString["searchBy"], categoryId = Request.QueryString["categoryId"] }))
@@ -138,7 +139,7 @@
 
         function successfulOrder() {
             $.notify(
-              "Item added in the Shopping Cart!",
+             $("#currentOrderedBook").text() + " added in the Shopping Cart!",
             { position: "right bottom", className: "success" }
             );
         }

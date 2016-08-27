@@ -109,7 +109,16 @@ namespace ForestBookstore.Controllers
 
             ApplicationDbContext db = new ApplicationDbContext();
             var currentUser = UserManager.FindById(User.Identity.GetUserId());
-            bool successful = true;
+            string bookName = "";
+
+            try
+            {
+                bookName = db.Books.Where(book => book.Id == bookId).Single().Name;
+            }
+            catch (Exception)
+            {
+                bookName = "Book does not exist";
+            }
 
             var lineExist = db.BooksInBaskets
                     .Where(b => b.UserId == currentUser.Id && b.BookId == bookId).Count();
@@ -136,7 +145,7 @@ namespace ForestBookstore.Controllers
                           
             db.SaveChanges();
 
-            return Content(successful.ToString());
+            return Content(bookName);
         }
 
         [Authorize]
