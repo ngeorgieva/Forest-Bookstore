@@ -1,11 +1,13 @@
 ﻿@using ForestBookstore.Models.DbContext
 @model List<OrdersMade>
 
+@section scripts {
+    <link href="@Url.Content("~/Content/Styles/shopping-cart.css")" rel="stylesheet" type="text/css" />
+}
+
 <h2>My Orders</h2>
 
 @if (Model.Any())
-{
-foreach (var orders in Model)
 {
     <div class="shopping-cart">
         <table class="table">
@@ -36,7 +38,7 @@ foreach (var orders in Model)
                                 <div>@bookCounter: <b>@book.Book.Name</b> by <i>@book.Book.Author.Name</i></div>
                                 <div><b>Count</b>: @book.Count - <b>Price</b>: @Math.Round(book.Book.Price, 2) - <b>Overall</b>: @Math.Round(currentBookOverallPrice, 2)</div>
                             }
-
+                            <hr style="border-color: #118C4E" />
                             <div><b>Order Overall</b>: @Math.Round(totalOrderPrice, 2)</div>
                         </td>
 
@@ -51,10 +53,10 @@ foreach (var orders in Model)
                         <td>
                             @if (order.Status == false)
                             {
-                                @: Waiting to be sent.
+                                <div style="color: yellow">Waiting to be sent.</div>
                             }else
                             {
-                                @: Order sent.
+                                <div style="color: darkgreen">Order has been sent.</div>
                             }
                         </td>
                     </tr>
@@ -62,6 +64,6 @@ foreach (var orders in Model)
             }
         </table>
     </div>
-                                }}else{
+                                }else{
                                     @: No orders made.
                                 }

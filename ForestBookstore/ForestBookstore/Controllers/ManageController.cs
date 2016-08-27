@@ -89,7 +89,7 @@ namespace ForestBookstore.Controllers
                 myOrders = db.OrdersMades
                     .Where(u => u.UserId == user.Id)
                     .OrderBy(o => o.Status)
-                    .ThenBy(o => o.OrderedOn)
+                    .ThenByDescending(o => o.OrderedOn)
                     .ToList();
             }
 
