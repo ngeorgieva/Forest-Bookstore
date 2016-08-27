@@ -23,7 +23,8 @@ namespace ForestBookstore.Models.DbContext
 
         public bool Status { get; set; }
 
-        [Column(TypeName = "date")]
+        [Required]
+        [DataType(DataType.DateTime)]
         public DateTime OrderedOn { get; set; }
 
         public virtual ICollection<BooksForOrder> BooksForOrder
