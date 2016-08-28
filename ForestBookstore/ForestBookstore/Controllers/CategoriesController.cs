@@ -35,8 +35,16 @@ namespace ForestBookstore.Controllers
             {
                 return HttpNotFound();
             }
-            var bookList = this.db.Books.Include(b => b.Categories).Include(b => b.Author).Where(b => b.Categories.Any(c => c.Id == id)).ToList();
-            this.ViewBag.BookList = bookList;
+            if (category.Name == "New Releases")
+            {
+                DateTime sixMonthsAgo = DateTime.Today.AddMonths(-6);
+                this.ViewBag.BookList = this.db.Books.Include(b => b.Author).Where(b => DateTime.Compare(b.ReleaseDate, sixMonthsAgo) >= 0).OrderByDescending(b => b.ReleaseDate).ToList();
+            }
+            else
+            {
+                this.ViewBag.BookList = this.db.Books.Include(b => b.Categories).Include(b => b.Author).Where(b => b.Categories.Any(c => c.Id == id)).ToList();
+            }
+            
             return this.View(category);
         }
 
