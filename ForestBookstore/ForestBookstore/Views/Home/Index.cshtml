@@ -15,7 +15,7 @@
     @foreach (var item in ViewBag.NewReleases)
     {
         <div class="col-md-4">
-            <h3>@Utils.CutText(item.Name, 52)</h3>
+            <h3>@Utils.CutText(item.Name, 28)</h3>
             <h4><i>by </i>@item.Author.Name</h4>
             <p>
                 @if (item.Image != null)
@@ -36,7 +36,7 @@
     @foreach (var item in ViewBag.BestSellers)
     {
         <div class="col-md-4">
-            <h3>@Utils.CutText(item.Name, 52)</h3>
+            <h3>@Utils.CutText(item.Name, 28)</h3>
             <h4><i>by </i>@item.Author.Name</h4>
             <p>
                 @if (item.Image != null)

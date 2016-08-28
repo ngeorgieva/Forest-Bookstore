@@ -28,21 +28,6 @@ namespace ForestBookstore.Controllers
             return View(reviews.ToList());
         }
 
-        // GET: Reviews/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Review review = db.Reviews.Include(r => r.Book.Author).FirstOrDefault(r => r.Id == id);
-            if (review == null)
-            {
-                return HttpNotFound();
-            }
-            return View(review);
-        }
-
         // GET: Reviews/Create
         public ActionResult Create()
         {
