@@ -19,7 +19,7 @@
         // GET: Books
         public ActionResult Index(string searchString, string searchBy, int? categoryId, int page = 1, int pageSize = 3)
         {
-            var books = this.db.Books.Include(b => b.Author).OrderByDescending(b => b.CreatedOn);
+            var books = this.db.Books.Include(b => b.Author).OrderByDescending(b => b.ReleaseDate);
 
             if (categoryId != null)
             {
