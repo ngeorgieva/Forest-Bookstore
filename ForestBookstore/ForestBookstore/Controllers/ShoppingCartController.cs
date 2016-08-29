@@ -72,6 +72,8 @@ namespace ForestBookstore.Controllers
         [Authorize]
         public ActionResult Index()
         {
+            this.Session["PlacingOrder"] = null;
+
             ApplicationDbContext db = new ApplicationDbContext();
             var currentUser = UserManager.FindById(User.Identity.GetUserId());
             ShoppingCartBookViewModel booksInCart = new ShoppingCartBookViewModel(new List<CartLine>());
@@ -151,12 +153,6 @@ namespace ForestBookstore.Controllers
         [Authorize]
         public ActionResult Checkout()
         {
-            //Validation TODO
-            //if (this.Session["cartCount"] == null || (int)this.Session["cartCount"] == 0)
-            //{
-            //    return RedirectToAction("Index");
-            //}
-
             var user = UserManager.FindById(User.Identity.GetUserId());
 
             ShipmentDetailsViewModel currentShipment = new ShipmentDetailsViewModel
@@ -166,6 +162,11 @@ namespace ForestBookstore.Controllers
                 Town = user.Town,
                 Phone = user.Phone.ToString()
             };
+
+            if(db.BooksInBaskets.Where(b => b.UserId == user.Id).Count() == 0)
+            {
+                return RedirectToAction("Index");
+            }
 
             this.Session["PlacingOrder"] = true;
 
@@ -273,13 +274,14 @@ namespace ForestBookstore.Controllers
                     var currentBook = db.Books.Find(currentBookId);
                     currentBook.CurrentCount -= 1;
                     currentBook.Author = db.Authors.Find(currentBook.AuthorId);
-                    //Check if book is out of order
                 }
 
                 var booksInTheCart = db.BooksInBaskets.Where(b => b.UserId == user.Id);
                 db.BooksInBaskets.RemoveRange(booksInTheCart);
 
                 db.SaveChanges();
+
+                this.Session["PlacingOrder"] = null;
             }
             catch (Exception e)
             {
