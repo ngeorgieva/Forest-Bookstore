@@ -72,8 +72,6 @@ namespace ForestBookstore.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            this.Session["PlacingOrder"] = null;
-
             ApplicationDbContext db = new ApplicationDbContext();
             var currentUser = UserManager.FindById(User.Identity.GetUserId());
             ShoppingCartBookViewModel booksInCart = new ShoppingCartBookViewModel(new List<CartLine>());
@@ -279,6 +277,11 @@ namespace ForestBookstore.Controllers
                 var booksInTheCart = db.BooksInBaskets.Where(b => b.UserId == user.Id);
                 db.BooksInBaskets.RemoveRange(booksInTheCart);
 
+                if(this.Session["PlacingOrder"] == null)
+                {
+                    return RedirectToAction("Index");
+                }
+
                 db.SaveChanges();
 
                 this.Session["PlacingOrder"] = null;
@@ -296,6 +299,8 @@ namespace ForestBookstore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
+            this.Session["PlacingOrder"] = null;
+
             var user = UserManager.FindById(User.Identity.GetUserId());
             BooksInBasket booksInBasket = db.BooksInBaskets
                 .Where(bi => bi.BookId == id && bi.User.Id == user.Id).Single();
