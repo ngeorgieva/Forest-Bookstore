@@ -1,20 +1,10 @@
-﻿using System.Data.Entity;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using ForestBookstore.Models.DbContext;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System;
-using System.Data.Entity.Validation;
-
-namespace ForestBookstore.Models
+﻿namespace ForestBookstore.Models
 {
+    using System.Data.Entity;
     using DataLayer;
-    using System.ComponentModel;
+    using DbContext;
     using ForestBookstore.DataLayer.Models;
+    using Microsoft.AspNet.Identity.EntityFramework;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

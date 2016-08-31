@@ -1,21 +1,18 @@
 ﻿namespace ForestBookstore.Migrations
 {
     using System;
-    using System.CodeDom;
-    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Data.Entity.Validation;
     using System.IO;
     using System.Linq;
     using System.Text;
-    using System.Web;
     using DataLayer.Models;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Models;
-    using Models.DbContext;
     using Models.DataLayer;
+    using Models.DbContext;
 
     public sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
@@ -31,7 +28,7 @@
             this.ContextKey = "MVCBlog.Models.ApplicationDbContext";
         }
 
-        protected override void Seed(ForestBookstore.Models.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
             if (!context.Users.Any())
             {

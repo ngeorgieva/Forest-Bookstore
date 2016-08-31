@@ -1,11 +1,8 @@
 namespace ForestBookstore.Models.DbContext
 {
-    using DataLayer;
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
+    using DataLayer;
 
     [Table("BooksInBasket")]
     public partial class BooksInBasket

@@ -5,7 +5,6 @@ namespace ForestBookstore.Models.DbContext
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
     using ForestBookstore.DataLayer.Models;
 
     public partial class Book
