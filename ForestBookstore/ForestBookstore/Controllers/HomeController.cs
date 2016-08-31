@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace ForestBookstore.Controllers
+﻿namespace ForestBookstore.Controllers
 {
     using System.Data.Entity;
+    using System.Linq;
+    using System.Web.Mvc;
     using Models;
 
     public class HomeController : Controller

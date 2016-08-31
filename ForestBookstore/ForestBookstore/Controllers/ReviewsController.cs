@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using ForestBookstore.DataLayer.Models;
-using ForestBookstore.Models;
-
-namespace ForestBookstore.Controllers
+﻿namespace ForestBookstore.Controllers
 {
-    using System.Text;
-    using Classes;
-    using Models.DataLayer;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Net;
+    using System.Web.Mvc;
+    using DataLayer.Models;
+    using Models;
     using Models.DbContext;
 
     public class ReviewsController : Controller
@@ -24,8 +16,8 @@ namespace ForestBookstore.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
-            var reviews = db.Reviews.Include(r => r.Author).Include(r => r.Book.Author);
-            return View(reviews.ToList());
+            var reviews = this.db.Reviews.Include(r => r.Author).Include(r => r.Book.Author);
+            return this.View(reviews.ToList());
         }
 
         // GET: Reviews/Create
@@ -42,7 +34,7 @@ namespace ForestBookstore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Text,Date,Book")] Review review, int? id)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 review.Author = this.db.Users.FirstOrDefault(u => u.UserName == this.User.Identity.Name);
 
@@ -69,12 +61,12 @@ namespace ForestBookstore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Review review = db.Reviews.Find(id);
+            Review review = this.db.Reviews.Find(id);
             if (review == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
-            ViewBag.AuthorId = new SelectList(db.Users, "Id", "PersonName", review.AuthorId);
+            this.ViewBag.AuthorId = new SelectList(this.db.Users, "Id", "PersonName", review.AuthorId);
 
             var booksQuery =
                 this.db.Books
@@ -86,7 +78,7 @@ namespace ForestBookstore.Controllers
                         Description = $"{b.Name} by {b.Author.Name}"
                     });
             this.ViewBag.BookId = new SelectList(booksQuery, "BookId", "Description", review.BookId);
-            return View(review);
+            return this.View(review);
         }
 
         // POST: Reviews/Edit/5
@@ -96,15 +88,15 @@ namespace ForestBookstore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Text,Date,AuthorId,BookId")] Review review)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                db.Entry(review).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                this.db.Entry(review).State = EntityState.Modified;
+                this.db.SaveChanges();
+                return this.RedirectToAction("Index");
             }
-            ViewBag.AuthorId = new SelectList(db.Users, "Id", "PersonName", review.AuthorId);
-            ViewBag.BookId = new SelectList(db.Books, "Id", "Name", review.BookId);
-            return View(review);
+            this.ViewBag.AuthorId = new SelectList(this.db.Users, "Id", "PersonName", review.AuthorId);
+            this.ViewBag.BookId = new SelectList(this.db.Books, "Id", "Name", review.BookId);
+            return this.View(review);
         }
 
         // GET: Reviews/Delete/5
@@ -115,12 +107,12 @@ namespace ForestBookstore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Review review = db.Reviews.Include(r => r.Book.Author).FirstOrDefault(r => r.Id == id);
+            Review review = this.db.Reviews.Include(r => r.Book.Author).FirstOrDefault(r => r.Id == id);
             if (review == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
-            return View(review);
+            return this.View(review);
         }
 
         // POST: Reviews/Delete/5
@@ -129,17 +121,17 @@ namespace ForestBookstore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Review review = db.Reviews.Find(id);
-            db.Reviews.Remove(review);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            Review review = this.db.Reviews.Find(id);
+            this.db.Reviews.Remove(review);
+            this.db.SaveChanges();
+            return this.RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                this.db.Dispose();
             }
             base.Dispose(disposing);
         }

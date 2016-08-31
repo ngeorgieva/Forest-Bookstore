@@ -78,7 +78,7 @@
 
             if (book == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
 
             var categries = this.GetBookCategoriesAsAString(book);
@@ -168,7 +168,7 @@
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Book book = db.Books.Include(b => b.Author).Single(b => b.Id == id);
+            Book book = this.db.Books.Include(b => b.Author).Single(b => b.Id == id);
             if (book == null)
             {
                 return this.HttpNotFound();

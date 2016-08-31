@@ -1,14 +1,15 @@
 ﻿using Microsoft.Owin;
-using Owin;
 
-[assembly: OwinStartupAttribute(typeof(ForestBookstore.Startup))]
+[assembly: OwinStartup(typeof(ForestBookstore.Startup))]
 namespace ForestBookstore
 {
+    using Owin;
+
     public partial class Startup
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+            this.ConfigureAuth(app);
         }
     }
 }

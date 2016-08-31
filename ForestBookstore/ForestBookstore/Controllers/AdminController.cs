@@ -1,13 +1,11 @@
-﻿using ForestBookstore.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using ForestBookstore.Models.DbContext;
-
-namespace ForestBookstore.Controllers
+﻿namespace ForestBookstore.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+    using Models;
+    using Models.DbContext;
+
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     { 
@@ -15,17 +13,17 @@ namespace ForestBookstore.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult CheckNewOrders()
         {
-            var getUnsentOrders = GetOrders(false);
+            var getUnsentOrders = this.GetOrders(false);
      
-            return View(getUnsentOrders);
+            return this.View(getUnsentOrders);
         }
 
         [HttpGet]
         public ActionResult CheckSentOrders()
         {
-            var getSentOrders = GetOrders(true);      
+            var getSentOrders = this.GetOrders(true);      
 
-            return View(getSentOrders);
+            return this.View(getSentOrders);
         }
 
         [HttpPost]
@@ -37,7 +35,7 @@ namespace ForestBookstore.Controllers
             currOrder.Status = true;
             db.SaveChanges();
 
-            return RedirectToAction("CheckNewOrders");
+            return this.RedirectToAction("CheckNewOrders");
         }
         
         [HttpPost]
@@ -49,7 +47,7 @@ namespace ForestBookstore.Controllers
             currOrder.Status = false;
             db.SaveChanges();
 
-            return View("CheckSentOrders");
+            return this.View("CheckSentOrders");
         }
 
         private List<OrdersMade> GetOrders(bool getSentOrders)

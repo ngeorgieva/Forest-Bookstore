@@ -1,17 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using ForestBookstore.Models;
-using System.Collections.Generic;
-using ForestBookstore.Models.DbContext;
-
-namespace ForestBookstore.Controllers
+﻿namespace ForestBookstore.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Web;
+    using System.Web.Mvc;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.Owin;
+    using Microsoft.Owin.Security;
+    using Models;
+    using Models.DbContext;
+
     [Authorize]
     public class ManageController : Controller
     {
@@ -24,19 +23,19 @@ namespace ForestBookstore.Controllers
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
-            UserManager = userManager;
-            SignInManager = signInManager;
+            this.UserManager = userManager;
+            this.SignInManager = signInManager;
         }
 
         public ApplicationSignInManager SignInManager
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+                return this._signInManager ?? this.HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
             private set
             {
-                _signInManager = value;
+                this._signInManager = value;
             }
         }
 
@@ -44,11 +43,11 @@ namespace ForestBookstore.Controllers
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return this._userManager ?? this.HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {
-                _userManager = value;
+                this._userManager = value;
             }
         }
 
@@ -56,7 +55,7 @@ namespace ForestBookstore.Controllers
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
+            this.ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.ChangeInfoSuccess ? "Your account personal settings has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
@@ -66,22 +65,22 @@ namespace ForestBookstore.Controllers
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
 
-            var userId = User.Identity.GetUserId();
+            var userId = this.User.Identity.GetUserId();
             var model = new IndexViewModel
             {
-                HasPassword = HasPassword(),
-                PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
-                Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                HasPassword = this.HasPassword(),
+                PhoneNumber = await this.UserManager.GetPhoneNumberAsync(userId),
+                TwoFactor = await this.UserManager.GetTwoFactorEnabledAsync(userId),
+                Logins = await this.UserManager.GetLoginsAsync(userId),
+                BrowserRemembered = await this.AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
-            return View(model);
+            return this.View(model);
         }
 
         public ActionResult CheckMyOrders()
         {
             ApplicationDbContext db = new ApplicationDbContext();
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = this.UserManager.FindById(this.User.Identity.GetUserId());
             var myOrders = new List<OrdersMade>();
 
             if(db.OrdersMades.Where(u => u.User.Id == user.Id).Count() > 0)
@@ -101,13 +100,13 @@ namespace ForestBookstore.Controllers
                 }
             }
 
-            return View(myOrders);
+            return this.View(myOrders);
         }
 
         [HttpGet]
         public ActionResult ChangePersonalInformation()
         {
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = this.UserManager.FindById(this.User.Identity.GetUserId());
         
             PersonalInfoViewModel userPersonalInfo = new PersonalInfoViewModel
             {
@@ -116,10 +115,10 @@ namespace ForestBookstore.Controllers
                 Town = user.Town,
                 Phone = user.Phone
             };
+
+            this.ViewBag.Title = "Manage";
         
-            ViewBag.Title = "Manage";
-        
-            return View(userPersonalInfo);
+            return this.View(userPersonalInfo);
         }
 
         [HttpPost]
@@ -128,21 +127,21 @@ namespace ForestBookstore.Controllers
             [Bind(Include = "PersonName,Address,Town,Phone")] PersonalInfoViewModel model)
         {
             ApplicationDbContext db = new ApplicationDbContext();
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = this.UserManager.FindById(this.User.Identity.GetUserId());
 
             user.PersonName = model.PersonName;
             user.Address = model.Address;
             user.Town = model.Town;
             user.Phone = model.Phone;
 
-            var result = UserManager.Update(user);
+            var result = this.UserManager.Update(user);
 
             if (!result.Succeeded)
             {
-                AddErrors(result);
+                this.AddErrors(result);
             }
 
-            return RedirectToAction("Index", new { Message = ManageMessageId.ChangeInfoSuccess });
+            return this.RedirectToAction("Index", new { Message = ManageMessageId.ChangeInfoSuccess });
         }
 
 
@@ -153,13 +152,13 @@ namespace ForestBookstore.Controllers
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
         {
             ManageMessageId? message;
-            var result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
+            var result = await this.UserManager.RemoveLoginAsync(this.User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
-                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var user = await this.UserManager.FindByIdAsync(this.User.Identity.GetUserId());
                 if (user != null)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
                 message = ManageMessageId.RemoveLoginSuccess;
             }
@@ -167,14 +166,14 @@ namespace ForestBookstore.Controllers
             {
                 message = ManageMessageId.Error;
             }
-            return RedirectToAction("ManageLogins", new { Message = message });
+            return this.RedirectToAction("ManageLogins", new { Message = message });
         }
 
         //
         // GET: /Manage/AddPhoneNumber
         public ActionResult AddPhoneNumber()
         {
-            return View();
+            return this.View();
         }
 
         //
@@ -183,31 +182,31 @@ namespace ForestBookstore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return View(model);
+                return this.View(model);
             }
             // Generate the token and send it
-            var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), model.Number);
-            if (UserManager.SmsService != null)
+            var code = await this.UserManager.GenerateChangePhoneNumberTokenAsync(this.User.Identity.GetUserId(), model.Number);
+            if (this.UserManager.SmsService != null)
             {
                 var message = new IdentityMessage
                 {
                     Destination = model.Number,
                     Body = "Your security code is: " + code
                 };
-                await UserManager.SmsService.SendAsync(message);
+                await this.UserManager.SmsService.SendAsync(message);
             }
-            return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
+            return this.RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
         }
 
         //
         // GET: /Manage/VerifyPhoneNumber
         public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
         {
-            var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), phoneNumber);
+            var code = await this.UserManager.GenerateChangePhoneNumberTokenAsync(this.User.Identity.GetUserId(), phoneNumber);
             // Send an SMS through the SMS provider to verify the phone number
-            return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
+            return phoneNumber == null ? this.View("Error") : this.View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
         }
 
         //
@@ -216,23 +215,23 @@ namespace ForestBookstore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return View(model);
+                return this.View(model);
             }
-            var result = await UserManager.ChangePhoneNumberAsync(User.Identity.GetUserId(), model.PhoneNumber, model.Code);
+            var result = await this.UserManager.ChangePhoneNumberAsync(this.User.Identity.GetUserId(), model.PhoneNumber, model.Code);
             if (result.Succeeded)
             {
-                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var user = await this.UserManager.FindByIdAsync(this.User.Identity.GetUserId());
                 if (user != null)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
+                return this.RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
             }
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "Failed to verify phone");
-            return View(model);
+            this.ModelState.AddModelError("", "Failed to verify phone");
+            return this.View(model);
         }
 
         //
@@ -241,24 +240,24 @@ namespace ForestBookstore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemovePhoneNumber()
         {
-            var result = await UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
+            var result = await this.UserManager.SetPhoneNumberAsync(this.User.Identity.GetUserId(), null);
             if (!result.Succeeded)
             {
-                return RedirectToAction("Index", new { Message = ManageMessageId.Error });
+                return this.RedirectToAction("Index", new { Message = ManageMessageId.Error });
             }
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var user = await this.UserManager.FindByIdAsync(this.User.Identity.GetUserId());
             if (user != null)
             {
-                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
             }
-            return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
+            return this.RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
         }
 
         //
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
-            return View();
+            return this.View();
         }
 
         //
@@ -267,29 +266,29 @@ namespace ForestBookstore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return View(model);
+                return this.View(model);
             }
-            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            var result = await this.UserManager.ChangePasswordAsync(this.User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
             if (result.Succeeded)
             {
-                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var user = await this.UserManager.FindByIdAsync(this.User.Identity.GetUserId());
                 if (user != null)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return this.RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
-            AddErrors(result);
-            return View(model);
+            this.AddErrors(result);
+            return this.View(model);
         }
 
         //
         // GET: /Manage/SetPassword
         public ActionResult SetPassword()
         {
-            return View();
+            return this.View();
         }
 
         //
@@ -298,42 +297,42 @@ namespace ForestBookstore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+                var result = await this.UserManager.AddPasswordAsync(this.User.Identity.GetUserId(), model.NewPassword);
                 if (result.Succeeded)
                 {
-                    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                    var user = await this.UserManager.FindByIdAsync(this.User.Identity.GetUserId());
                     if (user != null)
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     }
-                    return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
+                    return this.RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
                 }
-                AddErrors(result);
+                this.AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return this.View(model);
         }
 
         //
         // GET: /Manage/ManageLogins
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
+            this.ViewBag.StatusMessage =
                 message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var user = await this.UserManager.FindByIdAsync(this.User.Identity.GetUserId());
             if (user == null)
             {
-                return View("Error");
+                return this.View("Error");
             }
-            var userLogins = await UserManager.GetLoginsAsync(User.Identity.GetUserId());
-            var otherLogins = AuthenticationManager.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
-            ViewBag.ShowRemoveButton = user.PasswordHash != null || userLogins.Count > 1;
-            return View(new ManageLoginsViewModel
+            var userLogins = await this.UserManager.GetLoginsAsync(this.User.Identity.GetUserId());
+            var otherLogins = this.AuthenticationManager.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
+            this.ViewBag.ShowRemoveButton = user.PasswordHash != null || userLogins.Count > 1;
+            return this.View(new ManageLoginsViewModel
             {
                 CurrentLogins = userLogins,
                 OtherLogins = otherLogins
@@ -347,30 +346,30 @@ namespace ForestBookstore.Controllers
         public ActionResult LinkLogin(string provider)
         {
             // Request a redirect to the external login provider to link a login for the current user
-            return new AccountController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
+            return new AccountController.ChallengeResult(provider, this.Url.Action("LinkLoginCallback", "Manage"), this.User.Identity.GetUserId());
         }
 
         //
         // GET: /Manage/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
+            var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, this.User.Identity.GetUserId());
             if (loginInfo == null)
             {
-                return RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+                return this.RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
             }
-            var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
-            return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+            var result = await this.UserManager.AddLoginAsync(this.User.Identity.GetUserId(), loginInfo.Login);
+            return result.Succeeded ? this.RedirectToAction("ManageLogins") : this.RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
 
 
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && _userManager != null)
+            if (disposing && this._userManager != null)
             {
-                _userManager.Dispose();
-                _userManager = null;
+                this._userManager.Dispose();
+                this._userManager = null;
             }
 
             base.Dispose(disposing);
@@ -384,7 +383,7 @@ namespace ForestBookstore.Controllers
         {
             get
             {
-                return HttpContext.GetOwinContext().Authentication;
+                return this.HttpContext.GetOwinContext().Authentication;
             }
         }
 
@@ -392,13 +391,13 @@ namespace ForestBookstore.Controllers
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError("", error);
+                this.ModelState.AddModelError("", error);
             }
         }
 
         private bool HasPassword()
         {
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = this.UserManager.FindById(this.User.Identity.GetUserId());
             if (user != null)
             {
                 return user.PasswordHash != null;
@@ -408,7 +407,7 @@ namespace ForestBookstore.Controllers
 
         private bool HasPhoneNumber()
         {
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = this.UserManager.FindById(this.User.Identity.GetUserId());
             if (user != null)
             {
                 return user.PhoneNumber != null;

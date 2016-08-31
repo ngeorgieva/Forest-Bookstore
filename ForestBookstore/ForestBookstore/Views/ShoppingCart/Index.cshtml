@@ -1,6 +1,4 @@
-﻿@using System
-@using ForestBookstore.Models;
-@model ShoppingCartBookViewModel
+﻿@model ForestBookstore.Models.ShoppingCartBookViewModel
 
 <h2>Shopping Cart</h2>
 @section scripts {
@@ -8,7 +6,7 @@
 }
 
 @{
-    if (this.Model.Books.Count == 0)
+    if (Model.Books.Count == 0)
     {
         @:No books added in the Shopping Cart.
     }
@@ -24,7 +22,7 @@
                     <th>Price</th>
                     <th></th>
                 </tr>
-                @foreach (var book in this.Model.Books)
+                @foreach (var book in Model.Books)
                 {
                     <tr>
                         <td>
@@ -88,9 +86,3 @@
         
       }
 }
-
-<script>
-    function calculateBookPrice(bookId, ) {
-
-    }
-</script>

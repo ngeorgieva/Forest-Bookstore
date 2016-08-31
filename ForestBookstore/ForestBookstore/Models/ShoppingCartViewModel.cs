@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using ForestBookstore.Models.DbContext;
-
-namespace ForestBookstore.Models
+﻿namespace ForestBookstore.Models
 {
+    using System.Collections.Generic;
+    using DbContext;
+
     public class ShoppingCartBookViewModel
     {
         public ShoppingCartBookViewModel(ICollection<CartLine> collection)

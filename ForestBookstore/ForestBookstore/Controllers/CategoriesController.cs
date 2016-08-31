@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using ForestBookstore.Models;
-using ForestBookstore.Models.DbContext;
-
-namespace ForestBookstore.Controllers
+﻿namespace ForestBookstore.Controllers
 {
-    using System.Web.WebPages.Html;
+    using System;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Net;
+    using System.Web.Mvc;
+    using Models;
+    using Models.DbContext;
 
     public class CategoriesController : Controller
     {
@@ -20,7 +15,7 @@ namespace ForestBookstore.Controllers
         // GET: Categories
         public ActionResult Index()
         {
-            return View(db.Categories.Include(c => c.Books).ToList());
+            return this.View(this.db.Categories.Include(c => c.Books).ToList());
         }
 
         // GET: Categories/Details/5
@@ -33,7 +28,7 @@ namespace ForestBookstore.Controllers
             Category category = this.db.Categories.Include(c => c.Books).Single(c => c.Id == id);
             if (category == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
             if (category.Name == "New Releases")
             {
@@ -52,7 +47,7 @@ namespace ForestBookstore.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
-            return View();
+            return this.View();
         }
 
         // POST: Categories/Create
@@ -63,14 +58,14 @@ namespace ForestBookstore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name")] Category category)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                db.Categories.Add(category);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                this.db.Categories.Add(category);
+                this.db.SaveChanges();
+                return this.RedirectToAction("Index");
             }
 
-            return View(category);
+            return this.View(category);
         }
 
         // GET: Categories/Edit/5
@@ -84,7 +79,7 @@ namespace ForestBookstore.Controllers
             Category category = this.db.Categories.Find(id);
             if (category == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
             
             var booksQuery =
@@ -98,7 +93,7 @@ namespace ForestBookstore.Controllers
                     });
 
             this.ViewBag.BookId = new SelectList(booksQuery, "BookId", "Description");
-            return View(category);
+            return this.View(category);
         }
 
         // POST: Categories/Edit/5
@@ -109,16 +104,16 @@ namespace ForestBookstore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name")] Category category)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 int bookId = int.Parse(this.Request.Form["BookId"]);
                 var book = this.db.Books.Include(b => b.Categories).Single(b => b.Id == bookId);
                 if (book != null) book.Categories.Remove(this.db.Categories.Single(c => c.Id == category.Id));
                 //this.db.Entry(category).State = EntityState.Modified;
                 this.db.SaveChanges();
-                return RedirectToAction("Index");
+                return this.RedirectToAction("Index");
             }
-            return View(category);
+            return this.View(category);
         }
 
         // GET: Categories/Delete/5
@@ -129,12 +124,12 @@ namespace ForestBookstore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category category = db.Categories.Find(id);
+            Category category = this.db.Categories.Find(id);
             if (category == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
-            return View(category);
+            return this.View(category);
         }
 
         // POST: Categories/Delete/5
@@ -143,17 +138,17 @@ namespace ForestBookstore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Category category = db.Categories.Find(id);
-            db.Categories.Remove(category);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            Category category = this.db.Categories.Find(id);
+            this.db.Categories.Remove(category);
+            this.db.SaveChanges();
+            return this.RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                this.db.Dispose();
             }
             base.Dispose(disposing);
         }
